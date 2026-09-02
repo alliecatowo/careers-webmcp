@@ -4,7 +4,7 @@ import { GlobalJobListing } from '@/modules/talent-acquisition/components/Global
 import { RecentlyViewedJobs } from '@/modules/jobs/components/RecentlyViewedJobs';
 
 export const metadata: Metadata = {
-    title: "Open Positions Worldwide | Baalvion Careers",
+    title: "Open Positions Worldwide | Northwind Careers",
     description: "Explore your next challenge and join our global team. Search for open roles in Engineering, Design, Product, and more across our global hiring regions.",
 };
 

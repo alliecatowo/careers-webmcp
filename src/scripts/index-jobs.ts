@@ -10,7 +10,7 @@ import { mockJobs } from '@/mocks/talent-platform/jobs.mock';
 
 const API_ENDPOINT = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
 const INDEXING_SECRET = process.env.GOOGLE_INDEXING_SECRET;
-const BASE_URL = 'https://www.jobs.baalvion.com';
+const BASE_URL = 'https://www.jobs.northwind.com';
 
 // Country ID to slug mapping
 const countrySlugMap: Record<string, string> = {

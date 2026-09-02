@@ -110,11 +110,11 @@ export function GoogleIndexingTrigger() {
   const generateJobUrls = () => {
     // Generate sample job URLs based on your URL structure
     const sampleUrls = [
-      'https://www.jobs.baalvion.com/careers/countries/india/jobs/job-1',
-      'https://www.jobs.baalvion.com/careers/countries/united-states/jobs/job-2',
-      'https://www.jobs.baalvion.com/careers/countries/poland/jobs/job-3',
-      'https://www.jobs.baalvion.com/careers/countries/india/jobs/job-4',
-      'https://www.jobs.baalvion.com/careers/countries/united-kingdom/jobs/job-5',
+      'https://www.jobs.northwind.com/careers/countries/india/jobs/job-1',
+      'https://www.jobs.northwind.com/careers/countries/united-states/jobs/job-2',
+      'https://www.jobs.northwind.com/careers/countries/poland/jobs/job-3',
+      'https://www.jobs.northwind.com/careers/countries/india/jobs/job-4',
+      'https://www.jobs.northwind.com/careers/countries/united-kingdom/jobs/job-5',
     ];
 
     setBulkUrls(sampleUrls.join('\n'));
@@ -140,7 +140,7 @@ export function GoogleIndexingTrigger() {
               <Input
                 id="url"
                 type="url"
-                placeholder="https://www.jobs.baalvion.com/careers/countries/india/jobs/job-1"
+                placeholder="https://www.jobs.northwind.com/careers/countries/india/jobs/job-1"
                 value={url}
                 onChange={(e) => setUrl(e.target.value)}
                 required
@@ -229,7 +229,7 @@ export function GoogleIndexingTrigger() {
               </div>
               <Textarea
                 id="bulk-urls"
-                placeholder="https://www.jobs.baalvion.com/careers/countries/india/jobs/job-1&#10;https://www.jobs.baalvion.com/careers/countries/united-states/jobs/job-2"
+                placeholder="https://www.jobs.northwind.com/careers/countries/india/jobs/job-1&#10;https://www.jobs.northwind.com/careers/countries/united-states/jobs/job-2"
                 value={bulkUrls}
                 onChange={(e) => setBulkUrls(e.target.value)}
                 rows={6}

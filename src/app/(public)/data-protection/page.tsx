@@ -5,13 +5,13 @@ import { Metadata } from 'next';
 
 export const metadata: Metadata = {
     title: "Data Protection Policy",
-    description: "Learn about Baalvion's commitment to data protection, our principles, and the measures we take to secure your data.",
+    description: "Learn about Northwind's commitment to data protection, our principles, and the measures we take to secure your data.",
     alternates: {
         canonical: '/data-protection',
     },
     openGraph: {
-        title: "Data Protection Policy | TalentOS by Baalvion",
-        description: "Learn about Baalvion's commitment to data protection.",
+        title: "Data Protection Policy | Northwind Careers",
+        description: "Learn about Northwind's commitment to data protection.",
         url: '/data-protection'
     }
 };
@@ -47,14 +47,14 @@ export default function DataProtectionPolicyPage() {
         
         <Section title="1. Purpose &amp; Scope">
           <p className="text-lg text-muted-foreground">
-            This Data Protection Policy outlines the commitment of Baalvion Industries Pvt Ltd ("Baalvion") to protecting personal data processed within our global talent acquisition platform, Jobs.Baalvion.com (the "Platform"). This policy applies to all personal data collected, processed, and stored by Baalvion, including data from candidates, employer clients, and platform users. It forms the foundation of our data governance framework and demonstrates our commitment to operating in a secure, transparent, and compliant manner.
+            This Data Protection Policy outlines the commitment of Northwind Industries Pvt Ltd ("Northwind") to protecting personal data processed within our global talent acquisition platform, Jobs.Northwind.com (the "Platform"). This policy applies to all personal data collected, processed, and stored by Northwind, including data from candidates, employer clients, and platform users. It forms the foundation of our data governance framework and demonstrates our commitment to operating in a secure, transparent, and compliant manner.
           </p>
         </Section>
 
         <Separator />
 
         <Section title="2. Data Protection Principles">
-          <p className="text-lg text-muted-foreground">Baalvion adheres to the following core data protection principles:</p>
+          <p className="text-lg text-muted-foreground">Northwind adheres to the following core data protection principles:</p>
           <BulletList items={[
               <><strong>Lawfulness, Fairness, and Transparency:</strong> We process personal data lawfully, fairly, and in a transparent manner in relation to the data subject.</>,
               <><strong>Purpose Limitation:</strong> We collect personal data for specified, explicit, and legitimate purposes and do not further process it in a manner that is incompatible with those purposes.</>,
@@ -87,7 +87,7 @@ export default function DataProtectionPolicyPage() {
         </Section>
         
         <Section title="5. Data Security Measures">
-          <p className="text-lg text-muted-foreground">Baalvion implements a multi-layered security framework to protect data:</p>
+          <p className="text-lg text-muted-foreground">Northwind implements a multi-layered security framework to protect data:</p>
             <BulletList items={[
                 <><strong>Encryption:</strong> All data is encrypted in transit using TLS 1.2+ and at rest using industry-standard AES-256 encryption.</>,
                 <><strong>Access Control:</strong> We enforce a strict role-based access control (RBAC) model to ensure users can only access data necessary for their role.</>,
@@ -125,7 +125,7 @@ export default function DataProtectionPolicyPage() {
         </Section>
         
         <Section title="10. Data Subject Rights Handling">
-          <p className="text-lg text-muted-foreground">Baalvion has established procedures to facilitate the exercise of data subject rights, including rights of access, rectification, erasure, restriction, and portability. All requests are handled in a timely manner, in accordance with applicable legal frameworks. Users can initiate a request through the contact information provided in our Privacy Policy.</p>
+          <p className="text-lg text-muted-foreground">Northwind has established procedures to facilitate the exercise of data subject rights, including rights of access, rectification, erasure, restriction, and portability. All requests are handled in a timely manner, in accordance with applicable legal frameworks. Users can initiate a request through the contact information provided in our Privacy Policy.</p>
         </Section>
 
         <Section title="11. Data Breach Management">
@@ -133,11 +133,11 @@ export default function DataProtectionPolicyPage() {
         </Section>
         
         <Section title="12. Governance &amp; Accountability">
-          <p className="text-lg text-muted-foreground">Data protection is a core responsibility at Baalvion. We maintain an internal governance structure to oversee our data protection program, conduct regular policy reviews, and monitor for compliance with this policy and applicable regulations, including GDPR principles and India's Information Technology Act, 2000.</p>
+          <p className="text-lg text-muted-foreground">Data protection is a core responsibility at Northwind. We maintain an internal governance structure to oversee our data protection program, conduct regular policy reviews, and monitor for compliance with this policy and applicable regulations, including GDPR principles and India's Information Technology Act, 2000.</p>
         </Section>
         
         <Section title="13. Contact &amp; Escalation">
-          <p className="text-lg text-muted-foreground">For questions regarding this policy or our data protection practices, please contact our legal team at legal@baalvion.com. This is the designated channel for all data protection inquiries.</p>
+          <p className="text-lg text-muted-foreground">For questions regarding this policy or our data protection practices, please contact our legal team at legal@northwind.com. This is the designated channel for all data protection inquiries.</p>
         </Section>
       </div>
     </main>

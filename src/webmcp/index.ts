@@ -1,0 +1,12 @@
+export { WebMCPProvider } from './WebMCPProvider';
+export { registerCareersTools, getToolDefinitions } from './register';
+export { tools } from './tools';
+export type { CareersTool } from './tools';
+export { getContext } from './context';
+export type { CareersContext } from './context';
+export { navigate, setNavigator, scrollToTop } from './navigation';
+export { assertRevision } from './revision';
+export { WebMCPError, toErrorResult, WEBMCP_ERROR_CODES } from './errors';
+export type { WebMCPErrorCode, ErrorResult } from './errors';
+export { ok, fail, boundText, boundResult, LIMITS } from './results';
+export * from './schemas';

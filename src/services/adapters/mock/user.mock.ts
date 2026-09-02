@@ -8,7 +8,7 @@ export let mockUsers: (SystemUser & { tenantId: string, phone?: string })[] = [
   {
     id: '1',
     name: 'Super Admin (Acme)',
-    email: 'admin@baalvion.com',
+    email: 'admin@northwind.com',
     role: 'SUPER_ADMIN',
     createdAt: new Date('2023-01-15T09:00:00Z').toISOString(),
     tenantId: 'org_acme',
@@ -17,7 +17,7 @@ export let mockUsers: (SystemUser & { tenantId: string, phone?: string })[] = [
   {
     id: '2',
     name: 'Recruiter (Acme)',
-    email: 'recruiter@baalvion.com',
+    email: 'recruiter@northwind.com',
     role: 'RECRUITER',
     createdAt: new Date('2023-02-20T14:30:00Z').toISOString(),
     tenantId: 'org_acme',
@@ -26,7 +26,7 @@ export let mockUsers: (SystemUser & { tenantId: string, phone?: string })[] = [
   {
     id: '3',
     name: 'Hiring Manager (Stark)',
-    email: 'manager@baalvion.com',
+    email: 'manager@northwind.com',
     role: 'ADMIN',
     createdAt: new Date('2023-03-10T11:00:00Z').toISOString(),
     tenantId: 'org_stark',

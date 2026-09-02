@@ -1,5 +1,5 @@
 {
-  "name": "nextn",
+  "name": "careers-webmcp",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -9,7 +9,11 @@
     "lint": "next lint",
     "typecheck": "tsc --noEmit",
     "index-jobs": "npx tsx src/scripts/index-jobs.ts",
-    "test-indexing": "npx tsx src/lib/test-google-indexing.ts"
+    "test-indexing": "npx tsx src/lib/test-google-indexing.ts",
+    "test": "vitest run",
+    "test:unit": "vitest run",
+    "test:e2e": "playwright test",
+    "test:all": "pnpm test:unit && pnpm test:e2e"
   },
   "dependencies": {
     "@dnd-kit/core": "^6.1.0",
@@ -66,6 +70,7 @@
     "zustand": "^4.5.2"
   },
   "devDependencies": {
+    "@playwright/test": "^1.62.1",
     "@types/dotenv": "^6.1.1",
     "@types/file-saver": "^2.0.7",
     "@types/node": "^20.19.37",
@@ -76,7 +81,9 @@
     "postcss": "^8",
     "tailwindcss": "^3.4.1",
     "tsx": "^4.7.0",
-    "typescript": "^5.9.3"
+    "typescript": "^5.9.3",
+    "vitest": "^3.2.7",
+    "webmcp-types": "0.1.5"
   },
   "packageManager": "pnpm@10.31.0+sha512.e3927388bfaa8078ceb79b748ffc1e8274e84d75163e67bc22e06c0d3aed43dd153151cbf11d7f8301ff4acb98c68bdc5cadf6989532801ffafe3b3e4a63c268"
 }

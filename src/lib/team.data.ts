@@ -21,7 +21,7 @@ export let teamMembers: TeamMember[] = [
     name: "Arjun Verma",
     role: "Founder & Chief Architect",
     tagline: "Building the rails for global talent.",
-    bio: "Arjun is the visionary behind Baalvion, driven by the belief that talent is borderless. With a background in distributed systems and fintech, he is architecting the intelligent infrastructure to power the future of work.",
+    bio: "Arjun is the visionary behind Northwind, driven by the belief that talent is borderless. With a background in distributed systems and fintech, he is architecting the intelligent infrastructure to power the future of work.",
     expertise: ["System Architecture", "Go (Golang)", "Fintech", "Product Strategy"],
     socials: {
       linkedin: "https://linkedin.com/in/arjunverma",
@@ -35,7 +35,7 @@ export let teamMembers: TeamMember[] = [
     name: "Priya Sharma",
     role: "Head of Product",
     tagline: "Crafting experiences that empower.",
-    bio: "Priya leads the product team with a relentless focus on the user. She translates complex hiring challenges into simple, elegant solutions, ensuring Baalvion is not just powerful, but intuitive.",
+    bio: "Priya leads the product team with a relentless focus on the user. She translates complex hiring challenges into simple, elegant solutions, ensuring Northwind is not just powerful, but intuitive.",
     expertise: ["Product Management", "UX Strategy", "SaaS", "Agile Methodologies"],
     socials: {
       linkedin: "https://linkedin.com/in/priyasharma"
@@ -48,7 +48,7 @@ export let teamMembers: TeamMember[] = [
     name: "David Chen",
     role: "Lead Platform Engineer",
     tagline: "Obsessed with scale and reliability.",
-    bio: "David is responsible for the core infrastructure of Baalvion. He specializes in building fault-tolerant, scalable systems on the cloud, ensuring our platform is always on, no matter the demand.",
+    bio: "David is responsible for the core infrastructure of Northwind. He specializes in building fault-tolerant, scalable systems on the cloud, ensuring our platform is always on, no matter the demand.",
     expertise: ["DevOps", "Kubernetes", "AWS", "Site Reliability Engineering (SRE)"],
     socials: {
       linkedin: "https://linkedin.com/in/davidchen",
@@ -62,7 +62,7 @@ export let teamMembers: TeamMember[] = [
     name: "Emily Woods",
     role: "Lead Frontend Engineer",
     tagline: "Turning pixels into performance.",
-    bio: "Emily leads the frontend team, where she combines her passion for design with deep technical expertise. She is dedicated to building a fast, accessible, and beautiful interface for all Baalvion users.",
+    bio: "Emily leads the frontend team, where she combines her passion for design with deep technical expertise. She is dedicated to building a fast, accessible, and beautiful interface for all Northwind users.",
     expertise: ["React", "TypeScript", "Performance Optimization", "Accessibility (a11y)"],
     socials: {
       linkedin: "https://linkedin.com/in/emilywoods",
@@ -76,7 +76,7 @@ export let teamMembers: TeamMember[] = [
     name: "Samuel Jones",
     role: "Head of AI & Data Science",
     tagline: "Finding signal in the noise.",
-    bio: "Samuel and his team are the brains behind Baalvion's intelligence layer. He develops the algorithms that parse resumes, score candidates, and mitigate bias, making hiring faster and fairer.",
+    bio: "Samuel and his team are the brains behind Northwind's intelligence layer. He develops the algorithms that parse resumes, score candidates, and mitigate bias, making hiring faster and fairer.",
     expertise: ["Machine Learning", "Natural Language Processing (NLP)", "Python", "Data Ethics"],
     socials: {
       linkedin: "https://linkedin.com/in/samueljones"
@@ -103,7 +103,7 @@ export let teamMembers: TeamMember[] = [
     name: "Omar Al-Fayed",
     role: "Head of Global Compliance",
     tagline: "Navigating the complexities of global hiring.",
-    bio: "With a background in international law and technology, Omar ensures that the Baalvion platform operates in full compliance with the labor and data privacy laws of every country we support.",
+    bio: "With a background in international law and technology, Omar ensures that the Northwind platform operates in full compliance with the labor and data privacy laws of every country we support.",
     expertise: ["RegTech", "GDPR", "International Law", "Risk Management"],
     socials: {
       linkedin: "https://linkedin.com/in/omaralfayed"

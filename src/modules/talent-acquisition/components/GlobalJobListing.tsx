@@ -12,8 +12,16 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { Search } from 'lucide-react';
 import { Job, Country, Department } from '@/lib/talent-acquisition';
 import { talentService } from '@/services/talent.service';
+import { JOB_LEVELS } from '@/domain/jobs';
 import { JobCard } from './JobCard';
 import { PaginationControls } from '@/modules/jobs/components/PaginationControls';
+
+const WORKPLACES = ['On-site', 'Hybrid', 'Remote'] as const;
+
+/** 'On-site' shown to users maps to the upstream Job.workforceType value 'Onsite'. */
+function toWorkforceType(workplace: string): string {
+    return workplace === 'On-site' ? 'Onsite' : workplace;
+}
 
 type GlobalJobListingProps = {
     countries: Country[];
@@ -81,6 +89,20 @@ function JobFilters({ countries, departments }: { countries: Country[], departme
                     {jobTypes.map(type => <SelectItem key={type} value={type}>{type}</SelectItem>)}
                 </SelectContent>
             </Select>
+             <Select defaultValue={searchParams.get('level') || 'all'} onValueChange={(v) => handleFilterChange('level', v)}>
+                <SelectTrigger><SelectValue placeholder="Level" /></SelectTrigger>
+                <SelectContent>
+                    <SelectItem value="all">All Levels</SelectItem>
+                    {JOB_LEVELS.map(level => <SelectItem key={level} value={level}>{level}</SelectItem>)}
+                </SelectContent>
+            </Select>
+             <Select defaultValue={searchParams.get('workplace') || 'all'} onValueChange={(v) => handleFilterChange('workplace', v)}>
+                <SelectTrigger><SelectValue placeholder="Workplace" /></SelectTrigger>
+                <SelectContent>
+                    <SelectItem value="all">All Workplaces</SelectItem>
+                    {WORKPLACES.map(w => <SelectItem key={w} value={w}>{w}</SelectItem>)}
+                </SelectContent>
+            </Select>
         </div>
     );
 }
@@ -91,24 +113,26 @@ function JobListings({ countries, departments }: { countries: Country[], departm
     const pathname = usePathname();
 
     const page = Number(searchParams.get('page')) || 1;
-    const limit = 5; // Set a limit for public pagination
+    const limit = 10; // Set a limit for public pagination
+    const level = searchParams.get('level') || undefined;
+    const workplace = searchParams.get('workplace') || undefined;
 
-    const filters: any = {
+    // Server-side (adapter) filters. Level/workplace are applied client-side below
+    // since they're derived/demo fields (cheap path, per BUILD_CONTRACT §43) —
+    // fetch a generous page of already-filtered jobs, then filter + paginate locally.
+    const baseFilters: any = {
         status: 'published',
         q: searchParams.get('q') || undefined,
         countryId: searchParams.get('countryId') || undefined,
         departmentId: searchParams.get('departmentId') || undefined,
         employmentType: searchParams.get('employmentType') || undefined,
-        page,
-        limit,
+        limit: 100,
     };
-    
-    // Remove undefined filters before stringifying
-    Object.keys(filters).forEach(key => filters[key] === undefined && delete filters[key]);
-    
+    Object.keys(baseFilters).forEach(key => baseFilters[key] === undefined && delete baseFilters[key]);
+
     const { data: jobsResponse, error, isLoading } = useSWR(
-        ['public-jobs', JSON.stringify(filters)],
-        () => talentService.getJobs(filters)
+        ['public-jobs', JSON.stringify(baseFilters)],
+        () => talentService.getJobs(baseFilters)
     );
 
     const setPage = (newPage: number) => {
@@ -120,8 +144,15 @@ function JobListings({ countries, departments }: { countries: Country[], departm
     if (isLoading) return <LoadingSkeleton />;
     if (error) return <Card><CardContent className="p-6 text-destructive">Failed to load jobs. Please try again later.</CardContent></Card>;
 
-    const jobs = jobsResponse?.data || [];
-    const totalJobs = jobsResponse?.total || 0;
+    const allJobs = jobsResponse?.data || [];
+    const filteredJobs = allJobs.filter(job => {
+        if (level && (job.seniorityLevel ?? job.experienceBand) !== level) return false;
+        if (workplace && job.workforceType !== toWorkforceType(workplace)) return false;
+        return true;
+    });
+    const totalJobs = filteredJobs.length;
+    const totalPages = Math.max(1, Math.ceil(totalJobs / limit));
+    const jobs = filteredJobs.slice((page - 1) * limit, page * limit);
 
     return (
         <div className="space-y-8">
@@ -140,12 +171,12 @@ function JobListings({ countries, departments }: { countries: Country[], departm
                     </CardContent>
                 </Card>
             )}
-            {jobsResponse && jobsResponse.totalPages > 1 && (
-                <PaginationControls 
+            {totalPages > 1 && (
+                <PaginationControls
                     page={page}
                     setPage={setPage}
-                    totalPages={jobsResponse.totalPages}
-                    totalItems={jobsResponse.total}
+                    totalPages={totalPages}
+                    totalItems={totalJobs}
                     itemsCount={jobs.length}
                     limit={limit}
                 />

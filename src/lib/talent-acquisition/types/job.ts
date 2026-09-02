@@ -73,6 +73,13 @@ export interface Job {
     updatedBy?: string;
     [key: string]: any;
   };
+  // Semantic search / demo fields (Sonnet A)
+  team?: string;
+  summary?: string;
+  postedAt?: string;
+  slug?: string;
+  salaryMin?: number;
+  salaryMax?: number;
 }
 
 export const jobFormSchema = z.object({

@@ -4,13 +4,13 @@ import { Metadata } from 'next';
 
 export const metadata: Metadata = {
     title: "Terms of Service",
-    description: "Read the terms and conditions for using the Baalvion talent acquisition platform.",
+    description: "Read the terms and conditions for using the Northwind talent acquisition platform.",
     alternates: {
         canonical: '/terms',
     },
     openGraph: {
-        title: "Terms of Service | TalentOS by Baalvion",
-        description: "Read the terms and conditions for using the Baalvion talent acquisition platform.",
+        title: "Terms of Service | Northwind Careers",
+        description: "Read the terms and conditions for using the Northwind talent acquisition platform.",
         url: '/terms'
     }
 };
@@ -27,7 +27,7 @@ export default function TermsOfServicePage() {
             <Separator />
              <div className="container mx-auto py-16 lg:py-24 max-w-4xl space-y-12">
                 <p className="text-lg text-muted-foreground">
-                    Content for our Terms of Service is coming soon. This document will outline the rules and guidelines for using the Baalvion platform for both candidates and employers. It will cover topics such as account responsibilities, data usage, acceptable conduct, and limitations of liability.
+                    Content for our Terms of Service is coming soon. This document will outline the rules and guidelines for using the Northwind platform for both candidates and employers. It will cover topics such as account responsibilities, data usage, acceptable conduct, and limitations of liability.
                 </p>
              </div>
         </main>

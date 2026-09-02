@@ -12,7 +12,7 @@ export const mockInterviews: Interview[] = [
         scheduledAt: new Date(new Date().getTime() + 2 * 24 * 60 * 60 * 1000), // 2 days from now
         interviewerIds: ['4'],
         interviewerNames: ['Elon Musk (Stark)'],
-        meetingLink: 'https://meet.baalvion.com/xyz-123',
+        meetingLink: 'https://meet.northwind.com/xyz-123',
         status: 'SCHEDULED',
         createdAt: new Date().toISOString()
     },
@@ -26,7 +26,7 @@ export const mockInterviews: Interview[] = [
         scheduledAt: new Date(new Date().getTime() + 5 * 24 * 60 * 60 * 1000), // 5 days from now
         interviewerIds: ['2', '4'],
         interviewerNames: ['Recruiter (Acme)', 'Elon Musk (Stark)'],
-        meetingLink: 'https://meet.baalvion.com/abc-456',
+        meetingLink: 'https://meet.northwind.com/abc-456',
         status: 'SCHEDULED',
         createdAt: new Date().toISOString()
     },

@@ -10,6 +10,7 @@ import { JobComplianceSection } from '@/modules/talent-acquisition/components/jo
 import { Separator } from '@/components/ui/separator';
 import { TrackViewedJob } from '@/modules/jobs/components/TrackViewedJob';
 import { generateJobPostingStructuredData } from '@/lib/structured-data';
+import { CurrentJobBridge } from '@/domain/ui-context/bridges';
 
 type Props = {
   params: { slug: string; jobId: string };
@@ -49,7 +50,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   }
 
   const canonicalUrl = `${AppConfig.baseUrl}/careers/countries/${country.slug}/jobs/${job.id}`;
-  const title = `${job.title} in ${country.name} | Baalvion Careers`;
+  const title = `${job.title} in ${country.name} | Northwind Careers`;
   const description = job.description.substring(0, 160);
 
   return {
@@ -100,6 +101,7 @@ export default async function JobDetailPage({ params }: Props) {
 
   return (
     <>
+      <CurrentJobBridge jobId={job.id} />
       <TrackViewedJob jobId={job.id} />
       <script
         type="application/ld+json"

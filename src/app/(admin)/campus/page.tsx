@@ -147,7 +147,7 @@ const PlacementDashboardPro = () => {
   return (
     <div className="space-y-8">
       <div>
-        <h1 className="text-3xl font-bold tracking-tight">Baalvion Industries Campus Placement Dashboard</h1>
+        <h1 className="text-3xl font-bold tracking-tight">Northwind Industries Campus Placement Dashboard</h1>
         <p className="text-muted-foreground">Monitor campus hiring metrics and manage student placements.</p>
       </div>
 

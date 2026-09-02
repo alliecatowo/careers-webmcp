@@ -13,7 +13,7 @@ export function Logo({ collapsed = false }: LogoProps) {
       <div className="bg-foreground text-background p-2 rounded-lg">
         <Bot className="h-6 w-6" />
       </div>
-      <span className={cn("font-headline tracking-tight", collapsed && "md:hidden")}>Baalvion</span>
+      <span className={cn("font-headline tracking-tight", collapsed && "md:hidden")}>Northwind</span>
     </div>
   );
 }

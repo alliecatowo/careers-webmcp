@@ -10,13 +10,13 @@ import { AppConfig } from "@/config/app.config";
 
 export const metadata: Metadata = {
     title: "About Us",
-    description: "Learn about Baalvion's mission to build the intelligent infrastructure that connects exceptional talent with borderless opportunity.",
+    description: "Learn about Northwind's mission to build the intelligent infrastructure that connects exceptional talent with borderless opportunity.",
     alternates: {
       canonical: `/about`,
     },
     openGraph: {
-      title: "About Us | TalentOS by Baalvion",
-      description: "Learn about Baalvion's mission to build the intelligent infrastructure that connects exceptional talent with borderless opportunity.",
+      title: "About Us | Northwind Careers",
+      description: "Learn about Northwind's mission to build the intelligent infrastructure that connects exceptional talent with borderless opportunity.",
       url: `/about`,
     }
 };
@@ -59,7 +59,7 @@ export default function AboutPage() {
                         We are building the intelligent infrastructure that connects exceptional talent with borderless opportunity.
                     </p>
                     <p className="mt-4 text-sm font-semibold uppercase tracking-wider text-primary">
-                        Baalvion Industries Pvt Ltd // Jobs.Baalvion.com
+                        Northwind Industries Pvt Ltd // Jobs.Northwind.com
                     </p>
                 </div>
             </section>
@@ -72,7 +72,7 @@ export default function AboutPage() {
                     <div className="max-w-xl">
                         <h2 className="text-4xl md:text-5xl font-bold tracking-tight">Our Mission</h2>
                         <p className="mt-6 text-lg text-muted-foreground">
-                            Talent is globally distributed; opportunity is not. Traditional hiring is constrained by geography, bias, and inefficiency. Baalvion exists to dismantle these barriers. We are creating a fair, intelligent, and transparent ecosystem where skill is the only currency that matters.
+                            Talent is globally distributed; opportunity is not. Traditional hiring is constrained by geography, bias, and inefficiency. Northwind exists to dismantle these barriers. We are creating a fair, intelligent, and transparent ecosystem where skill is the only currency that matters.
                         </p>
                     </div>
                     <div className="bg-muted/50 p-8 rounded-lg border">
@@ -88,7 +88,7 @@ export default function AboutPage() {
                 <div className="container mx-auto px-4 text-center max-w-4xl">
                      <h2 className="text-4xl md:text-5xl font-bold tracking-tight">Our 10-Year Vision</h2>
                      <p className="mt-6 text-xl text-muted-foreground">
-                        We envision a future where any organization can seamlessly hire the best talent from any nation. Baalvion will be the foundational layer—the global rails—upon which this new, multi-country, multi-organization ecosystem runs. Secure, compliant, and intelligent by default.
+                        We envision a future where any organization can seamlessly hire the best talent from any nation. Northwind will be the foundational layer—the global rails—upon which this new, multi-country, multi-organization ecosystem runs. Secure, compliant, and intelligent by default.
                     </p>
                 </div>
             </section>
@@ -97,7 +97,7 @@ export default function AboutPage() {
             <section className="py-20 lg:py-32">
                 <div className="container mx-auto px-4">
                     <div className="text-center max-w-3xl mx-auto">
-                        <h2 className="text-4xl md:text-5xl font-bold tracking-tight">The Baalvion Platform</h2>
+                        <h2 className="text-4xl md:text-5xl font-bold tracking-tight">The Northwind Platform</h2>
                         <p className="mt-4 text-lg text-muted-foreground">This is not another job board. We are engineering a deeply integrated system for enterprise-grade talent acquisition.</p>
                     </div>
                     <div className="mt-16 grid gap-8 md:grid-cols-2 lg:grid-cols-3">
@@ -157,7 +157,7 @@ export default function AboutPage() {
                     </div>
                     <div className="border-l-4 border-primary pl-8">
                         <p className="text-xl font-medium text-foreground">
-                            Baalvion solves this by abstracting away the complexity. We replace manual, biased processes with an intelligent, data-driven system that surfaces the right talent for the right role, regardless of geography.
+                            Northwind solves this by abstracting away the complexity. We replace manual, biased processes with an intelligent, data-driven system that surfaces the right talent for the right role, regardless of geography.
                         </p>
                     </div>
                 </div>

@@ -27,7 +27,11 @@
         "src/*"
       ]
     },
-    "baseUrl": "."
+    "baseUrl": ".",
+    "types": [
+      "webmcp-types",
+      "vitest/globals"
+    ]
   },
   "include": [
     "next-env.d.ts",
@@ -37,6 +41,7 @@
     ".next/dev/types/**/*.ts"
   ],
   "exclude": [
-    "node_modules"
+    "node_modules",
+    "src/lib/__tests__/**"
   ]
 }

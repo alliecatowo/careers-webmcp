@@ -6,14 +6,14 @@ import { ProjectList, ProjectListSkeleton } from "@/modules/projects/components/
 export const metadata: Metadata = {
   title: 'Project Marketplace',
   description:
-    'Browse the Baalvion project marketplace. Find your next challenge, collaborate with global talent, and get paid for your skills.',
+    'Browse the Northwind project marketplace. Find your next challenge, collaborate with global talent, and get paid for your skills.',
   alternates: {
     canonical: '/projects',
   },
   openGraph: {
-    title: 'Project Marketplace | TalentOS by Baalvion',
+    title: 'Project Marketplace | Northwind Careers',
     description:
-      'Browse the Baalvion project marketplace. Find your next challenge and get paid for your skills.',
+      'Browse the Northwind project marketplace. Find your next challenge and get paid for your skills.',
     url: '/projects',
   },
 };

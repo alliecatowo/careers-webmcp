@@ -11,7 +11,7 @@ import { Separator } from '@/components/ui/separator';
 import { TeamMember } from '@/lib/team.data';
 
 export const metadata: Metadata = {
-  title: 'Meet the Team | Baalvion',
+  title: 'Meet the Team | Northwind',
   description:
     'The creators, innovators, and problem-solvers shaping our mission to build the intelligent infrastructure for global talent.',
 };
@@ -51,10 +51,10 @@ export default async function TeamPage() {
   const jsonLd = {
     '@context': 'https://schema.org',
     '@type': 'CollectionPage',
-    name: 'The Minds Behind Baalvion',
+    name: 'The Minds Behind Northwind',
     description:
-      'Meet the team of creators, innovators, and problem-solvers at Baalvion.',
-    url: 'https://jobs.baalvion.com/about/team',
+      'Meet the team of creators, innovators, and problem-solvers at Northwind.',
+    url: 'https://jobs.northwind.com/about/team',
     mainEntity: {
       '@type': 'ItemList',
       itemListElement: leaders.map((member) => ({
@@ -77,7 +77,7 @@ export default async function TeamPage() {
       <section className="py-24 sm:py-32 bg-muted/40">
         <div className="container mx-auto px-4 text-center max-w-4xl">
           <h1 className="text-5xl md:text-7xl font-bold tracking-tight">
-            The Minds Behind Baalvion
+            The Minds Behind Northwind
           </h1>
           <p className="mt-6 max-w-3xl mx-auto text-lg md:text-xl text-muted-foreground">
             We are a collective of engineers, designers, and strategists united

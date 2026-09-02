@@ -4,7 +4,7 @@ import { atsConfig } from './mockATSData';
 
 /**
  * Maps an internal application status to the corresponding status for a specific ATS provider.
- * @param internalStatus - The status from the Baalvion system.
+ * @param internalStatus - The status from the Northwind system.
  * @param providerName - The name of the target ATS provider.
  * @returns The equivalent status string for the external ATS.
  */

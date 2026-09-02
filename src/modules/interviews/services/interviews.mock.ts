@@ -14,7 +14,7 @@ const tenantInterviews = [
     scheduledAt: new Date(Date.now() + 2 * 24 * 60 * 60 * 1000), // 2 days from now
     interviewerIds: ['user-interviewer-1'],
     interviewerNames: ['Tim Cook'],
-    meetingLink: 'https://meet.baalvion.com/xyz-123',
+    meetingLink: 'https://meet.northwind.com/xyz-123',
     status: 'SCHEDULED' as InterviewStatus,
     createdAt: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000).toISOString(),
     tenantId: 'org_acme',
@@ -29,7 +29,7 @@ const tenantInterviews = [
     scheduledAt: new Date(Date.now() + 5 * 24 * 60 * 60 * 1000), // 5 days from now
     interviewerIds: ['user-recruiter', 'user-interviewer-2'],
     interviewerNames: ['Beth Harmon', 'Elon Musk'],
-    meetingLink: 'https://meet.baalvion.com/abc-456',
+    meetingLink: 'https://meet.northwind.com/abc-456',
     status: 'SCHEDULED' as InterviewStatus,
     createdAt: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString(),
     tenantId: 'org_stark',
@@ -44,7 +44,7 @@ const tenantInterviews = [
     scheduledAt: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000), // In the past
     interviewerIds: ['user-recruiter'],
     interviewerNames: ['Beth Harmon'],
-    meetingLink: 'https://meet.baalvion.com/def-789',
+    meetingLink: 'https://meet.northwind.com/def-789',
     status: 'COMPLETED' as InterviewStatus,
     feedback: 'Excellent portfolio and strong communication skills.',
     rating: 5,
@@ -61,7 +61,7 @@ const tenantInterviews = [
     scheduledAt: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000),
     interviewerIds: ['4'],
     interviewerNames: ['Elon Musk (Stark)'],
-    meetingLink: 'https://meet.baalvion.com/elena-123',
+    meetingLink: 'https://meet.northwind.com/elena-123',
     status: 'SCHEDULED' as InterviewStatus,
     createdAt: new Date().toISOString(),
     tenantId: 'org_acme',

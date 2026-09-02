@@ -8,18 +8,18 @@ export async function sendApplicationConfirmation(candidate: Candidate, job: Job
   console.log("=====================================");
   console.log(`📧 MOCK EMAIL: Sending application confirmation...`);
   console.log(`   To: ${candidate.email}`);
-  console.log(`   Subject: Your Application for ${job.title} at Baalvion`);
+  console.log(`   Subject: Your Application for ${job.title} at Northwind`);
   console.log(`
     Hi ${candidate.name},
 
-    Thank you for applying for the ${job.title} position at Baalvion Industries. We have successfully received your application.
+    Thank you for applying for the ${job.title} position at Northwind Industries. We have successfully received your application.
 
     You can track the status of your application at any time by visiting your candidate dashboard.
 
     Our team will review your qualifications and get back to you soon.
 
     Best,
-    The Baalvion Talent Team
+    The Northwind Talent Team
   `);
   console.log("=====================================");
 }
@@ -37,7 +37,7 @@ export async function sendStageUpdateEmail(candidate: Candidate, job: Job, newSt
     Please visit your candidate dashboard for more details.
 
     Best,
-    The Baalvion Talent Team
+    The Northwind Talent Team
   `);
   console.log("=====================================");
 }
@@ -46,18 +46,18 @@ export async function sendOfferEmail(candidate: Candidate, job: Job) {
   console.log("=====================================");
   console.log(`📧 MOCK EMAIL: Sending offer letter...`);
   console.log(`   To: ${candidate.email}`);
-  console.log(`   Subject: Congratulations! An Offer from Baalvion Industries`);
+  console.log(`   Subject: Congratulations! An Offer from Northwind Industries`);
   console.log(`
     Dear ${candidate.name},
 
-    Congratulations! Following your recent interviews, we are thrilled to formally offer you the position of ${job.title} at Baalvion Industries.
+    Congratulations! Following your recent interviews, we are thrilled to formally offer you the position of ${job.title} at Northwind Industries.
 
     Please log in to your candidate dashboard to view and accept your official offer letter.
 
     We were incredibly impressed with your skills and experience and believe you will be a fantastic addition to our team.
 
     Best,
-    The Baalvion Talent Team
+    The Northwind Talent Team
   `);
   console.log("=====================================");
 }
@@ -75,7 +75,7 @@ export async function sendInterviewScheduledEmail(candidate: Candidate, intervie
       Please log in to your candidate dashboard to view the full details, including the date, time, and meeting link.
   
       Best,
-      The Baalvion Talent Team
+      The Northwind Talent Team
     `);
   console.log("=====================================");
 }
@@ -95,7 +95,7 @@ export async function sendInterviewerNotification(interviewer: User, interview: 
       Job: ${interview.jobTitle}
   
       Thanks,
-      Baalvion TalentOS
+      Northwind Northwind Careers
     `);
   console.log("=====================================");
 }

@@ -6,8 +6,8 @@ import { Check, Zap } from 'lucide-react';
 import Link from 'next/link';
 
 export const metadata: Metadata = {
-    title: "Performance-Based Internship Program (India) | Baalvion Careers",
-    description: "Join Baalvion's merit-driven, performance-focused internship program in India. A direct pathway to a full-time role for top performers.",
+    title: "Performance-Based Internship Program (India) | Northwind Careers",
+    description: "Join Northwind's merit-driven, performance-focused internship program in India. A direct pathway to a full-time role for top performers.",
 };
 
 const specializations = [
@@ -66,7 +66,7 @@ export default function InternshipProgramPage() {
                      <div>
                         <h2 className="text-3xl font-bold tracking-tight mb-6">Core Competency Framework</h2>
                         <p className="text-muted-foreground mb-6">
-                            You will be rigorously assessed against our five core competencies. Mastery in these areas is non-negotiable for progressing within Baalvion.
+                            You will be rigorously assessed against our five core competencies. Mastery in these areas is non-negotiable for progressing within Northwind.
                         </p>
                         <ul className="space-y-4">
                            {competencies.map(item => (
@@ -97,7 +97,7 @@ export default function InternshipProgramPage() {
                 <section className="text-center">
                      <h2 className="text-3xl font-bold tracking-tight">Pathway to a Full-Time Role</h2>
                      <p className="mt-4 text-lg text-muted-foreground max-w-3xl mx-auto">
-                        This is not just an internship; it's your interview for a full-time position. Interns who consistently exceed expectations and demonstrate mastery of our core competencies will receive a Pre-Placement Offer (PPO) to join Baalvion as a full-time employee upon graduation.
+                        This is not just an internship; it's your interview for a full-time position. Interns who consistently exceed expectations and demonstrate mastery of our core competencies will receive a Pre-Placement Offer (PPO) to join Northwind as a full-time employee upon graduation.
                     </p>
                     <div className="mt-8">
                         <Button size="lg" asChild>

@@ -6,7 +6,7 @@ import { Job } from '@/lib/talent-acquisition';
  */
 export function generateJobPostingStructuredData(
   job: Job,
-  baseUrl: string = 'https://www.jobs.baalvion.com',
+  baseUrl: string = 'https://www.jobs.northwind.com',
 ) {
   // Map employment types to schema.org values
   const employmentTypeMap: Record<string, string> = {
@@ -38,7 +38,7 @@ export function generateJobPostingStructuredData(
     '@type': 'JobPosting',
     identifier: {
       '@type': 'PropertyValue',
-      name: 'Baalvion Job ID',
+      name: 'Northwind Job ID',
       value: job.id,
     },
     title: job.title,
@@ -48,8 +48,8 @@ export function generateJobPostingStructuredData(
     employmentType: employmentTypeMap[job.employmentType] || job.employmentType,
     hiringOrganization: {
       '@type': 'Organization',
-      name: 'Baalvion',
-      sameAs: 'https://www.baalvion.com',
+      name: 'Northwind',
+      sameAs: 'https://www.northwind.com',
       logo: `${baseUrl}/logo.png`,
     },
     jobLocation: {
@@ -67,7 +67,7 @@ export function generateJobPostingStructuredData(
     applicationContact: {
       '@type': 'ContactPoint',
       contactType: 'HR',
-      email: 'careers@baalvion.com',
+      email: 'careers@northwind.com',
     },
   };
 

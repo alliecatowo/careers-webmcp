@@ -1,244 +1,187 @@
-# TalentOS by Baalvion
+# Careers WebMCP
 
-**TalentOS** is an intelligent, global talent acquisition platform designed to connect exceptional talent with borderless opportunity.
+> The careers page is the connector.
 
-This repository contains the frontend application for the **Baalvion Jobs Portal**, a modern recruitment platform that enables companies to manage hiring pipelines while helping candidates discover and apply to opportunities worldwide.
+**Live demo:** https://careers-webmcp.vercel.app/careers/open-positions · **Tool reference:** [docs/webmcp-tools.md](docs/webmcp-tools.md) · **Demo script:** [docs/demo-script.md](docs/demo-script.md)
 
-Built using **Next.js**, **TypeScript**, and a scalable modular architecture, TalentOS aims to provide a powerful yet intuitive experience for both recruiters and job seekers.
+Careers WebMCP demonstrates what agent-native destination websites can look
+like.
 
----
+The underlying application is a normal careers portal: humans can search
+jobs, inspect openings, save roles, and manage applications without an AI
+model or agent.
 
-# Live Demo
+When WebMCP is available, the same page exposes those concepts semantically
+to the browser agent already accompanying the user.
 
-Coming Soon
+No careers-specific MCP server.
+No bearer token.
+No DOM scraping.
+No AI SDK.
 
----
+Visit the site, and the site explains itself.
 
-# Screenshots
+| Normal careers site | Agent + human co-editing one application draft |
+| --- | --- |
+| ![Jobs index](docs/media/01-jobs-index.png) | ![Application co-edit](docs/media/03-application-coedit.png) |
 
-*(Add screenshots of the job portal and admin dashboard here)*
+## What it is
 
-Example:
+A fictional employer's careers site (built on the MIT-licensed
+[Baalvion Jobs Portal](https://github.com/baalvionservice/Baalvion-Jobs-Portal))
+running in a deterministic demo mode, plus a WebMCP layer that registers
+eleven candidate-facing tools on `document.modelContext`:
 
-* Job Listings Page
-* Job Details Page
-* Candidate Application Flow
-* Admin Dashboard
+| Tool | Kind | What it does |
+| --- | --- | --- |
+| `careers_get_context` | read | Where the user is: session, page kind, current job, current application, current filters |
+| `careers_search_jobs` | read | Deterministic structured search over the live catalog (department, level, location, workplace, skills, compensation, keywords) |
+| `careers_get_job` | read | One job, bounded, with the candidate's saved/applied status |
+| `careers_open_job` | navigate | Opens the real job page in the user's tab |
+| `careers_get_saved_jobs` | read | The signed-in candidate's saved roles |
+| `careers_set_saved_job` | mutate | Same operation as the Save button |
+| `careers_get_my_applications` | read | The candidate's drafts and submissions |
+| `careers_get_application` | read | One application: fields, revision, missing required fields |
+| `careers_start_application` | mutate | Starts (or reopens) a draft and opens the normal application form |
+| `careers_update_application` | mutate | Patches only the supplied fields; rejects stale revisions |
+| `careers_submit_application` | mutate | Same validation gate and submission as the human Submit button |
 
----
+## Why this is WebMCP
 
-# Key Features
+The website already knows its job catalog, who is signed in, what is saved,
+which application is open and which page the user is on. WebMCP lets it say
+so, in its own vocabulary, to the agent that is already there.
 
-### Public Job Portal
+| | Traditional MCP | Careers WebMCP |
+| --- | --- | --- |
+| Setup | User installs connector | Visit website |
+| Lifetime | Persistent | Current website/session |
+| Auth | Configure separately | Existing site session |
+| Site context | Must recreate | Exact page/user state |
+| Distribution | One integration per service | Publisher adds WebMCP |
+| Best use | Headless/repeated automation | Help while visiting site |
 
-* SEO-optimized job listings
-* Static generation for fast loading
-* Detailed job description pages
+WebMCP does not replace MCP. It covers the long tail of sites you visit
+occasionally and would never configure as a permanent integration.
 
-### Advanced Application Flow
+## The open-web thesis
 
-* Multi-step application form
-* Resume upload
-* Candidate data validation
+Imagine every Ashby board, Greenhouse board, Lever board, Workday portal,
+company careers page, university portal, event site, marketplace and support
+portal exposing its own semantic capabilities. Users should not need to
+install hundreds of connectors. The open web becomes discoverable. This demo
+is one employer site.
 
-### Admin Panel
+### Why not scraping / browser automation?
 
-A complete dashboard for recruitment management:
+DOM automation has to infer which card is a job, which text is compensation,
+which button means Save, which route is an application and which state
+belongs to the current candidate. The site already knows all of that.
+Semantic tools are more reliable, structured, bounded, permission-aware,
+independent of CSS selectors, and maintained by the site owner.
 
-* Job creation and editing
-* Candidate tracking
-* Interview scheduling
-* Offer management
-* System settings
+## Demo
 
-### Role-Based Access Control (RBAC)
+1. Browse `/careers/open-positions` like any careers site. Filter, open a job, see level, workplace and compensation.
+2. Click **Continue as Avery Chen** (the site's normal candidate session).
+3. Ask your agent: *"What engineering roles here are staff level or above, in San Francisco or remote, with a base range starting at at least $220k?"* → `careers_search_jobs`.
+4. *"Open the Staff Platform Engineer role."* → `careers_open_job` opens the real page.
+5. Click **Save job** yourself. *"What have I saved?"* → `careers_get_saved_jobs` sees it.
+6. *"Start an application for this one."* → the normal form opens, prefilled. The agent fills a couple of fields; you watch them appear.
+7. Type your own cover note. *"Keep my changes and fill the remaining required fields."* → the agent re-reads the new revision and patches only what is missing. A stale write is refused with `STALE_APPLICATION`.
 
-Different permission levels including:
+Full narration in [docs/demo-script.md](docs/demo-script.md).
 
-* Super Admin
-* Recruiter
-* Interviewer
-* Hiring Manager
-
-### AI-Powered Capabilities (Planned)
-
-* Resume parsing
-* Candidate scoring
-* AI job matching
-* Talent recommendations
-
----
-
-# Tech Stack
-
-### Frontend
-
-* Next.js 14 (App Router)
-* React
-* TypeScript
-
-### UI & Styling
-
-* Tailwind CSS
-* ShadCN/UI
-* Responsive design system
-
-### State Management
-
-* Zustand (global state)
-* React Context (feature-level state)
-
-### Data Fetching
-
-* SWR for caching and real-time updates
-
-### Backend Integration
-
-Prepared for integration with:
-
-* Firebase
-* REST APIs
-* Serverless functions
-
----
-
-# Architecture Overview
-
-TalentOS follows a **scalable frontend architecture** that separates UI logic from backend services.
-
-A **Service Adapter Pattern** is used so that all data interactions go through a dedicated service layer. This enables:
-
-* UI development independent of backend
-* Easy swapping between mock data and real APIs
-* Cleaner testing and modular development
-
-Adapters include:
-
-* Mock adapter for development
-* Server adapter for production APIs
-
----
-
-# Folder Structure
+## Human + agent flow
 
 ```
-src/
-├── app/            Next.js routing, pages, layouts
-├── components/     Shared reusable components
-├── features/       Feature-based modules
-├── services/       Data fetching & service adapters
-├── config/         Application configuration
-├── lib/            Core utilities, hooks, context
-├── types/          TypeScript definitions
-├── mocks/          Mock data for development
-├── firebase/       Firebase configuration
-└── public/         Static assets
+HUMAN  visits the careers site, signs in
+AGENT  careers_search_jobs {departments:[Engineering], levels:[Staff, Senior Staff, Principal], locations:[San Francisco, Remote], minCompensation:220000}
+SITE   returns exact structured openings
+AGENT  careers_open_job → the normal job page opens
+HUMAN  reads it, clicks Save
+AGENT  careers_get_saved_jobs sees it; careers_start_application → normal form opens
+AGENT  careers_update_application (revision 1) fills portfolio + availability
+HUMAN  edits the cover note (revision 3)
+AGENT  careers_get_application → revision 3; careers_update_application {expectedRevision: 3, fields:{phone}} → ok
+       a write with expectedRevision 2 → STALE_APPLICATION, human text survives
+HUMAN  clicks Submit
 ```
 
----
-
-# Getting Started
-
-## Prerequisites
-
-* Node.js v18+
-* npm or yarn
-
----
-
-## Installation
-
-Clone the repository
+## Architecture
 
 ```
-git clone https://github.com/baalvionservice/Baalvion-Jobs-Portal.git
-cd Baalvion-Jobs-Portal
+Human UI  ⇄  domain state (session · ui-context · saved-jobs · applications)  ⇄  existing services / mock adapter
+                                   ⇅
+                    WebMCP semantic adapter (src/webmcp)
+                                   ⇅
+                    document.modelContext.registerTool(...)
 ```
 
-Install dependencies
+Tools are registered once per page load and read live state at call time.
+Navigation tools use the app router. Nothing reads the DOM. Details in
+[docs/architecture.md](docs/architecture.md).
 
-```
-npm install
-```
+## Security
 
-Create environment file
+- The agent receives no credentials. Context exposes only `{ signedIn, candidate: { id, displayName } }`.
+- Candidate-scoped tools return `AUTH_REQUIRED` when signed out. There is no agent-only session path.
+- Mutations run through the same domain functions and validation as the human UI.
+- Job descriptions and application free text are untrusted content: tools that return them set `untrustedContentHint: true`; tool descriptions never interpolate site content.
+- Outputs are bounded (10/30 search results, ~20 KB prose, ~50 KB per result) with an explicit `truncated` flag.
+- A regression test serializes every tool result and asserts no token/cookie/password/API-key patterns appear.
 
-```
-cp .env.example .env
-```
+## Existing project / challenge delta
 
-Add your configuration values inside `.env`.
+This is built on a pre-existing open-source careers portal. The careers UI,
+service adapters, admin dashboards and styling are upstream work. The
+challenge contribution is the WebMCP layer, the live context bridge, the
+semantic search, the shared candidate session, saved jobs, the shared
+application draft with revision protection, the tests, the demo data and the
+docs. The split is documented precisely in
+[docs/CHALLENGE_DELTA.md](docs/CHALLENGE_DELTA.md) and
+[docs/UPSTREAM.md](docs/UPSTREAM.md); deviations from the build contract are
+in [docs/DECISIONS.md](docs/DECISIONS.md).
 
----
+## Running locally
 
-# Running the Development Server
-
-Start the development server
-
-```
-npm run dev
-```
-
-Open in your browser:
-
-```
-http://localhost:3000
-```
-
-Admin panel can be accessed via:
-
-```
-/login
+```bash
+pnpm install
+pnpm dev          # http://localhost:3000/careers/open-positions
 ```
 
----
+`.env` sets `NEXT_PUBLIC_USE_MOCK=true`; no backend, database or credentials
+are needed. Session, saved jobs and application drafts persist in the
+browser's localStorage.
 
-# Available Scripts
+Without a WebMCP-capable browser you can still drive the tools: inject the
+test shim from `tests/webmcp-shim.ts` (it defines `document.modelContext`)
+and call `window.__webmcp.call('careers_get_context', {})` from DevTools.
 
+## Testing
+
+```bash
+pnpm test:unit    # vitest: search, context, registration, errors, bounds, saved jobs, application revisions, secret leakage
+pnpm test:e2e     # playwright: no-WebMCP, registration, shared route, shared save, application co-edit + stale protection, submission, auth-required
 ```
-npm run dev      Start development server
-npm run build    Create production build
-npm run start    Run production build
-npm run lint     Run ESLint
-npm run format   Format code with Prettier
-```
 
----
+## Limitations
 
-# Roadmap
+- Fictional, deterministic 15-job catalog for a single employer
+- Demo candidate session (no real identity provider)
+- No real employer submission pipeline; no resume upload through WebMCP v1
+- No demographic or sensitive hiring fields by design
+- No job recommendation AI; search is a deterministic scorer
+- Requires a browser with WebMCP support; otherwise it is simply a careers site
 
-Future improvements planned for TalentOS:
+This is a protocol demo, not production ATS software.
 
-* AI Resume Parsing
-* AI Job Matching Engine
-* Video Interview System
-* Recruiter Analytics Dashboard
-* Notification System
-* Multi-tenant company support
+## License / upstream attribution
 
----
-
-# Contributing
-
-Contributions are welcome.
-
-1. Fork the repository
-2. Create a feature branch
-3. Commit changes
-4. Submit a pull request
-
----
-
-# License
-
-MIT License
-
-Copyright (c) Baalvion
-
----
-
-# About Baalvion
-
-**Baalvion** is building next-generation platforms for hiring, talent intelligence, and global workforce connectivity.
-
-TalentOS is the first step toward a **fully AI-powered recruitment ecosystem**.
+MIT (see [LICENSE](LICENSE)). Based on
+[Baalvion Jobs Portal](https://github.com/baalvionservice/Baalvion-Jobs-Portal),
+imported at commit `9108409` (2026-04-14), the last upstream commit published
+under its README's MIT declaration; upstream later switched to a proprietary
+license for subsequent versions, which is why this project pins that commit.
+The visible employer in this demo is the fictional "Northwind"; "Baalvion" is
+used only for attribution. Details in [docs/UPSTREAM.md](docs/UPSTREAM.md).

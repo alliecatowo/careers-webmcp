@@ -13,13 +13,13 @@ const inter = Inter({
 export const metadata: Metadata = {
   metadataBase: new URL(AppConfig.baseUrl),
   title: {
-    default: 'TalentOS by Baalvion | The OS for Modern Recruitment',
-    template: '%s | TalentOS by Baalvion',
+    default: 'Northwind Careers | The OS for Modern Recruitment',
+    template: '%s | Northwind Careers',
   },
   description:
-    'TalentOS is an intelligent, global talent acquisition platform designed to connect exceptional talent with borderless opportunity.',
+    'Northwind Careers is an intelligent, global talent acquisition platform designed to connect exceptional talent with borderless opportunity.',
   openGraph: {
-    title: 'TalentOS by Baalvion',
+    title: 'Northwind Careers',
     description: 'The Operating System for Modern Recruitment.',
     type: 'website',
     url: AppConfig.baseUrl,
@@ -27,7 +27,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'TalentOS by Baalvion',
+    title: 'Northwind Careers',
     description: 'The Operating System for Modern Recruitment.',
     images: [`/og-image.png`],
   },
@@ -36,7 +36,7 @@ export const metadata: Metadata = {
 const organizationSchema = {
   '@context': 'https://schema.org',
   '@type': 'Organization',
-  name: 'TalentOS by Baalvion',
+  name: 'Northwind Careers',
   url: AppConfig.baseUrl,
   logo: `${AppConfig.baseUrl}/logo.png`,
   sameAs: [],
@@ -56,7 +56,7 @@ export default function RootLayout({
         />
         <link rel='preconnect' href='https://fonts.gstatic.com' crossOrigin='anonymous' />
       </head>
-      <body className='font-sans antialiased'>
+     <body className='font-sans antialiased'>
         <AppProvider>{children}</AppProvider>
       </body>
     </html>

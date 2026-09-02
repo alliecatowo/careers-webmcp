@@ -97,7 +97,7 @@ export default async function PublicProfilePage({ params }: Props) {
     url: `/profiles/${candidate.id}`,
     worksFor: {
       '@type': 'Organization',
-      name: 'Baalvion Industries',
+      name: 'Northwind Industries',
     },
     knowsAbout: parsedData?.skills.concat(parsedData.technologies),
   };
@@ -125,7 +125,7 @@ export default async function PublicProfilePage({ params }: Props) {
             </CardDescription>
             <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-2 pt-2 text-sm text-muted-foreground">
               <div className="flex items-center gap-1.5">
-                <Building className="h-4 w-4" /> Baalvion Industries
+                <Building className="h-4 w-4" /> Northwind Industries
               </div>
               <div className="flex items-center gap-1.5">
                 <Mail className="h-4 w-4" /> {candidate.email}

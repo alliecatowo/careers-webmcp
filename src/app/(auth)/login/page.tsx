@@ -15,9 +15,13 @@ import { LoginFormData, LoginSchema } from "@/types/auth.types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Loader2 } from "lucide-react";
 import { useForm } from "react-hook-form";
+import { useRouter } from "next/navigation";
+import { useSessionStore } from "@/domain/session/session.store";
 
 export default function LoginPage() {
     const { login, isLoading } = useAuth();
+    const router = useRouter();
+    const signInAsDemoCandidate = useSessionStore((s) => s.signInAsDemoCandidate);
     const form = useForm<LoginFormData>({
         resolver: zodResolver(LoginSchema),
         defaultValues: {
@@ -31,9 +35,9 @@ export default function LoginPage() {
     };
 
     const mockUsers = [
-        { role: 'Super Admin', email: 'admin@baalvion.com' },
-        { role: 'Recruiter', email: 'recruiter@baalvion.com' },
-        { role: 'Admin / Manager', email: 'manager@baalvion.com' },
+        { role: 'Super Admin', email: 'admin@northwind.com' },
+        { role: 'Recruiter', email: 'recruiter@northwind.com' },
+        { role: 'Admin / Manager', email: 'manager@northwind.com' },
         { role: 'Interviewer', email: 'elon@tesla.com' },
         { role: 'Finance', email: 'finance@acme.inc' },
         { role: 'Candidate', email: 'elena.rodriguez@example.com' },
@@ -47,12 +51,29 @@ export default function LoginPage() {
                     <CardDescription>Enter your credentials to access the admin panel.</CardDescription>
                 </CardHeader>
                 <CardContent>
+                    <div className="mb-6 rounded-lg border bg-muted/40 p-4 space-y-3">
+                        <div>
+                            <p className="text-sm font-semibold text-foreground">Candidate demo</p>
+                            <p className="text-xs text-muted-foreground">Creates the normal candidate session used by the careers site (and by WebMCP tools).</p>
+                        </div>
+                        <Button
+                            type="button"
+                            className="w-full"
+                            data-testid="demo-sign-in"
+                            onClick={() => {
+                                signInAsDemoCandidate();
+                                router.push('/my-account');
+                            }}
+                        >
+                            Continue as Avery Chen
+                        </Button>
+                    </div>
                     <Form {...form}>
                         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
                             <FormField control={form.control} name="email" render={({ field }) => (
                                 <FormItem>
                                     <FormLabel>Email</FormLabel>
-                                    <FormControl><Input placeholder="admin@baalvion.com" {...field} /></FormControl>
+                                    <FormControl><Input placeholder="admin@northwind.com" {...field} /></FormControl>
                                     <FormMessage />
                                 </FormItem>
                             )} />

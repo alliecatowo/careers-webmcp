@@ -11,13 +11,13 @@ import {
 
 export const metadata: Metadata = {
     title: "Frequently Asked Questions",
-    description: "Find answers to common questions about applying for jobs and using the Baalvion platform.",
+    description: "Find answers to common questions about applying for jobs and using the Northwind platform.",
     alternates: {
         canonical: '/faqs',
     },
     openGraph: {
-        title: "Frequently Asked Questions | TalentOS by Baalvion",
-        description: "Find answers to common questions about applying for jobs and using the Baalvion platform.",
+        title: "Frequently Asked Questions | Northwind Careers",
+        description: "Find answers to common questions about applying for jobs and using the Northwind platform.",
         url: '/faqs'
     }
 };

@@ -5,13 +5,13 @@ import { Metadata } from 'next';
 
 export const metadata: Metadata = {
     title: "Privacy Policy",
-    description: "Read the Baalvion privacy policy to understand how we collect, use, and protect your data on our global talent acquisition platform.",
+    description: "Read the Northwind privacy policy to understand how we collect, use, and protect your data on our global talent acquisition platform.",
     alternates: {
         canonical: '/privacy',
     },
     openGraph: {
-        title: "Privacy Policy | TalentOS by Baalvion",
-        description: "Learn how Baalvion protects your privacy.",
+        title: "Privacy Policy | Northwind Careers",
+        description: "Learn how Northwind protects your privacy.",
         url: '/privacy',
     }
 };
@@ -49,14 +49,14 @@ export default function PrivacyPolicyPage() {
 
       <div className="container mx-auto py-16 lg:py-24 max-w-4xl space-y-12">
         <p className="text-xl text-muted-foreground">
-            This Privacy Policy describes how Baalvion Industries Pvt Ltd ("Baalvion", "we", "us", or "our") collects, uses, and discloses information in connection with your use of our website, Jobs.Baalvion.com, and our related services (collectively, the "Platform").
+            This Privacy Policy describes how Northwind Industries Pvt Ltd ("Northwind", "we", "us", or "our") collects, uses, and discloses information in connection with your use of our website, Jobs.Northwind.com, and our related services (collectively, the "Platform").
         </p>
 
         <Separator />
 
         <Section title="1. Introduction">
           <p className="text-muted-foreground">
-            Baalvion provides a global talent acquisition and recruitment SaaS platform designed to connect employers with candidates. This policy applies to all users of our Platform, including individual candidates ("Candidates"), employer clients ("Clients"), and their authorized users. By accessing or using our Platform, you signify that you have read, understood, and agree to our collection, storage, use, and disclosure of your personal information as described in this Privacy Policy and our Terms of Service.
+            Northwind provides a global talent acquisition and recruitment SaaS platform designed to connect employers with candidates. This policy applies to all users of our Platform, including individual candidates ("Candidates"), employer clients ("Clients"), and their authorized users. By accessing or using our Platform, you signify that you have read, understood, and agree to our collection, storage, use, and disclosure of your personal information as described in this Privacy Policy and our Terms of Service.
           </p>
         </Section>
 
@@ -123,7 +123,7 @@ export default function PrivacyPolicyPage() {
                 "Algorithmic Scoring: We use proprietary algorithms to score a candidate's profile against the requirements of a specific job description. This scoring is based on factors such as skills, experience, and education.",
           ]} />
           <p className="text-muted-foreground">
-            It is important to note that these automated tools are designed to assist human recruiters, not to replace them. <strong>Baalvion does not make fully automated hiring decisions.</strong> All outputs from our AI systems, including scores and summaries, are provided to our Clients to aid their evaluation process, which involves human review and judgment. We are committed to developing and deploying our AI technology responsibly and actively work to mitigate potential biases.
+            It is important to note that these automated tools are designed to assist human recruiters, not to replace them. <strong>Northwind does not make fully automated hiring decisions.</strong> All outputs from our AI systems, including scores and summaries, are provided to our Clients to aid their evaluation process, which involves human review and judgment. We are committed to developing and deploying our AI technology responsibly and actively work to mitigate potential biases.
           </p>
         </Section>
 
@@ -132,7 +132,7 @@ export default function PrivacyPolicyPage() {
             <BulletList items={[
                 "With Employers: When a Candidate applies for a job, their profile information, including their resume and our AI-generated analysis, is shared with that specific Client.",
                 "Service Providers: We engage third-party service providers to perform functions on our behalf, such as cloud hosting (e.g., Google Cloud Platform), email delivery, and analytics. These providers only have access to the information necessary to perform their functions and are contractually obligated to maintain the confidentiality and security of your data.",
-                "Legal Obligations: We may disclose information if required by law, subpoena, or other legal process, or if we have a good faith belief that disclosure is reasonably necessary to protect the rights, property, or safety of Baalvion, our users, or the public.",
+                "Legal Obligations: We may disclose information if required by law, subpoena, or other legal process, or if we have a good faith belief that disclosure is reasonably necessary to protect the rights, property, or safety of Northwind, our users, or the public.",
                 "Business Transfers: In the event of a merger, acquisition, or sale of assets, your information may be transferred as part of that transaction.",
             ]} />
             <p className="font-bold text-lg text-foreground">We do not sell your personal data to third parties.</p>
@@ -140,7 +140,7 @@ export default function PrivacyPolicyPage() {
 
         <Section title="6. International Data Transfers">
           <p className="text-muted-foreground">
-            Baalvion operates globally, and your information may be transferred to, and processed in, countries other than the one in which you reside. These countries may have data protection laws that are different from the laws of your country. We rely on secure cloud infrastructure with robust security and data protection safeguards to ensure that your data is protected wherever it is processed.
+            Northwind operates globally, and your information may be transferred to, and processed in, countries other than the one in which you reside. These countries may have data protection laws that are different from the laws of your country. We rely on secure cloud infrastructure with robust security and data protection safeguards to ensure that your data is protected wherever it is processed.
           </p>
         </Section>
 
@@ -206,8 +206,8 @@ export default function PrivacyPolicyPage() {
                 If you have any questions or concerns about this Privacy Policy or our data practices, please contact us at:
             </p>
             <div className="text-lg text-muted-foreground">
-                <p>Email: legal@baalvion.com</p>
-                <p>Baalvion Industries Pvt Ltd</p>
+                <p>Email: legal@northwind.com</p>
+                <p>Northwind Industries Pvt Ltd</p>
                 <p>[Your Registered Office Address, City, Postal Code, India]</p>
             </div>
         </Section>

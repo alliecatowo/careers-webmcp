@@ -2,8 +2,8 @@
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-    title: "Our Hiring Process | Baalvion Careers",
-    description: "Learn about Baalvion's transparent, four-step hiring process designed to identify the best talent.",
+    title: "Our Hiring Process | Northwind Careers",
+    description: "Learn about Northwind's transparent, four-step hiring process designed to identify the best talent.",
 };
 
 const hiringProcessSteps = [

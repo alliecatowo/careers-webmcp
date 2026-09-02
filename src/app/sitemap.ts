@@ -19,7 +19,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { path: '/careers/hiring-process', changeFrequency: 'monthly', priority: 0.7 },
     { path: '/careers/hiring-strategy', changeFrequency: 'monthly', priority: 0.7 },
     { path: '/careers/internship-program', changeFrequency: 'monthly', priority: 0.7 },
-    { path: '/careers/life-at-baalvion', changeFrequency: 'monthly', priority: 0.7 },
+    { path: '/careers/life-at-northwind', changeFrequency: 'monthly', priority: 0.7 },
     { path: '/about', changeFrequency: 'monthly', priority: 0.8 },
     { path: '/about/diversity', changeFrequency: 'monthly', priority: 0.6 },
     { path: '/about/team', changeFrequency: 'monthly', priority: 0.6 },

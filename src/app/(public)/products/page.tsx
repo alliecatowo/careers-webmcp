@@ -9,7 +9,7 @@ export const metadata: Metadata = {
         canonical: '/products',
     },
     openGraph: {
-        title: "Our Products | TalentOS by Baalvion",
+        title: "Our Products | Northwind Careers",
         description: "Discover the suite of products powering the next generation of global talent acquisition.",
         url: '/products',
     }

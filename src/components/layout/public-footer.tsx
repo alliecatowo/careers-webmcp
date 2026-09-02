@@ -86,7 +86,7 @@ export function PublicFooter() {
         </div>
         
         <div className="mt-16 border-t pt-8 text-center">
-          <p className="text-sm text-muted-foreground">&copy; {new Date().getFullYear()} Baalvion Industries Pvt Ltd. All Rights Reserved.</p>
+          <p className="text-sm text-muted-foreground">&copy; {new Date().getFullYear()} Northwind Industries Pvt Ltd. All Rights Reserved.</p>
         </div>
       </div>
     </footer>

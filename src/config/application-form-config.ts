@@ -39,7 +39,7 @@ export const formConfig: { phases: FormPhase[] } = {
         { name: "resume", label: "Upload Resume/CV", type: "file", description: "PDF, DOC, DOCX only. Max 5MB." },
         { name: "coverLetter", label: "Cover Letter", type: "textarea", placeholder: "Briefly tell us why you're a great fit for this role." },
         { name: "sourceOfDiscovery", label: "How did you hear about us?", type: "text", placeholder: "e.g., LinkedIn, university job fair, etc." },
-        { name: "consentGiven", label: "Data Privacy Consent", type: "checkbox", description: "I agree to the terms of the Baalvion Privacy Policy and consent to my data being processed for recruitment purposes." },
+        { name: "consentGiven", label: "Data Privacy Consent", type: "checkbox", description: "I agree to the terms of the Northwind Privacy Policy and consent to my data being processed for recruitment purposes." },
       ],
     },
     {

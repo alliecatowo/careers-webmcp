@@ -5,5 +5,5 @@
  */
 export function generateMeetingLink(): string {
   const randomId = Math.random().toString(36).substring(2, 10);
-  return `https://meet.baalvion.com/${randomId}`;
+  return `https://meet.northwind.com/${randomId}`;
 }

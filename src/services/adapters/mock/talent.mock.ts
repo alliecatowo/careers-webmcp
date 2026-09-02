@@ -6,7 +6,8 @@ import { mockDepartments } from '@/mocks/talent-platform/departments.mock';
 import { mockComplianceProfiles } from '@/mocks/talent-platform/compliance.mock';
 import { getRolesByCountry as getRolesByCountryData } from '@/mocks/talent-platform/roles.mock';
 
-const delay = (ms: number) => new Promise(res => setTimeout(res, ms));
+// Deterministic, low-latency demo mode: keep it visible as async but fast.
+const delay = (ms: number) => new Promise(res => setTimeout(res, Math.min(ms, 30)));
 
 export const talentMockService = {
   // COUNTRIES
@@ -66,7 +67,13 @@ export const talentMockService = {
     const searchTerm = filters.q || filters.search;
     if (searchTerm) {
         const term = searchTerm.toLowerCase();
-        filteredJobs = filteredJobs.filter(j => j.title.toLowerCase().includes(term) || j.description.toLowerCase().includes(term));
+        filteredJobs = filteredJobs.filter(j =>
+            j.title.toLowerCase().includes(term) ||
+            j.description.toLowerCase().includes(term) ||
+            (j.team ?? '').toLowerCase().includes(term) ||
+            j.city.toLowerCase().includes(term) ||
+            (j.requiredSkills ?? []).some(skill => skill.toLowerCase().includes(term))
+        );
     }
     
     if (filters.department && filters.department !== 'all') {

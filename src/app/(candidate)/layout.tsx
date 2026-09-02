@@ -26,7 +26,7 @@ export default function CandidateLayout({
           </main>
           <footer className="p-8 bg-background border-t">
               <div className="container mx-auto text-center text-xs text-muted-foreground">
-                  <p>&copy; {new Date().getFullYear()} Baalvion Global Hiring Infrastructure. All rights reserved.</p>
+                  <p>&copy; {new Date().getFullYear()} Northwind Global Hiring Infrastructure. All rights reserved.</p>
               </div>
           </footer>
       </div>

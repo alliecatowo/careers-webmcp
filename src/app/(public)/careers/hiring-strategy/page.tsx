@@ -4,8 +4,8 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Check } from "lucide-react";
 
 export const metadata: Metadata = {
-    title: "Our Hiring Strategy | Baalvion Careers",
-    description: "Learn about Baalvion's data-driven, globally-minded approach to building a world-class team.",
+    title: "Our Hiring Strategy | Northwind Careers",
+    description: "Learn about Northwind's data-driven, globally-minded approach to building a world-class team.",
 };
 
 const hiringPrinciples = [

@@ -92,7 +92,7 @@ export function BankingTab() {
             <Card>
                 <CardHeader>
                     <CardTitle>Payment History</CardTitle>
-                    <CardDescription>A record of all payments received from Baalvion.</CardDescription>
+                    <CardDescription>A record of all payments received from Northwind.</CardDescription>
                 </CardHeader>
                 <CardContent>
                     <Table>

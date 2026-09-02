@@ -118,7 +118,7 @@ export const jobs: Job[] = [
     createdAt: new Date().toISOString(),
     updatedAt: new Date().toISOString(),
     description:
-      'Join our performance-based internship program in Pune. This is an opportunity to work on real-world projects and secure a full-time role at Baalvion.',
+      'Join our performance-based internship program in Pune. This is an opportunity to work on real-world projects and secure a full-time role at Northwind.',
     responsibilities: [
       'Contribute to the development of our core product',
       'Learn from experienced engineers in a fast-paced environment',

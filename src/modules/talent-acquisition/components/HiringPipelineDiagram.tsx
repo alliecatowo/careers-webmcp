@@ -13,7 +13,7 @@ export function HiringPipelineDiagram() {
     return (
         <Card className="bg-muted/30">
             <CardHeader className="text-center">
-                <CardTitle className="text-3xl font-bold tracking-tight">Career Pathways at Baalvion</CardTitle>
+                <CardTitle className="text-3xl font-bold tracking-tight">Career Pathways at Northwind</CardTitle>
                 <CardDescription>From foundational experience to global leadership.</CardDescription>
             </CardHeader>
             <CardContent>

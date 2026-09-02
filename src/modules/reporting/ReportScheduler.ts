@@ -8,7 +8,7 @@ const mockScheduledReports: ScheduledReport[] = [
         format: 'PDF',
         cronExpression: '0 1 * * 1', // Every Monday at 1am
         filters: {},
-        recipients: ['exec@baalvion.com'],
+        recipients: ['exec@northwind.com'],
         lastRun: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000),
         nextRun: new Date(Date.now() + 6 * 24 * 60 * 60 * 1000),
         isActive: true,
@@ -19,7 +19,7 @@ const mockScheduledReports: ScheduledReport[] = [
         format: 'XLSX',
         cronExpression: '0 2 * * *', // Daily at 2am
         filters: {},
-        recipients: ['compliance@baalvion.com', 'admin@baalvion.com'],
+        recipients: ['compliance@northwind.com', 'admin@northwind.com'],
         lastRun: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000),
         nextRun: new Date(Date.now() + 22 * 60 * 60 * 1000),
         isActive: true,

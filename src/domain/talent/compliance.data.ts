@@ -7,7 +7,7 @@ export const complianceProfiles: ComplianceProfile[] = [
     countryId: "country_in",
     laborLawReference: "Shops and Establishment Act, IT Act 2000",
     dataProtectionRegime: "Digital Personal Data Protection Act, 2023",
-    equalOpportunityStatement: "Baalvion is an equal opportunity employer. We celebrate diversity and are committed to creating an inclusive environment for all employees.",
+    equalOpportunityStatement: "Northwind is an equal opportunity employer. We celebrate diversity and are committed to creating an inclusive environment for all employees.",
     hiringDisclosureText: "All hiring and employment practices in India adhere to local and national labor laws and regulations."
   },
   {
@@ -15,7 +15,7 @@ export const complianceProfiles: ComplianceProfile[] = [
     countryId: "country_us",
     laborLawReference: "Fair Labor Standards Act (FLSA), Title VII of the Civil Rights Act of 1964",
     dataProtectionRegime: "CCPA/CPRA, and other state-specific laws",
-    equalOpportunityStatement: "Baalvion is an equal opportunity employer and complies with all applicable federal, state, and local fair employment practices laws.",
+    equalOpportunityStatement: "Northwind is an equal opportunity employer and complies with all applicable federal, state, and local fair employment practices laws.",
     hiringDisclosureText: "We are committed to providing equal employment opportunities to all employees and applicants for employment."
   },
   {
@@ -23,7 +23,7 @@ export const complianceProfiles: ComplianceProfile[] = [
     countryId: "country_gb",
     laborLawReference: "Equality Act 2010",
     dataProtectionRegime: "UK GDPR, Data Protection Act 2018",
-    equalOpportunityStatement: "Baalvion is an equal opportunity employer. We value diversity and are committed to creating an inclusive environment for all employees.",
+    equalOpportunityStatement: "Northwind is an equal opportunity employer. We value diversity and are committed to creating an inclusive environment for all employees.",
     hiringDisclosureText: "All hiring and employment practices in the UK adhere to local labour laws and regulations."
   },
   {
@@ -31,7 +31,7 @@ export const complianceProfiles: ComplianceProfile[] = [
     countryId: "country_ca",
     laborLawReference: "Canada Labour Code and provincial employment standards",
     dataProtectionRegime: "PIPEDA",
-    equalOpportunityStatement: "Baalvion is an equal opportunity employer and encourages applications from all qualified individuals.",
+    equalOpportunityStatement: "Northwind is an equal opportunity employer and encourages applications from all qualified individuals.",
     hiringDisclosureText: "All hiring and employment practices in Canada adhere to federal and provincial labor laws."
   },
    {
@@ -39,7 +39,7 @@ export const complianceProfiles: ComplianceProfile[] = [
     countryId: "country_pl",
     laborLawReference: "Polish Labour Code, EU Directives",
     dataProtectionRegime: "General Data Protection Regulation (GDPR)",
-    equalOpportunityStatement: "Baalvion is an equal opportunity employer. All applicants will be considered for employment without attention to race, color, religion, sex, sexual orientation, gender identity, national origin, veteran or disability status.",
+    equalOpportunityStatement: "Northwind is an equal opportunity employer. All applicants will be considered for employment without attention to race, color, religion, sex, sexual orientation, gender identity, national origin, veteran or disability status.",
     hiringDisclosureText: "All hiring practices conform to EU and local regulations."
   },
    {
@@ -47,7 +47,7 @@ export const complianceProfiles: ComplianceProfile[] = [
     countryId: "country_au",
     laborLawReference: "Fair Work Act 2009",
     dataProtectionRegime: "Privacy Act 1988",
-    equalOpportunityStatement: "Baalvion is an equal opportunity employer, and we encourage people from all backgrounds to apply.",
+    equalOpportunityStatement: "Northwind is an equal opportunity employer, and we encourage people from all backgrounds to apply.",
     hiringDisclosureText: "Hiring practices are in accordance with the Fair Work Act."
   },
   {
@@ -55,7 +55,7 @@ export const complianceProfiles: ComplianceProfile[] = [
     countryId: "country_vn",
     laborLawReference: "Labour Code of Vietnam 2019",
     dataProtectionRegime: "Decree 13/2023/ND-CP on Personal Data Protection",
-    equalOpportunityStatement: "Baalvion provides equal employment opportunities to all employees and applicants.",
+    equalOpportunityStatement: "Northwind provides equal employment opportunities to all employees and applicants.",
     hiringDisclosureText: "Hiring practices are in accordance with the Labour Code of Vietnam."
   },
    {
@@ -63,7 +63,7 @@ export const complianceProfiles: ComplianceProfile[] = [
     countryId: "country_ph",
     laborLawReference: "Labor Code of the Philippines",
     dataProtectionRegime: "Data Privacy Act of 2012 (Republic Act No. 10173)",
-    equalOpportunityStatement: "Baalvion provides equal employment opportunities to all employees and applicants.",
+    equalOpportunityStatement: "Northwind provides equal employment opportunities to all employees and applicants.",
     hiringDisclosureText: "Hiring practices are in accordance with the Labor Code of the Philippines."
   },
    {
@@ -71,7 +71,7 @@ export const complianceProfiles: ComplianceProfile[] = [
     countryId: "country_ua",
     laborLawReference: "Labour Code of Ukraine",
     dataProtectionRegime: "On Protection of Personal Data",
-    equalOpportunityStatement: "Baalvion provides equal employment opportunities to all employees and applicants.",
+    equalOpportunityStatement: "Northwind provides equal employment opportunities to all employees and applicants.",
     hiringDisclosureText: "Hiring practices are in accordance with the Labour Code of Ukraine."
   },
 ];

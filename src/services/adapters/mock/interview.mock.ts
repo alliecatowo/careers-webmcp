@@ -19,7 +19,7 @@ tenantInterviews.push({
     scheduledAt: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000),
     interviewerIds: ['4'],
     interviewerNames: ['Elon Musk (Stark)'],
-    meetingLink: 'https://meet.baalvion.com/elena-123',
+    meetingLink: 'https://meet.northwind.com/elena-123',
     status: 'SCHEDULED',
     createdAt: new Date().toISOString(),
     tenantId: 'org_acme',

@@ -23,9 +23,9 @@ import { AppConfig } from '@/config/app.config';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 
 export async function getCareersLandingMetadata(canonicalPath: string): Promise<Metadata> {
-  const title = 'TalentOS by Baalvion | The Operating System for Global Talent';
+  const title = 'Northwind Careers | The Operating System for Global Talent';
   const description =
-    "Join Baalvion, headquartered in India with a globally distributed workforce. We're building the intelligent infrastructure that connects exceptional talent with borderless opportunity.";
+    "Join Northwind, headquartered in India with a globally distributed workforce. We're building the intelligent infrastructure that connects exceptional talent with borderless opportunity.";
   const canonicalUrl = `${AppConfig.baseUrl}${canonicalPath}`;
 
   // Keep canonical-only for main careers landing to avoid cross-country hreflang duplication.
@@ -121,7 +121,7 @@ export async function CareersLanding() {
         )}
         <div className="absolute inset-0 bg-black/60" />
         <div className="relative container mx-auto px-4">
-          <h1 className="text-5xl md:text-7xl font-bold tracking-tight">TalentOS by Baalvion</h1>
+          <h1 className="text-5xl md:text-7xl font-bold tracking-tight">Northwind Careers</h1>
           <p className="mt-4 max-w-3xl mx-auto text-lg md:text-xl text-neutral-200">The Operating System for Global Talent.</p>
           <div className="mt-8 flex items-center justify-center gap-4">
             <Button size="lg" asChild>
@@ -191,10 +191,10 @@ export async function CareersLanding() {
         </div>
       </section>
 
-      {/* Careers at Baalvion Section */}
+      {/* Careers at Northwind Section */}
       <section className="py-24 lg:py-32 bg-muted/50">
         <div className="container mx-auto px-4 text-center">
-          <h2 className="text-4xl md:text-5xl font-bold tracking-tight">Careers at Baalvion</h2>
+          <h2 className="text-4xl md:text-5xl font-bold tracking-tight">Careers at Northwind</h2>
           <p className="mt-4 max-w-2xl mx-auto text-lg text-muted-foreground">Building global infrastructure from India to the world.</p>
           <div className="mt-8">
             <Button size="lg" asChild>
@@ -208,7 +208,7 @@ export async function CareersLanding() {
       <section className="py-24 lg:py-32">
         <div className="container mx-auto px-4">
           <div className="text-center max-w-3xl mx-auto">
-            <h2 className="text-4xl md:text-5xl font-bold tracking-tight">Why Join Baalvion?</h2>
+            <h2 className="text-4xl md:text-5xl font-bold tracking-tight">Why Join Northwind?</h2>
             <p className="mt-4 text-lg text-muted-foreground">
               We are a team of builders, thinkers, and innovators on a mission to unlock the world's human potential.
             </p>
@@ -234,7 +234,7 @@ export async function CareersLanding() {
           <div className="text-center max-w-3xl mx-auto">
             <h2 className="text-4xl md:text-5xl font-bold tracking-tight">Our Global Presence</h2>
             <p className="mt-4 text-lg text-muted-foreground">
-              Baalvion is headquartered in India with a globally distributed workforce across North America, Europe, and Asia-Pacific.
+              Northwind is headquartered in India with a globally distributed workforce across North America, Europe, and Asia-Pacific.
             </p>
           </div>
           <div className="mt-16 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">

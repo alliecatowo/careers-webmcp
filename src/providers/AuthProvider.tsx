@@ -16,7 +16,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       id: 'admin-1',
       name: 'Admin User',
       fullName: 'Admin User',
-      email: 'admin@baalvion.com',
+      email: 'admin@northwind.com',
       role: 'SUPER_ADMIN',
       avatarUrl: 'https://github.com/shadcn.png',
       isActive: true,

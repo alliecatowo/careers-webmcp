@@ -98,7 +98,7 @@ export function InterviewForm({ onSaveSuccess }: InterviewFormProps) {
         scheduledAt: values.scheduledAt,
         interviewerIds: interviewers.map((i) => i.id),
         interviewerNames: interviewers.map((i) => i.name),
-        meetingLink: `https://meet.baalvion.com/mock-${Date.now()}`,
+        meetingLink: `https://meet.northwind.com/mock-${Date.now()}`,
       };
       await interviewService.schedule(
         values.candidateId, // This should be applicationId

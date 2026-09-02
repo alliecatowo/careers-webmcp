@@ -53,7 +53,7 @@ export default function StudentDashboardPage() {
         await notificationService.sendEmail(
             app.candidateEmail,
             `Update on your application for ${app.jobTitle}`,
-            `Hi ${app.candidateName},\n\nThis is a notification to let you know there has been an update regarding your application. Please log in to your dashboard to view the latest status.\n\nBest,\nThe Baalvion Team`
+            `Hi ${app.candidateName},\n\nThis is a notification to let you know there has been an update regarding your application. Please log in to your dashboard to view the latest status.\n\nBest,\nThe Northwind Team`
         );
         showToast({ title: 'Email Sent (Mock)', description: `An email has been sent to ${app.candidateName}.`, type: 'success' });
     };

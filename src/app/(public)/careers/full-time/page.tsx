@@ -6,9 +6,9 @@ import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 
 export const metadata: Metadata = {
-  title: 'Full-Time Roles | Baalvion Careers',
+  title: 'Full-Time Roles | Northwind Careers',
   description:
-    'Explore full-time career opportunities at Baalvion and join our mission to build the future of global hiring.',
+    'Explore full-time career opportunities at Northwind and join our mission to build the future of global hiring.',
 };
 
 export default async function FullTimeRolesPage() {

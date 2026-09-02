@@ -3,11 +3,11 @@ import { Separator } from "@/components/ui/separator";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-    title: "Diversity & Inclusion | TalentOS",
-    description: "Learn about Baalvion's commitment to building a diverse and inclusive workplace that reflects the world's talent.",
+    title: "Diversity & Inclusion | Northwind Careers",
+    description: "Learn about Northwind's commitment to building a diverse and inclusive workplace that reflects the world's talent.",
     openGraph: {
-        title: "Diversity & Inclusion | TalentOS",
-        description: "Learn about Baalvion's commitment to building a diverse and inclusive workplace.",
+        title: "Diversity & Inclusion | Northwind Careers",
+        description: "Learn about Northwind's commitment to building a diverse and inclusive workplace.",
     }
 };
 
@@ -23,7 +23,7 @@ export default function DiversityPage() {
             <Separator />
              <div className="container mx-auto py-16 lg:py-24 max-w-4xl space-y-12">
                  <p className="text-lg text-muted-foreground">
-                    At Baalvion, our mission is to create a fair, intelligent, and transparent ecosystem where skill is the only currency that matters. This mission begins with us. We are committed to building a diverse and inclusive workplace where all team members feel valued, respected, and empowered. We believe that diverse teams build better products, make better decisions, and better reflect the global community of talent we serve. We welcome and encourage applicants from all backgrounds, experiences, and identities to apply.
+                    At Northwind, our mission is to create a fair, intelligent, and transparent ecosystem where skill is the only currency that matters. This mission begins with us. We are committed to building a diverse and inclusive workplace where all team members feel valued, respected, and empowered. We believe that diverse teams build better products, make better decisions, and better reflect the global community of talent we serve. We welcome and encourage applicants from all backgrounds, experiences, and identities to apply.
                 </p>
              </div>
         </main>

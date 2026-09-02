@@ -6,6 +6,7 @@ import { usePathname } from 'next/navigation';
 import { Logo } from '@/components/layout/logo';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
+import { CandidateSessionButton } from '@/components/session/CandidateSessionButton';
 import { Menu, ChevronDown } from 'lucide-react';
 import {
     DropdownMenu,
@@ -51,7 +52,7 @@ const navItems = [
 const careersSubItems = [
     { href: `/careers/hiring-process`, label: 'Hiring Process' },
     { href: `/careers/hiring-strategy`, label: 'Hiring Strategy' },
-    { href: `/careers/life-at-baalvion`, label: 'Life at Baalvion' },
+    { href: `/careers/life-at-northwind`, label: 'Life at Northwind' },
 ];
 
 const aboutSubItems = [
@@ -143,9 +144,7 @@ export function PublicHeader() {
                         </nav>
 
                         <div className="hidden md:flex items-center gap-2">
-                            <Button variant="outline" asChild>
-                                <Link href="/login">Admin Panel</Link>
-                            </Button>
+                            <CandidateSessionButton />
                         </div>
 
                         <div className="md:hidden">
@@ -219,11 +218,7 @@ export function PublicHeader() {
                                                 Campus Placement
                                             </Link>
                                         </SheetClose>
-                                        <SheetClose asChild>
-                                            <Button variant="outline" asChild className="w-full mt-4">
-                                                <Link href="/login">Admin Panel</Link>
-                                            </Button>
-                                        </SheetClose>
+                                        <div className="mt-4"><CandidateSessionButton className="w-full" /></div>
                                     </nav>
                                 </SheetContent>
                             </Sheet>

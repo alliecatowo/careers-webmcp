@@ -10,13 +10,13 @@ import { Country } from "@/lib/talent-acquisition";
 
 export const metadata: Metadata = {
     title: "Contact Us",
-    description: "Get in touch with the Baalvion team. We're here to help with general inquiries, sales, partnerships, and candidate support.",
+    description: "Get in touch with the Northwind team. We're here to help with general inquiries, sales, partnerships, and candidate support.",
     alternates: {
         canonical: '/contact',
     },
     openGraph: {
-        title: "Contact Us | TalentOS by Baalvion",
-        description: "Get in touch with the Baalvion team.",
+        title: "Contact Us | Northwind Careers",
+        description: "Get in touch with the Northwind team.",
         url: '/contact'
     }
 };
@@ -98,13 +98,13 @@ export default async function ContactPage() {
                         <Separator className="mt-2 w-16 h-1 bg-destructive" />
                     </div>
                     <div className="space-y-6">
-                        <ContactDetail category="Business" contact="biz@baalvion.com" />
-                        <ContactDetail category="Press & Content Creators" contact="media@baalvion.com" />
-                        <ContactDetail category="Investors" contact="ir@baalvion.com" />
-                        <ContactDetail category="Job Offers" contact="jobs@baalvion.com" />
-                        <ContactDetail category="Technical Support" contact="support.baalvion.com" isLink />
-                        <ContactDetail category="Product Safety" contact="baalvion.com/product-safety" isLink />
-                        <ContactDetail category="Community" contact="contact.community@baalvion.com" />
+                        <ContactDetail category="Business" contact="biz@northwind.com" />
+                        <ContactDetail category="Press & Content Creators" contact="media@northwind.com" />
+                        <ContactDetail category="Investors" contact="ir@northwind.com" />
+                        <ContactDetail category="Job Offers" contact="jobs@northwind.com" />
+                        <ContactDetail category="Technical Support" contact="support.northwind.com" isLink />
+                        <ContactDetail category="Product Safety" contact="northwind.com/product-safety" isLink />
+                        <ContactDetail category="Community" contact="contact.community@northwind.com" />
                     </div>
                      <Button size="lg" variant="destructive" className="w-full text-lg">
                         Visit Our Press Center

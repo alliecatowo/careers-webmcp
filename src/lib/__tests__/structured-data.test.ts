@@ -91,8 +91,8 @@ describe('generateJobPostingStructuredData', () => {
     const result = generateJobPostingStructuredData(mockJob);
 
     expect(result.hiringOrganization).toBeDefined();
-    expect(result.hiringOrganization.name).toBe('Baalvion');
-    expect(result.hiringOrganization.sameAs).toBe('https://www.baalvion.com');
+    expect(result.hiringOrganization.name).toBe('Northwind');
+    expect(result.hiringOrganization.sameAs).toBe('https://www.northwind.com');
   });
 
   test('includes benefits when available', () => {

@@ -36,7 +36,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const canonicalUrl = `${AppConfig.baseUrl}/careers/countries/${country.slug}`;
 
   const title = `Careers in ${country.name}`;
-  const description = `Explore job opportunities and learn about Baalvion's presence in ${country.name}. Join our globally distributed team.`;
+  const description = `Explore job opportunities and learn about Northwind's presence in ${country.name}. Join our globally distributed team.`;
 
   return {
     title,
@@ -45,7 +45,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       canonical: canonicalUrl,
     },
     openGraph: {
-      title: `${title} | TalentOS by Baalvion`,
+      title: `${title} | Northwind Careers`,
       description,
       url: canonicalUrl,
     },

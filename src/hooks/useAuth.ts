@@ -9,9 +9,9 @@ const getMockUserRoleByEmail = (email: string): UserRole => {
   const normalizedEmail = email.trim().toLowerCase();
 
   const roleByEmail: Record<string, UserRole> = {
-    'admin@baalvion.com': 'SUPER_ADMIN',
-    'recruiter@baalvion.com': 'RECRUITER',
-    'manager@baalvion.com': 'ADMIN',
+    'admin@northwind.com': 'SUPER_ADMIN',
+    'recruiter@northwind.com': 'RECRUITER',
+    'manager@northwind.com': 'ADMIN',
     'elon@tesla.com': 'INTERVIEWER',
     'finance@acme.inc': 'FINANCE',
     'elena.rodriguez@example.com': 'CANDIDATE',

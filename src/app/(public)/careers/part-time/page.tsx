@@ -6,9 +6,9 @@ import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 
 export const metadata: Metadata = {
-  title: 'Part-Time Roles | Baalvion Careers',
+  title: 'Part-Time Roles | Northwind Careers',
   description:
-    'Explore flexible, part-time roles at Baalvion and contribute to our mission on your schedule.',
+    'Explore flexible, part-time roles at Northwind and contribute to our mission on your schedule.',
 };
 
 export default async function PartTimeRolesPage() {

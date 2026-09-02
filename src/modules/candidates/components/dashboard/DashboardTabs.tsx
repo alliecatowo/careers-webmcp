@@ -7,6 +7,7 @@ import { useSearchParams } from 'next/navigation';
 // Tab Components
 import { OverviewTab } from "./tabs/OverviewTab";
 import { ApplicationsTab } from "./tabs/ApplicationsTab";
+import { SavedJobsTab } from "./tabs/SavedJobsTab";
 import { InterviewsTab } from "./tabs/InterviewsTab";
 import { OffersTab } from "./tabs/OffersTab";
 import { DocumentsTab } from "./tabs/DocumentsTab";
@@ -19,13 +20,14 @@ interface DashboardTabsProps {
 
 export function DashboardTabs({ user }: DashboardTabsProps) {
     const searchParams = useSearchParams();
-    const defaultTab = searchParams.get('tab') || 'overview';
+    const defaultTab = searchParams.get('tab') || 'applications';
 
     return (
         <Tabs defaultValue={defaultTab} className="w-full">
-            <TabsList className="grid w-full grid-cols-3 md:grid-cols-7">
+            <TabsList className="grid w-full grid-cols-3 md:grid-cols-8">
                 <TabsTrigger value="overview">Overview</TabsTrigger>
                 <TabsTrigger value="applications">Applications</TabsTrigger>
+                <TabsTrigger value="saved-jobs">Saved Jobs</TabsTrigger>
                 <TabsTrigger value="interviews">Interviews</TabsTrigger>
                 <TabsTrigger value="offers">Offers</TabsTrigger>
                 <TabsTrigger value="documents">Documents & Certificates</TabsTrigger>
@@ -37,7 +39,10 @@ export function DashboardTabs({ user }: DashboardTabsProps) {
                 <OverviewTab user={user} />
             </TabsContent>
             <TabsContent value="applications" className="mt-6">
-                <ApplicationsTab user={user} />
+                <ApplicationsTab />
+            </TabsContent>
+            <TabsContent value="saved-jobs" className="mt-6">
+                <SavedJobsTab />
             </TabsContent>
             <TabsContent value="interviews" className="mt-6">
                 <InterviewsTab user={user} />

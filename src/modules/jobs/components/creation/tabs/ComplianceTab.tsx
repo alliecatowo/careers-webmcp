@@ -62,7 +62,7 @@ export function ComplianceTab({ userRole }: ComplianceTabProps) {
             <div className="p-4 border rounded-lg bg-muted/50">
                 <h4 className="font-semibold">Auto-Generated Compliance Text</h4>
                 <p className="text-sm text-muted-foreground mt-2">
-                    {country === 'country_us' ? 'Baalvion is an equal opportunity employer and complies with all applicable federal, state, and local fair employment practices laws.' : 'Baalvion is an equal opportunity employer. We celebrate diversity and are committed to creating an inclusive environment for all employees.'}
+                    {country === 'country_us' ? 'Northwind is an equal opportunity employer and complies with all applicable federal, state, and local fair employment practices laws.' : 'Northwind is an equal opportunity employer. We celebrate diversity and are committed to creating an inclusive environment for all employees.'}
                 </p>
             </div>
         </div>
