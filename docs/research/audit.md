@@ -100,3 +100,17 @@
 ## Recommendation
 
 Fix the LICENSE file to be MIT-compliant before public submission. This is the only obstacle to accepting the build.
+
+---
+
+## Resolution (lead, 2026-09-02)
+
+The LICENSE blocker was real and rooted in upstream: upstream HEAD (`aa50e85`)
+had replaced its MIT declaration with a proprietary license on 2026-06-02.
+Resolution: the repository history was rewritten so the import commit is
+upstream `9108409` (the last MIT-declared commit, source-identical to HEAD
+except a later layout breakage), an MIT LICENSE with dual attribution was
+added, the visible brand was renamed to the fictional "Northwind", photos of
+real people and the committed upstream API key were excluded, and the site was
+redeployed. See docs/UPSTREAM.md and the final entry in docs/DECISIONS.md.
+Typecheck, 113 unit tests and 10 Playwright tests pass after the change.

@@ -1,0 +1,20 @@
+Careers WebMCP
+==============
+
+Original project: Baalvion Jobs Portal
+  https://github.com/baalvionservice/Baalvion-Jobs-Portal
+  Imported at commit 9108409d4844b7ba90367da79fd2fed5040f5b61 (2026-04-14), the
+  last upstream commit published under its README's "MIT License /
+  Copyright (c) Baalvion" declaration. Upstream adopted a proprietary license
+  for later versions; that relicensing does not apply to the MIT-licensed
+  version imported here.
+
+License: MIT (see LICENSE)
+
+Challenge work (Allison Coleman, 2026, OpenAI WebMCP Challenge):
+  WebMCP semantic integration, context/session bridge, deterministic semantic
+  job search, shared candidate operations (saved jobs, application drafts with
+  revision protection), testing, demo data, documentation.
+
+Trademarks: "Baalvion" identifies the upstream project only. The employer
+shown in this demo is the fictional "Northwind".

@@ -1,13 +1,7 @@
 MIT License
 
-Careers WebMCP (WebMCP layer, shared candidate state, semantic search, tests,
-demo data and documentation):
-Copyright (c) 2026 Allison Coleman
-
-Upstream Baalvion Jobs Portal, imported at commit
-9108409d4844b7ba90367da79fd2fed5040f5b61 (2026-04-14), which its README
-published under "MIT License, Copyright (c) Baalvion":
-Copyright (c) Baalvion
+Copyright (c) 2026 Allison Coleman (Careers WebMCP)
+Copyright (c) Baalvion (upstream Baalvion Jobs Portal, commit 9108409)
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -26,7 +20,3 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
-
-"Baalvion" is a name/trademark of its owner and is used here only to identify
-the upstream project. The demo employer shown in this application is the
-fictional "Northwind".
