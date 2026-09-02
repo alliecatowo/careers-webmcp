@@ -1,0 +1,82 @@
+
+{
+  "version": "2.0.0 / main",
+  "dependencies": {
+    "node": "20.x",
+    "next": "14.2.4",
+    "react": "18.3.1",
+    "typescript": "5.9.3",
+    "firebase": "Not installed, but config exists",
+    "other": [
+      { "name": "tailwindcss", "version": "3.4.1" },
+      { "name": "shadcn/ui", "version": "Implicit via Radix" },
+      { "name": "@radix-ui/*", "version": "Various" },
+      { "name": "@tanstack/react-table", "version": "8.17.3" },
+      { "name": "zod", "version": "3.23.8" },
+      { "name": "zustand", "version": "4.5.2" },
+      { "name": "recharts", "version": "2.12.7" },
+      { "name": "framer-motion", "version": "11.2.10" },
+      { "name": "genkit", "version": "Implicit via @genkit-ai/google-genai" }
+    ]
+  },
+  "structure": {
+    "folders": [
+      "src/app/(admin)",
+      "src/app/(public)",
+      "src/app/(candidate)",
+      "src/components/ui",
+      "src/components/system",
+      "src/modules",
+      "src/features",
+      "src/services/adapters/mock",
+      "src/services/adapters/server",
+      "src/lib",
+      "src/firebase",
+      "src/ai",
+      "src/config",
+      "docs"
+    ],
+    "key_modules": [
+      "Admin Dashboard",
+      "Public Job Portal",
+      "Candidate Application Workflow",
+      "Candidate Dashboard",
+      "Role-Based Access Control (RBAC)",
+      "Multi-Tenant Organization Context",
+      "Mock Service Layer",
+      "Analytics & Reporting",
+      "AI Resume Parsing & Matching",
+      "Real-time Notification System"
+    ],
+    "completed_modules": [
+      "UI for Admin Panel (all sections)",
+      "UI for Public Job Portal (all pages)",
+      "UI for Candidate Dashboard (all tabs)",
+      "Complete Mock Service Layer (simulates all backend functionality)",
+      "Multi-Phase Application Form Logic",
+      "Client-side Routing and Layouts",
+      "Role-Based Access Control (Static and Dynamic Rules)",
+      "Component Library (ShadCN/UI)",
+      "Project configuration for ESLint, Prettier, and TypeScript"
+    ],
+    "pending_modules": [
+      "Full backend integration (currently using mock services)",
+      "Live database connection (Firestore integration is set up but not fully used)",
+      "Real transactional email service integration (currently logs to console)",
+      "Live payment and payout integration (currently mocked)",
+      "Full implementation of server-side data fetching and mutations",
+      "CI/CD pipeline with automated testing and deployment to Vercel/Firebase Hosting"
+    ],
+    "remaining_tasks": [
+      "**Critical**: Implement live Firebase services to replace the mock adapter.",
+      "**Critical**: Create Firestore collections and migrate mock data structures.",
+      "**High**: Integrate a real transactional email service (e.g., Resend, SendGrid).",
+      "**High**: Implement server-side logic for all `services/adapters/server` files.",
+      "**Medium**: Connect AI flows to live Genkit/Vertex AI models.",
+      "**Medium**: Implement automated testing (Jest, React Testing Library).",
+      "**Low**: Enhance UI with more sophisticated loading states and skeletons.",
+      "**Low**: Add internationalization (i18n) support for multi-language capabilities."
+    ]
+  },
+  "issues": []
+}

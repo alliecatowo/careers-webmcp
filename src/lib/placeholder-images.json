@@ -1,0 +1,197 @@
+{
+  "placeholderImages": [
+
+
+
+
+    {
+      "id": "dilip-photo",
+      "description": "Portrait of the company founder.",
+      "imageUrl": "/photos/DilipKuldeepYadav.jpeg",
+      "imageHint": "portrait male"
+    },
+    {
+      "id": "executive-1-photo",
+      "description": "Portrait of a female executive.",
+      "imageUrl": "/photos/aadarshPatra.jpeg",
+      "imageHint": "portrait female"
+    },
+    {
+      "id": "tamanna-photo",
+      "description": "Portrait of tamanna.",
+      "imageUrl": "/photos/tamannaShaaikh.png",
+      "imageHint": "portrait tamanna"
+    },
+    {
+      "id": "sasmita-photo",
+      "description": "Portrait of sasmita.",
+      "imageUrl": "/photos/sasmitagamel.jpeg",
+      "imageHint": "portrait sasmita"
+    },
+    {
+      "id": "biswajeet-photo",
+      "description": "Portrait of biswajeet.",
+      "imageUrl": "/photos/Biswajeet patra.jpeg",
+      "imageHint": "portrait biswajeet"
+    },
+    {
+      "id": "laxman-photo",
+      "description": "Portrait of laxman.",
+      "imageUrl": "/photos/Laxman Singh Champia.jpeg",
+      "imageHint": "portrait laxman"
+    },
+    {
+      "id": "bishal-photo",
+      "description": "Portrait of bishal.",
+      "imageUrl": "/photos/bishalkumarpingua.jpeg",
+      "imageHint": "portrait bishal"
+    },
+    {
+      "id": "rashmika-photo",
+      "description": "Portrait of rashmika.",
+      "imageUrl": "/photos/Rashmika Singh.jpeg",
+      "imageHint": "portrait rashmika"
+    },
+    {
+      "id": "jaid-photo",
+      "description": "Portrait of jaid.",
+      "imageUrl": "/photos/Jaid Alam.jpeg",
+      "imageHint": "portrait jaid"
+    },
+    {
+      "id": "preeti-photo",
+      "description": "Portrait of preeti.",
+      "imageUrl": "/photos/Preeti snigdha Mallick.jpeg",
+      "imageHint": "portrait preeti"
+    },
+    
+
+
+    {
+      "id": "prathamesh-photo",
+      "description": "Portrait of Prathamesh Pawer.",
+      "imageUrl": "/photos/Prathamesh Pawer.jpeg",
+      "imageHint": "portrait male"
+    },
+
+
+
+
+
+
+
+
+
+
+
+
+    {
+      "id": "avatar-1",
+      "description": "User avatar 1",
+      "imageUrl": "https://images.unsplash.com/photo-1521119989659-a83eee488004?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw3fHxwZXJzb24lMjBwb3J0cmFpdHxlbnwwfHx8fDE3NzE0ODAxMDF8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "person portrait"
+    },
+    {
+      "id": "avatar-2",
+      "description": "User avatar 2",
+      "imageUrl": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw4fHxwZXJzb24lMjBwb3J0cmFpdHxlbnwwfHx8fDE3NzE0ODAxMDF8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "person portrait"
+    },
+    {
+      "id": "avatar-3",
+      "description": "User avatar 3",
+      "imageUrl": "https://images.unsplash.com/photo-1590086782792-42dd2350140d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw1fHxwZXJzb24lMjBwb3J0cmFpdHxlbnwwfHx8fDE3NzE0ODAxMDF8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "person portrait"
+    },
+    {
+      "id": "avatar-4",
+      "description": "User avatar 4",
+      "imageUrl": "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxwZXJzb24lMjBwb3J0cmFpdHxlbnwwfHx8fDE3NzE0ODAxMDF8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "person portrait"
+    },
+    {
+      "id": "avatar-5",
+      "description": "User avatar 5",
+      "imageUrl": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw4fHxwZXJzb24lMjBwb3J0cmFpdHxlbnwwfHx8fDE3NzE0ODAxMDF8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "person portrait"
+    },
+    {
+      "id": "avatar-6",
+      "description": "User avatar 6",
+      "imageUrl": "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwzfHxwZXJzb24lMjBwb3J0cmFpdHxlbnwwfHx8fDE3NzE0ODAxMDF8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "person portrait"
+    },
+    {
+      "id": "careers-hero",
+      "description": "Diverse team collaborating in a modern office",
+      "imageUrl": "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHx0ZWFtJTIwY29sbGFib3JhdGlvbnxlbnwwfHx8fDE3NzE1NDUwMDV8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "team collaboration"
+    },
+    {
+      "id": "team-hero",
+      "description": "A modern office space with people collaborating",
+      "imageUrl": "https://www.cdprojektred.com/build/images/img/studios-5-3a106431.png",
+      "imageHint": "office collaboration"
+    },
+    {
+      "id": "why-join-us-1",
+      "description": "Person working on a laptop in a bright, modern space",
+      "imageUrl": "https://images.unsplash.com/photo-1552664730-d307ca884978?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxpbWFnZSUyMG9mJTIwcGVyc29uJTIwd29ya2luZ3xlbnwwfHx8fDE3NzE1NDUwMzB8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "person working"
+    },
+    {
+      "id": "why-join-us-2",
+      "description": "A global map with connection lines",
+      "imageUrl": "https://images.unsplash.com/photo-1542744095-291d1f67b221?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxnbG9iYWwlMjBuZXR3b3JrfGVufDB8fHx8MTc3MTU0NTA1NHww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "global network"
+    },
+    {
+      "id": "team-member-1",
+      "description": "Portrait of a male team member",
+      "imageUrl": "https://images.unsplash.com/photo-1715423058726-ddea1ec51b66?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxtYWxlJTIwcG9ydHJhaXR8ZW58MHx8fHwxNzcyMTE4MDkzfDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "male portrait"
+    },
+    {
+      "id": "team-member-2",
+      "description": "Portrait of a female team member",
+      "imageUrl": "https://images.unsplash.com/photo-1634149134664-ca3598f29da5?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw3fHxmZW1hbGUlMjBwb3J0cmFpdHxlbnwwfHx8fDE3NzIyMDYxMjd8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "female portrait"
+    },
+    {
+      "id": "team-member-3",
+      "description": "Portrait of a team member",
+      "imageUrl": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw5fHxwZXJzb24lMjBwb3J0cmFpdHxlbnwwfHx8fDE3NzIxNjQ2Nzd8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "person portrait"
+    },
+    {
+      "id": "team-member-4",
+      "description": "Portrait of a team member",
+      "imageUrl": "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwzfHxwZXJzb24lMjBwb3J0cmFpdHxlbnwwfHx8fDE3NzIxNjQ2Nzd8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "person portrait"
+    },
+    {
+      "id": "team-member-5",
+      "description": "Portrait of a female team member",
+      "imageUrl": "https://images.unsplash.com/photo-1509868918748-a554ad25f858?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw5fHxmZW1hbGUlMjBwb3J0cmFpdHxlbnwwfHx8fDE3NzIyMDYxMjd8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "female portrait"
+    },
+    {
+      "id": "team-member-6",
+      "description": "Portrait of a male team member",
+      "imageUrl": "https://images.unsplash.com/photo-1590086782792-42dd2350140d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw0fHxtYWxlJTIwcG9ydHJhaXR8ZW58MHx8fHwxNzcyMTE4MDkzfDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "male portrait"
+    },
+    {
+      "id": "team-member-7",
+      "description": "Portrait of a team member",
+      "imageUrl": "https://images.unsplash.com/photo-1531123414780-f74242c2b052?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxMHx8cGVyc29uJTIwcG9ydHJhaXR8ZW58MHx8fHwxNzcyMTY0Njc3fDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "person portrait"
+    },
+    {
+      "id": "team-member-8",
+      "description": "Portrait of a team member",
+      "imageUrl": "https://images.unsplash.com/photo-1600180758890-6b94519a8ba6?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw0fHxwZXJzb24lMjBwb3J0cmFpdHxlbnwwfHx8fDE3NzIxNjQ2Nzd8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "person portrait"
+    }
+  ]
+}

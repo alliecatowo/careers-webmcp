@@ -1,0 +1,265 @@
+
+{
+  "entities": {
+    "User": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "User",
+      "type": "object",
+      "description": "Represents a user account within the TalentOS system.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the User entity, matching Firebase Auth UID."
+        },
+        "name": {
+          "type": "string",
+          "description": "The full name of the user."
+        },
+        "email": {
+          "type": "string",
+          "description": "The email address of the user, used for login.",
+          "format": "email"
+        },
+        "role": {
+          "type": "string",
+          "description": "The role assigned to the user, determining their access permissions.",
+          "enum": [
+            "SUPER_ADMIN",
+            "RECRUITER",
+            "CANDIDATE"
+          ]
+        },
+        "createdAt": {
+          "type": "string",
+          "description": "Timestamp when the user account was created.",
+          "format": "date-time"
+        },
+        "accountStatus": {
+            "type": "string",
+            "enum": ["ACTIVE", "SUSPENDED"],
+            "description": "The current status of the user's account."
+        }
+      },
+      "required": [
+        "id",
+        "name",
+        "email",
+        "role",
+        "createdAt",
+        "accountStatus"
+      ]
+    },
+    "Job": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "Job",
+      "type": "object",
+      "description": "Represents a job opening.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the Job entity."
+        },
+        "title": {
+          "type": "string",
+          "description": "The title of the job opening (e.g., 'Software Engineer')."
+        },
+        "department": {
+          "type": "string",
+          "description": "The department to which the job belongs (e.g., 'Engineering', 'Marketing')."
+        },
+        "location": {
+          "type": "string",
+          "description": "The primary work location for the job (e.g., 'New York', 'Remote')."
+        },
+        "status": {
+          "type": "string",
+          "description": "The current hiring status of the job (e.g., 'open', 'closed').",
+          "format": "enum"
+        },
+        "createdAt": {
+          "type": "string",
+          "description": "Timestamp when the job opening was created.",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "id",
+        "title",
+        "department",
+        "location",
+        "status",
+        "createdAt"
+      ]
+    },
+    "Candidate": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "Candidate",
+      "type": "object",
+      "description": "Represents a candidate who has applied for a job.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the Candidate entity."
+        },
+        "jobId": {
+          "type": "string",
+          "description": "Reference to the Job this candidate applied for."
+        },
+        "name": {
+          "type": "string",
+          "description": "The full name of the candidate."
+        },
+        "email": {
+          "type": "string",
+          "description": "The email address of the candidate.",
+          "format": "email"
+        },
+        "resumeUrl": {
+          "type": "string",
+          "description": "URL to the candidate's resume stored in Firebase Storage.",
+          "format": "uri"
+        },
+        "status": {
+          "type": "string",
+          "description": "The current stage of the candidate in the hiring pipeline (e.g., 'Applied', 'Screened').",
+          "format": "enum"
+        },
+        "createdAt": {
+          "type": "string",
+          "description": "Timestamp when the candidate's profile was created.",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "id",
+        "jobId",
+        "name",
+        "email",
+        "resumeUrl",
+        "status",
+        "createdAt"
+      ]
+    },
+    "Application": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "Application",
+      "type": "object",
+      "description": "Represents a specific application made by a candidate for a job.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the Application entity."
+        },
+        "candidateId": {
+          "type": "string",
+          "description": "Reference to the Candidate associated with this application."
+        },
+        "jobId": {
+          "type": "string",
+          "description": "Reference to the Job this application is for."
+        },
+        "status": {
+          "type": "string",
+          "description": "The current status of the application.",
+          "format": "enum"
+        }
+      },
+      "required": [
+        "id",
+        "candidateId",
+        "jobId",
+        "status"
+      ]
+    },
+    "AuditLog": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "AuditLog",
+      "type": "object",
+      "description": "Records significant actions performed within the system.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the AuditLog entry."
+        },
+        "actionType": {
+          "type": "string",
+          "description": "The type of action performed."
+        },
+        "actorId": {
+          "type": "string",
+          "description": "Reference to the User who performed the action."
+        },
+        "timestamp": {
+          "type": "string",
+          "description": "Timestamp when the action occurred.",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "id",
+        "actionType",
+        "actorId",
+        "timestamp"
+      ]
+    }
+  },
+  "auth": {
+    "providers": [
+      "password"
+    ]
+  },
+  "firestore": {
+    "structure": [
+      {
+        "path": "/users/{userId}",
+        "definition": {
+          "entityName": "User",
+          "schema": {
+            "$ref": "#/backend/entities/User"
+          },
+          "description": "Stores user profiles."
+        }
+      },
+      {
+        "path": "/jobs/{jobId}",
+        "definition": {
+          "entityName": "Job",
+          "schema": {
+            "$ref": "#/backend/entities/Job"
+          },
+          "description": "Manages job postings."
+        }
+      },
+      {
+        "path": "/candidates/{candidateId}",
+        "definition": {
+          "entityName": "Candidate",
+          "schema": {
+            "$ref": "#/backend/entities/Candidate"
+          },
+          "description": "Stores candidate profiles."
+        }
+      },
+      {
+        "path": "/applications/{applicationId}",
+        "definition": {
+          "entityName": "Application",
+          "schema": {
+            "$ref": "#/backend/entities/Application"
+          },
+          "description": "Tracks individual applications."
+        }
+      },
+      {
+        "path": "/auditLogs/{auditLogId}",
+        "definition": {
+          "entityName": "AuditLog",
+          "schema": {
+            "$ref": "#/backend/entities/AuditLog"
+          },
+          "description": "Logs all significant actions."
+        }
+      }
+    ]
+  }
+}

@@ -1,0 +1,27 @@
+
+rules_version = '2';
+
+service firebase.storage {
+  match /b/{bucket}/o {
+
+    // Allow public write to resumes folder for application submissions.
+    // This is necessary because users are not authenticated when applying.
+    // We add security constraints on file size and content type.
+    match /resumes/{fileName} {
+      allow write: if request.auth == null 
+                   && request.resource.size < 5 * 1024 * 1024
+                   && request.resource.contentType.matches('application/pdf|application/msword|application/vnd.openxmlformats-officedocument.wordprocessingml.document');
+      
+      // Reads are restricted to any authenticated user (recruiter/admin)
+      allow read: if request.auth != null;
+    }
+
+    match /company-assets/{allPaths=**} {
+      // Public assets like logos can be world-readable.
+      allow read: if true; 
+      
+      // Only authenticated users (admins) can write company assets.
+      allow write: if request.auth != null;
+    }
+  }
+}

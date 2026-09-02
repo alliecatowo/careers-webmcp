@@ -1,0 +1,115 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // =====================================================
+    // HELPER FUNCTIONS
+    // =====================================================
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    function isVerified() {
+      return isAuthenticated() && request.auth.token.email_verified == true;
+    }
+
+    function getUserRole(uid) {
+      return get(/databases/$(database)/documents/users/$(uid)).data.role;
+    }
+
+    function isSuperAdmin() {
+      return isVerified() && getUserRole(request.auth.uid) == "SUPER_ADMIN";
+    }
+
+    function isRecruiter() {
+      return isVerified() && getUserRole(request.auth.uid) == "RECRUITER";
+    }
+    
+    function isOwner(userId) {
+      return isAuthenticated() && request.auth.uid == userId;
+    }
+
+    // =====================================================
+    // JOBS COLLECTION (PUBLIC READ)
+    // =====================================================
+    match /jobs/{jobId} {
+      // Allow public read for the careers page
+      allow get, list: if true;
+      
+      // Allow write only for authorized admins/recruiters
+      allow create, update, delete: if isRecruiter() || isSuperAdmin();
+    }
+
+    // =====================================================
+    // USERS COLLECTION
+    // =====================================================
+    match /users/{userId} {
+      allow get: if isOwner(userId) || isRecruiter() || isSuperAdmin();
+      allow list: if isRecruiter() || isSuperAdmin();
+      allow create: if true; // Anyone can sign up
+      allow update: if isOwner(userId) || isSuperAdmin();
+      allow delete: if isSuperAdmin();
+    }
+
+    // =====================================================
+    // CANDIDATES COLLECTION
+    // =====================================================
+    match /candidates/{candidateId} {
+      // Public apply
+      allow create: if true;
+
+      // Recruiters/Admins can see all, candidates can see their own profile
+      allow get: if isRecruiter() || isSuperAdmin() || (isAuthenticated() && resource.data.email == request.auth.token.email);
+      allow list: if isRecruiter() || isSuperAdmin();
+      allow update: if isRecruiter() || isSuperAdmin();
+
+      // Notes subcollection
+      match /notes/{noteId} {
+        allow read, write: if isRecruiter() || isSuperAdmin();
+      }
+    }
+
+    // =====================================================
+    // APPLICATIONS COLLECTION
+    // =====================================================
+    match /applications/{applicationId} {
+      // Public apply
+      allow create: if true;
+
+      // Recruiters/Admins see all, candidates can see their own
+      allow get, list: if isRecruiter() || isSuperAdmin() || (isAuthenticated() && get(/databases/$(database)/documents/candidates/$(resource.data.candidateId)).data.email == request.auth.token.email);
+      allow update: if isRecruiter() || isSuperAdmin();
+      
+      match /stageHistory/{historyId} {
+        allow read: if isRecruiter() || isSuperAdmin();
+        allow create: if isRecruiter() || isSuperAdmin(); // Allow server/admin to write history
+        allow update, delete: if false;
+      }
+    }
+    
+    // =====================================================
+    // OFFERS & INTERVIEWS
+    // =====================================================
+    match /offers/{offerId} {
+      allow read, write: if isRecruiter() || isSuperAdmin();
+    }
+    
+    match /interviews/{interviewId} {
+        allow read, write: if isRecruiter() || isSuperAdmin();
+    }
+
+    // =====================================================
+    // NOTIFICATIONS & AUDIT LOGS
+    // =====================================================
+    match /notifications/{notificationId} {
+      allow read: if isAuthenticated() && resource.data.candidateId == request.auth.uid;
+      allow write: if false; // Only server can create
+    }
+
+    match /auditLogs/{logId} {
+      allow read: if isSuperAdmin();
+      allow write: if false; // Only server can create
+    }
+  }
+}
