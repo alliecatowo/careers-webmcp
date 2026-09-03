@@ -99,3 +99,36 @@ test.describe('human + agent shared application flow', () => {
     await expect(page.getByTestId('application-submitted')).toBeVisible();
   });
 });
+
+test.describe('stale validation error (acceptance finding #2)', () => {
+  test('a failed submit error clears once the agent fills the missing field', async ({ page }) => {
+    await installWebMCPShim(page);
+    await page.goto('/careers/open-positions');
+    await page.waitForFunction(() => Boolean((window as unknown as { __webmcp?: unknown }).__webmcp));
+    await signInAsDemoCandidate(page);
+
+    const started = await callTool<{ id: string; revision: number }>(page, 'careers_start_application', {
+      jobId: DEMO_JOBS.staffPlatform,
+    });
+
+    // Clear a required field so the human Submit fails the way the reviewer saw.
+    await callTool(page, 'careers_update_application', {
+      applicationId: started.id,
+      expectedRevision: null,
+      fields: { phone: '' },
+    });
+
+    await page.getByTestId('submit-application').click();
+    await expect(page.getByText(/fill in all required fields/i)).toBeVisible();
+
+    // The agent supplies what was missing. The error was a statement about an
+    // older revision, so it must not survive the write.
+    await callTool(page, 'careers_update_application', {
+      applicationId: started.id,
+      expectedRevision: null,
+      fields: { phone: '+1 555 0100' },
+    });
+
+    await expect(page.getByText(/fill in all required fields/i)).toHaveCount(0);
+  });
+});

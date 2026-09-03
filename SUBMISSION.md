@@ -46,7 +46,7 @@ Execution, Potential Impact, Creativity & Ambition (exact wording in §7).
 | Requirement | Status | Evidence |
 | --- | --- | --- |
 | Live URL, publicly reachable | PASS | `https://careers-webmcp.vercel.app/careers/open-positions` returns HTTP 200 anonymously (checked 2026-09-02 19:53 PDT). No Vercel deployment protection; the alias URL is the public one. |
-| Works in ChatGPT in-app browser / Chrome with WebMCP | **NEEDS HUMAN CHECK** | Feature-detected registration on `document.modelContext`, verified via the test shim and Playwright. No human has confirmed a real agent end to end. See CHECKLIST.md. |
+| Works in ChatGPT in-app browser / Chrome with WebMCP | PASS | Live acceptance pass 2026-09-02 against the deployed demo through a WebMCP-capable in-app browser as the seeded candidate: **all 18 tools exercised and passing**, including the two hand-offs, which staged their forms and did not complete. Three UX defects found and fixed (§10). |
 | Text description covering all four required points | PASS | §5 below, paste-ready. Same content in README.md: "The argument", "The problem this actually solves", "Why WebMCP specifically", "What humans and agents do together here", "How it's implemented". |
 | Public repo with all source, assets, instructions | PASS | https://github.com/alliecatowo/careers-webmcp — public; README carries local-run and testing instructions. |
 | OSS license detectable at top of repo page | PASS | `LICENSE` is canonical MIT text; GitHub reports `licenseInfo.key = "mit"`, so the About sidebar shows "MIT License". |
@@ -329,7 +329,47 @@ Itemized split: `docs/CHALLENGE_DELTA.md` and `docs/UPSTREAM.md`.
 
 ---
 
-## 9. Final submitted commit SHA
+## 9. Live acceptance pass — 2026-09-02
+
+The deployed demo was driven end to end through a WebMCP-capable in-app browser
+as the seeded candidate. **All 18 registered tools passed.** Both hand-off tools
+behaved as designed: `careers_create_account` populated the real sign-up form
+and returned `awaiting_human_confirmation` without creating an account, and
+`careers_submit_application` returned `VALIDATION_ERROR` while a required field
+was missing, then `awaiting_human_confirmation` once valid.
+
+Secret disclosure was confirmed bounded in the live run: context exposed only
+`signedIn`, candidate id and display name — no cookie, token, password or email
+— while the visible header independently showed the signed-in candidate.
+
+Three defects were found and fixed in `4e69c25`:
+
+1. **Stale validation error after an agent write.** After a failed human submit,
+   the form kept showing "Please fill in all required fields" even after
+   `careers_update_application` had filled them and reported no missing fields.
+   The error was React state that outlived the revision it described — the page
+   and the store disagreeing, which is the one thing this project claims cannot
+   happen. It is now cleared whenever the shared draft changes, by either party.
+   Covered by a regression test that fails without the fix.
+2. **Submit button never rendered its pending state.** The store write is
+   synchronous, so `isSubmitting` was set and cleared in the same tick and never
+   painted; the click looked inert until the route changed. It now persists
+   through navigation and the label reads "Submitting…".
+3. **Agent attention cues did not bring their target on screen.** Only explicit
+   field focus and the hand-off cue scrolled; field flashes and the typed search
+   query did not, so agent activity below the fold was invisible. All cues now
+   route through one helper that scrolls only when the target is off-screen and
+   honours `prefers-reduced-motion`.
+
+Two further findings were not site defects. The reviewer's browser was initially
+hidden, making the search animation invisible — a recording-setup requirement now
+in DEMO.md. And the browser's own safety layer refused an account preparation
+where the agent had inferred the name rather than being given it; once stated
+explicitly the tool worked, so the demo prompt now spells out every sign-up field.
+
+---
+
+## 10. Final submitted commit SHA
 
 Fill in immediately before submitting, from the commit that is live on the
 deployed URL:

@@ -8,7 +8,7 @@
  * form — the person still presses Create account themselves, and that button is
  * the only thing that creates a session.
  */
-import { Suspense, useEffect, useState } from 'react';
+import { Suspense, useEffect, useRef, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { Loader2, Sparkle } from 'lucide-react';
@@ -26,7 +26,7 @@ import {
   SignUpError,
   type SignUpFields,
 } from '@/domain/session/signup.store';
-import { useAgentHighlight, AGENT_FLASH_CLASS, usePresenceStore, setPendingConfirmation } from '@/webmcp/presence';
+import { useAgentAttention, AGENT_FLASH_CLASS, usePresenceStore, setPendingConfirmation } from '@/webmcp/presence';
 
 const FIELDS: {
   name: keyof SignUpFields;
@@ -46,7 +46,8 @@ const FIELDS: {
 
 function SignUpField({ field }: { field: (typeof FIELDS)[number] }) {
   const value = useSignUpStore((s) => s.fields[field.name]);
-  const flashing = useAgentHighlight(field.name);
+  const fieldRef = useRef<HTMLInputElement | null>(null);
+  const flashing = useAgentAttention(field.name, fieldRef);
 
   return (
     <div className="space-y-2">
@@ -55,6 +56,7 @@ function SignUpField({ field }: { field: (typeof FIELDS)[number] }) {
         {field.required && <span className="text-destructive"> *</span>}
       </Label>
       <Input
+        ref={fieldRef}
         id={field.name}
         type={field.type}
         placeholder={field.placeholder}

@@ -20,7 +20,8 @@ import { Job, Country } from '@/lib/talent-acquisition';
 import { useSessionStore } from '@/domain/session/session.store';
 import { CurrentApplicationBridge } from '@/domain/ui-context/bridges';
 import {
-  useAgentHighlight,
+  useAgentAttention,
+  scrollAgentTargetIntoView,
   AGENT_FLASH_CLASS,
   usePresenceStore,
   clearFocusRequest,
@@ -76,16 +77,16 @@ function ApplicationFormField({
   errors: FieldErrors<ApplicationFields>;
   onCommit: (name: keyof ApplicationFields, value: string | number | null) => void;
 }) {
-  const flashing = useAgentHighlight(field.name);
-  const focusRequest = usePresenceStore((s) => s.focusRequest);
   const elementRef = useRef<HTMLInputElement | HTMLTextAreaElement | null>(null);
+  const flashing = useAgentAttention(field.name, elementRef);
+  const focusRequest = usePresenceStore((s) => s.focusRequest);
 
   const requestedAt = focusRequest?.key === field.name ? focusRequest.at : null;
   useEffect(() => {
     if (requestedAt === null) return;
     const element = elementRef.current;
     if (element) {
-      element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      scrollAgentTargetIntoView(element);
       element.focus({ preventScroll: true });
     }
     clearFocusRequest();
@@ -222,6 +223,16 @@ function ApplicationForm() {
 
   const draft = useApplicationsStore((s) => (draftId ? (s.applications[draftId] ?? null) : null));
 
+  // The submit error is a statement about a specific revision of the draft.
+  // The moment anyone changes the draft — the human typing, or the agent via
+  // careers_update_application — that statement is stale, so it goes. Without
+  // this the form kept showing "fill in all required fields" after the agent
+  // had already filled them, which is the page and the store disagreeing.
+  const draftRevision = draft?.revision ?? null;
+  useEffect(() => {
+    setSubmitError(null);
+  }, [draftRevision]);
+
   const methods = useForm<ApplicationFields>({
     resolver: zodResolver(applicationFieldsSchema),
     mode: 'onChange',
@@ -250,6 +261,11 @@ function ApplicationForm() {
     try {
       submitApplication(candidate.id, draft.id, null);
       setPendingConfirmation(null);
+      // Deliberately leave isSubmitting true on the success path. The store
+      // write is synchronous, so clearing it here would unset the flag in the
+      // same tick it was set and the button would never render its pending
+      // state — the click would look like nothing happened until the route
+      // finally changed. Navigation unmounts this form instead.
       router.push(`/careers/application/${slug}/success?appId=${draft.id}`);
     } catch (err) {
       if (err instanceof ApplicationError && err.code === 'VALIDATION_ERROR') {
@@ -257,7 +273,6 @@ function ApplicationForm() {
       } else {
         setSubmitError('Something went wrong submitting your application. Please try again.');
       }
-    } finally {
       setIsSubmitting(false);
     }
   };
@@ -357,7 +372,7 @@ function ApplicationForm() {
             }
           >
             {isSubmitting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-            Submit Application
+            {isSubmitting ? 'Submitting…' : 'Submit Application'}
           </Button>
         </div>
       </form>

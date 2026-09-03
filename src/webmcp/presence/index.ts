@@ -1,6 +1,7 @@
 export { AgentPresenceLayer } from './AgentPresenceLayer';
 export { AgentSpotlight } from './AgentSpotlight';
-export { useAgentHighlight, AGENT_FLASH_CLASS } from './useAgentHighlight';
+export { useAgentHighlight, useAgentAttention, AGENT_FLASH_CLASS } from './useAgentHighlight';
+export { scrollAgentTargetIntoView, scrollToTestIdWhenReady, isComfortablyInView } from './scroll';
 export { typeIntoSearch } from './typing';
 export { instrument, instrumentAll } from './instrument';
 export {

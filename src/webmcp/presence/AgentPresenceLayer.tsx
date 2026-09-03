@@ -20,6 +20,7 @@ import {
   type AgentActivity,
   type PendingConfirmation,
 } from './presence.store';
+import { scrollToTestIdWhenReady } from './scroll';
 
 /** How long a finished activity stays on screen before fading out. */
 const LINGER_MS = 2600;
@@ -81,18 +82,7 @@ function useScrollToPendingTarget(pending: PendingConfirmation | null) {
   const testId = pending?.targetTestId ?? null;
   useEffect(() => {
     if (!testId) return;
-    let attempts = 0;
-    let timer = 0;
-    const tryScroll = () => {
-      const element = document.querySelector(`[data-testid="${testId}"]`);
-      if (element) {
-        element.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        return;
-      }
-      if (++attempts < 20) timer = window.setTimeout(tryScroll, 100);
-    };
-    tryScroll();
-    return () => window.clearTimeout(timer);
+    return scrollToTestIdWhenReady(testId);
   }, [testId]);
 }
 

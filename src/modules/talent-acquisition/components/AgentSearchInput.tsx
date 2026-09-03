@@ -10,7 +10,7 @@
  */
 import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { Input } from '@/components/ui/input';
-import { usePresenceStore } from '@/webmcp/presence';
+import { usePresenceStore, scrollAgentTargetIntoView } from '@/webmcp/presence';
 
 interface AgentSearchInputProps {
   /** Current `q` from the URL — the source of truth when the agent isn't typing. */
@@ -36,6 +36,15 @@ export function AgentSearchInput({ urlQuery, onQueryChange }: AgentSearchInputPr
 
   const agentTyping = typing !== null;
   const value = agentTyping ? typing.typed : humanValue;
+
+  // The agent usually navigates here and starts typing in the same tool call,
+  // so the search box can easily be below the fold when the animation begins.
+  // A query typing itself off-screen is the same as no query at all.
+  useEffect(() => {
+    if (!agentTyping) return;
+    const raf = requestAnimationFrame(() => scrollAgentTargetIntoView(inputRef.current));
+    return () => cancelAnimationFrame(raf);
+  }, [agentTyping]);
 
   // Track the width of the typed text so the fake caret sits at its end. The
   // mirror span copies the input's own font, so this stays correct if the

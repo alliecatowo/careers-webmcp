@@ -36,6 +36,12 @@ Before **every** recording session:
 4. Agent side panel open, **new empty conversation**.
 5. Browser zoom 100%, window ≥1440px, nothing else in the tab strip, no
    bookmarks bar, no notifications.
+6. **The page must be visible the whole time, next to the agent panel.** In an
+   acceptance run the browser was hidden while tools ran, and the entire
+   search-typing beat was invisible — the tools worked and the reviewer saw
+   nothing. Side-by-side, page dominant. If your agent client hides the page
+   while it works, record the page window and the agent panel together rather
+   than trusting the client's own layout.
 
 The demo deliberately opens **signed out** — the account hand-off in Clip E is
 the centre of the video and only works from a signed-out start.
@@ -200,13 +206,19 @@ take. **Protect this clip above all others.**
    this clip fresh you're already signed out — skip.)*
 2. Type verbatim:
 
-**"I want to apply. Set me up an account — I'm Sam Rivera, sam.rivera@example.test, based in Austin, about six years experience."**
+**"I want to apply. Set me up an account — my full name is Sam Rivera, my email is sam.rivera@example.test, my phone is +1 555 0100, I'm based in Austin, about six years experience."**
 
 3. Watch the sign-up page open, already filled, fields flashing. **Hold. Don't
    click yet.**
 4. Move the cursor onto the pulsing **Create account** button and hover — don't
    click for a full beat.
 5. Click **Create account** yourself.
+
+**Say every field out loud in the prompt — full name, email, phone.** Browser
+agents have their own safety layer that refuses to submit personal details it
+inferred rather than was given; an acceptance run hit exactly that when the
+name was implied. This is not the site validating, and it is not recoverable on
+camera. Spell it out.
 
 **Expected tool calls:** `careers_create_account`, returning
 `status: "awaiting_human_confirmation"`
