@@ -1,5 +1,5 @@
 /**
- * The 16 careers WebMCP tool definitions.
+ * The 18 careers WebMCP tool definitions.
  *
  * Tool `description`/`title` text is authored by us and must NEVER
  * interpolate job/application content (see BUILD_CONTRACT #36). Returned

@@ -1,6 +1,7 @@
 
 "use client";
 
+import Link from "next/link";
 import { Logo } from "@/components/layout/logo";
 import { UserNav } from "@/components/layout/user-nav";
 import { ProtectedRoute } from "@/modules/auth/guards/ProtectedRoute";
@@ -17,7 +18,9 @@ export default function CandidateLayout({
       <div className="min-h-screen flex flex-col bg-muted/40">
           <header className="p-4 border-b bg-background sticky top-0 z-10">
               <div className="container mx-auto flex justify-between items-center">
-                  <Logo />
+                  <Link href="/">
+                      <Logo />
+                  </Link>
                   <UserNav />
               </div>
           </header>
