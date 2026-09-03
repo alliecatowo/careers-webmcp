@@ -1,12 +1,19 @@
 /**
- * The 11 careers WebMCP tool definitions.
+ * The 16 careers WebMCP tool definitions.
  *
  * Tool `description`/`title` text is authored by us and must NEVER
  * interpolate job/application content (see BUILD_CONTRACT #36). Returned
  * *data* may contain untrusted site/user content; those tools carry
  * `untrustedContentHint: true`.
  */
-import { getJobCatalog, getCareersJob, searchJobs, toJobSummary, type JobSearchQuery } from '@/domain/jobs';
+import {
+  getJobCatalog,
+  getCareersJob,
+  searchJobs,
+  filterAndRankJobs,
+  toJobSummary,
+  type JobSearchQuery,
+} from '@/domain/jobs';
 import { listSavedJobIds, isJobSaved, setJobSaved } from '@/domain/saved-jobs';
 import {
   listApplications,
@@ -14,7 +21,6 @@ import {
   findApplicationByJob,
   startApplication,
   updateApplication,
-  submitApplication,
   applicationUrl,
   validateApplicationFields,
   APPLICATION_FIELD_NAMES,
@@ -22,10 +28,33 @@ import {
   type ApplicationDraft,
 } from '@/domain/applications';
 import { getCurrentCandidate } from '@/domain/session/session.store';
+import { talentService } from '@/services/talent.service';
+import {
+  setSignUpFields,
+  getSignUpFields,
+  validateSignUpFields,
+  SIGNUP_FIELD_NAMES,
+  type SignUpFields,
+} from '@/domain/session/signup.store';
+import {
+  createExport,
+  readExport,
+  getExport,
+  jobsToRows,
+  JOB_EXPORT_COLUMNS,
+  applicationsToRows,
+  APPLICATION_EXPORT_COLUMNS,
+  toCsv,
+  EXPORT_PREVIEW_ROWS,
+  EXPORT_READ_MAX,
+  type ExportDataset,
+} from '@/domain/exports';
 import { getContext } from './context';
 import { navigate, scrollToTop } from './navigation';
 import { ok, fail, boundResult } from './results';
 import { WebMCPError, toErrorResult } from './errors';
+import { assertRevision } from './revision';
+import { highlight, setPendingConfirmation, offerExport, requestFocus, typeIntoSearch } from './presence';
 import {
   searchJobsSchema,
   getJobSchema,
@@ -38,6 +67,11 @@ import {
   startApplicationSchema,
   updateApplicationSchema,
   submitApplicationSchema,
+  setSearchViewSchema,
+  focusApplicationFieldSchema,
+  createAccountSchema,
+  createExportSchema,
+  readExportSchema,
   validateInput,
 } from './schemas';
 
@@ -176,6 +210,8 @@ export const tools: CareersTool[] = [
         }
         navigate(job.url);
         scrollToTop();
+        // Flash the job title on arrival so the human's eye lands where the agent looked.
+        highlight('job', ['job-title']);
         return ok(boundResult({ opened: true, job: toJobSummary(job) }));
       } catch (err) {
         return fail(toErrorResult(err));
@@ -357,12 +393,17 @@ export const tools: CareersTool[] = [
         }
         const draft = updateApplication(candidate.id, parsed.applicationId, parsed.expectedRevision, parsed.fields);
         const validation = validateApplicationFields(draft.fields);
+        const updatedFields = Object.keys(parsed.fields);
+        // Flash exactly the inputs the agent wrote, so the human can see what changed.
+        highlight('field', updatedFields);
         return ok(
           boundResult({
             id: draft.id,
             revision: draft.revision,
             status: draft.status,
             fields: draft.fields,
+            updatedFields,
+            updatedFieldCount: updatedFields.length,
             missingRequiredFields: validation.missingRequiredFields,
           }),
         );
@@ -373,8 +414,9 @@ export const tools: CareersTool[] = [
   },
   {
     name: 'careers_submit_application',
-    title: 'Submit a job application',
-    description: 'Submit the signed-in candidate draft application using the same validation and submission logic as the normal application form.',
+    title: 'Review and hand off a job application for submission',
+    description:
+      "Check the candidate's draft against the same rules as the normal form, then open it for final review. This site requires the person to press Submit themselves, so this tool does not submit for them: it returns 'awaiting_human_confirmation', or VALIDATION_ERROR listing what is missing.",
     inputSchema: submitApplicationSchema,
     annotations: {},
     execute: async (input, options) => {
@@ -385,16 +427,359 @@ export const tools: CareersTool[] = [
         };
         const candidate = requireCandidate();
         if (isAborted(options?.signal)) return ok(boundResult(null));
-        const draft = submitApplication(candidate.id, parsed.applicationId, parsed.expectedRevision);
-        navigate(`/careers/application/${draft.countrySlug}/success?appId=${draft.id}`);
+
+        const draft = getApplicationDraft(candidate.id, parsed.applicationId);
+        if (!draft) {
+          throw new WebMCPError('APPLICATION_NOT_FOUND', `No application "${parsed.applicationId}" for this candidate.`);
+        }
+        if (draft.status === 'submitted') {
+          return ok(
+            boundResult({
+              id: draft.id,
+              status: draft.status,
+              revision: draft.revision,
+              submittedAt: draft.submittedAt,
+              alreadySubmitted: true,
+            }),
+          );
+        }
+        assertRevision(parsed.expectedRevision, draft.revision);
+
+        // Same rules the human Submit button enforces — fail before we send the
+        // person to a form they can't actually complete.
+        const validation = validateApplicationFields(draft.fields);
+        if (!validation.valid) {
+          throw new WebMCPError('VALIDATION_ERROR', 'The application is not ready to submit.', {
+            missingRequiredFields: validation.missingRequiredFields,
+            invalidFields: Object.keys(validation.errors),
+          });
+        }
+
+        navigate(applicationUrl(draft));
+        setPendingConfirmation({
+          kind: 'submit_application',
+          targetTestId: 'submit-application',
+          label: 'Your application is complete and ready to send.',
+          at: Date.now(),
+        });
+
         return ok(
           boundResult({
             id: draft.id,
-            status: draft.status,
+            status: 'awaiting_human_confirmation',
+            applicationStatus: draft.status,
             revision: draft.revision,
-            submittedAt: draft.submittedAt,
+            url: applicationUrl(draft),
+            message: 'The application is filled in and valid. The person needs to press Submit on the page to send it.',
           }),
         );
+      } catch (err) {
+        return fail(toErrorResult(err));
+      }
+    },
+  },
+
+  {
+    name: 'careers_set_search_view',
+    title: 'Show a search on the jobs page',
+    description:
+      "Show a search on the site's own jobs page: opens open-positions, types the query into the visible search box, and applies the filters. Use it after careers_search_jobs to put your results on screen for the person; read results from careers_search_jobs, not from here.",
+    inputSchema: setSearchViewSchema,
+    annotations: {},
+    execute: async (input, options) => {
+      try {
+        const parsed = validateInput('careers_set_search_view', input) as {
+          query?: string;
+          department?: string;
+          country?: string;
+          level?: string;
+          workplace?: string;
+          employmentType?: string;
+        };
+        if (isAborted(options?.signal)) return ok(boundResult({ applied: false }));
+
+        // Resolve human-readable names to the ids the visible filter controls use.
+        const [departments, countries] = await Promise.all([
+          talentService.getDepartments({}),
+          talentService.getCountries({}),
+        ]);
+        const lower = (v: string) => v.trim().toLowerCase();
+        const department = parsed.department
+          ? departments.find((d) => lower(d.name) === lower(parsed.department!))
+          : undefined;
+        if (parsed.department && !department) {
+          throw new WebMCPError('VALIDATION_ERROR', `Unknown department "${parsed.department}".`, {
+            field: 'department',
+            known: departments.map((d) => d.name),
+          });
+        }
+        const country = parsed.country
+          ? countries.find((c) => lower(c.name) === lower(parsed.country!) || lower(c.slug) === lower(parsed.country!))
+          : undefined;
+        if (parsed.country && !country) {
+          throw new WebMCPError('VALIDATION_ERROR', `Unknown country "${parsed.country}".`, {
+            field: 'country',
+            known: countries.map((c) => c.name),
+          });
+        }
+
+        const params = new URLSearchParams();
+        if (department) params.set('departmentId', department.id);
+        if (country) params.set('countryId', country.id);
+        if (parsed.level) params.set('level', parsed.level);
+        if (parsed.workplace) params.set('workplace', parsed.workplace);
+        if (parsed.employmentType) params.set('employmentType', parsed.employmentType);
+        params.set('page', '1');
+
+        const base = '/careers/open-positions';
+        // Land on the filtered page first so the search box is mounted, then type.
+        navigate(params.toString() ? `${base}?${params.toString()}` : base);
+
+        const query = parsed.query ?? '';
+        await typeIntoSearch(query, {
+          signal: options?.signal,
+          onCommit: () => {
+            const committed = new URLSearchParams(params);
+            if (query) committed.set('q', query);
+            navigate(`${base}?${committed.toString()}`);
+          },
+        });
+
+        // Report the same count the page now shows, using the shared catalog.
+        const catalog = await getJobCatalog();
+        const result = searchJobs(catalog, {
+          query: query || undefined,
+          departments: department ? [department.name] : undefined,
+          levels: parsed.level ? [parsed.level] : undefined,
+          workplace: parsed.workplace ? [parsed.workplace] : undefined,
+          employmentTypes: parsed.employmentType ? [parsed.employmentType] : undefined,
+          maxResults: 1,
+        } as JobSearchQuery);
+
+        const applied = new URLSearchParams(params);
+        if (query) applied.set('q', query);
+        return ok(
+          boundResult({
+            applied: true,
+            url: `${base}?${applied.toString()}`,
+            view: {
+              query: query || null,
+              department: department?.name ?? null,
+              country: country?.name ?? null,
+              level: parsed.level ?? null,
+              workplace: parsed.workplace ?? null,
+              employmentType: parsed.employmentType ?? null,
+            },
+            totalMatches: result.totalMatches,
+          }),
+        );
+      } catch (err) {
+        return fail(toErrorResult(err));
+      }
+    },
+  },
+  {
+    name: 'careers_focus_application_field',
+    title: 'Point the person at an application field',
+    description:
+      "Open the candidate's application and move the cursor to one field, highlighting it. Use this when the person has to supply something you should not invent — for example their phone number or notice period — so they can see exactly where to type.",
+    inputSchema: focusApplicationFieldSchema,
+    annotations: {},
+    execute: async (input, options) => {
+      try {
+        const parsed = validateInput('careers_focus_application_field', input) as {
+          applicationId?: string;
+          field: string;
+        };
+        const candidate = requireCandidate();
+        if (isAborted(options?.signal)) return ok(boundResult({ focused: false }));
+
+        let app: ApplicationDraft | null = null;
+        if (parsed.applicationId) {
+          app = getApplicationDraft(candidate.id, parsed.applicationId);
+        } else {
+          const context = await getContext();
+          if (context.application) app = getApplicationDraft(candidate.id, context.application.id);
+        }
+        if (!app) {
+          throw new WebMCPError('APPLICATION_NOT_FOUND', 'No matching application found.');
+        }
+
+        navigate(applicationUrl(app));
+        // The form component owns the ref and performs the focus; no DOM lookup here.
+        requestFocus(parsed.field);
+        highlight('field', [parsed.field]);
+
+        return ok(
+          boundResult({
+            focused: true,
+            applicationId: app.id,
+            field: parsed.field,
+            currentValue: app.fields[parsed.field as keyof ApplicationFields] ?? null,
+            url: applicationUrl(app),
+          }),
+        );
+      } catch (err) {
+        return fail(toErrorResult(err));
+      }
+    },
+  },
+  {
+    name: 'careers_create_account',
+    title: 'Prepare a candidate account',
+    description:
+      "Fill this site's normal sign-up form with details the person gave you and open it for them to confirm. It never creates the account itself: it returns 'awaiting_human_confirmation', and once they press Create account careers_get_context reports them signed in. Never invent an email address.",
+    inputSchema: createAccountSchema,
+    annotations: {},
+    execute: async (input, options) => {
+      try {
+        const parsed = validateInput('careers_create_account', input) as Partial<SignUpFields>;
+        if (isAborted(options?.signal)) return ok(boundResult(null));
+
+        const existing = getCurrentCandidate();
+        if (existing) {
+          return ok(
+            boundResult({
+              alreadySignedIn: true,
+              candidate: { id: existing.id, displayName: existing.displayName },
+              message: 'Someone is already signed in on this site; no account was created.',
+            }),
+          );
+        }
+
+        const fields = setSignUpFields(parsed, 'agent');
+        const validation = validateSignUpFields(fields);
+        navigate('/careers/signup');
+        setPendingConfirmation({
+          kind: 'create_account',
+          targetTestId: 'confirm-signup',
+          label: validation.valid
+            ? 'Your details are filled in — nothing to type.'
+            : 'Almost there — a couple of details still needed.',
+          at: Date.now(),
+        });
+        highlight('field', Object.keys(parsed));
+
+        return ok(
+          boundResult({
+            status: 'awaiting_human_confirmation',
+            url: '/careers/signup',
+            fields,
+            missingRequiredFields: validation.missingRequiredFields,
+            invalidFields: validation.invalidFields,
+            readyToConfirm: validation.valid,
+            message: validation.valid
+              ? 'The sign-up form is filled in. The person needs to press Create account to finish.'
+              : 'The sign-up form is open but still needs the listed fields before it can be confirmed.',
+          }),
+        );
+      } catch (err) {
+        return fail(toErrorResult(err));
+      }
+    },
+  },
+  {
+    name: 'careers_create_export',
+    title: 'Prepare a downloadable export',
+    description:
+      'Build a downloadable CSV and get back a handle to it, not the rows: row count, columns and a short preview. Use it instead of paging search results when you need a whole result set, then read only the slices and columns you need with careers_read_export. The person gets the same file.',
+    inputSchema: createExportSchema,
+    annotations: { untrustedContentHint: true },
+    execute: async (input, options) => {
+      try {
+        const parsed = validateInput('careers_create_export', input) as {
+          dataset?: ExportDataset;
+          query?: JobSearchQuery;
+          columns?: string[];
+        };
+        if (isAborted(options?.signal)) return ok(boundResult(null));
+
+        const dataset: ExportDataset = parsed.dataset ?? 'jobs';
+        let columns: string[];
+        let rows: Record<string, string>[];
+        let candidateId: string | null = null;
+        let label: string;
+
+        if (dataset === 'applications') {
+          const candidate = requireCandidate();
+          candidateId = candidate.id;
+          columns = [...APPLICATION_EXPORT_COLUMNS];
+          rows = applicationsToRows(listApplications(candidate.id));
+          label = 'My applications';
+        } else {
+          const catalog = await getJobCatalog();
+          // Rank without the search page limit: an export is the "give me
+          // everything" path, which is safe precisely because the rows never
+          // enter a tool result. The registry still caps at EXPORT_MAX_ROWS.
+          const matched = filterAndRankJobs(catalog, (parsed.query ?? {}) as JobSearchQuery);
+          columns = [...JOB_EXPORT_COLUMNS];
+          rows = jobsToRows(matched);
+          candidateId = getCurrentCandidate()?.id ?? null;
+          label = parsed.query && Object.keys(parsed.query).length > 0 ? 'Search results' : 'All open positions';
+        }
+
+        const requested = parsed.columns?.filter((c) => columns.includes(c));
+        if (requested && requested.length > 0) {
+          columns = requested;
+          rows = rows.map((row) => Object.fromEntries(columns.map((c) => [c, row[c] ?? ''])));
+        }
+
+        const record = createExport({ dataset, format: 'csv', columns, rows, label, candidateId });
+        offerExport(record.id);
+
+        return ok(
+          boundResult({
+            exportId: record.id,
+            dataset: record.dataset,
+            format: record.format,
+            label: record.label,
+            rowCount: record.rows.length,
+            columns: record.columns,
+            byteSize: toCsv(record.columns, record.rows).length,
+            downloadUrl: `/careers/exports/${record.id}`,
+            preview: record.rows.slice(0, EXPORT_PREVIEW_ROWS),
+            readHint: `Rows are not included here. Call careers_read_export with this exportId, an offset, a limit of up to ${EXPORT_READ_MAX}, and only the columns you need.`,
+          }),
+        );
+      } catch (err) {
+        return fail(toErrorResult(err));
+      }
+    },
+  },
+  {
+    name: 'careers_read_export',
+    title: 'Read a slice of an export',
+    description:
+      'Read a bounded window of rows from an export created by careers_create_export. Narrow the columns to only what you need so you can scan a large result set without pulling every field. Returns hasMore so you know whether to continue.',
+    inputSchema: readExportSchema,
+    annotations: { readOnlyHint: true, untrustedContentHint: true },
+    execute: async (input, options) => {
+      try {
+        const parsed = validateInput('careers_read_export', input) as {
+          exportId: string;
+          offset?: number;
+          limit?: number;
+          columns?: string[];
+        };
+        if (isAborted(options?.signal)) return ok(boundResult(null));
+
+        const record = getExport(parsed.exportId);
+        if (!record) {
+          throw new WebMCPError('EXPORT_NOT_FOUND', `No export found with id "${parsed.exportId}".`, {
+            exportId: parsed.exportId,
+          });
+        }
+        // An applications export belongs to one candidate; don't serve it to another session.
+        if (record.candidateId && record.candidateId !== getCurrentCandidate()?.id) {
+          throw new WebMCPError('AUTH_REQUIRED', 'This export belongs to a different candidate session.');
+        }
+
+        const slice = readExport(parsed.exportId, {
+          offset: parsed.offset,
+          limit: parsed.limit,
+          columns: parsed.columns,
+        });
+        return ok(boundResult(slice));
       } catch (err) {
         return fail(toErrorResult(err));
       }

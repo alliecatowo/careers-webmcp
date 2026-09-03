@@ -30,9 +30,14 @@ export function CandidateSessionButton({ className }: { className?: string }) {
 
   if (!candidate) {
     return (
-      <Button className={className} data-testid="demo-sign-in" onClick={() => signIn()}>
-        Continue as Avery Chen
-      </Button>
+      <div className={`flex items-center gap-2 ${className ?? ''}`}>
+        <Button variant="ghost" size="sm" asChild data-testid="signup-link">
+          <Link href="/careers/signup">Create account</Link>
+        </Button>
+        <Button data-testid="demo-sign-in" onClick={() => signIn()}>
+          Continue as Avery Chen
+        </Button>
+      </div>
     );
   }
 

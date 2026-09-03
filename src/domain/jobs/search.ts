@@ -122,17 +122,19 @@ export function toJobSummary(job: CareersJob): JobSummary {
   };
 }
 
-/** Pure, deterministic search over an already-normalized catalog. No AI, no embeddings. */
-export function searchJobs(catalog: CareersJob[], query: JobSearchQuery): JobSearchResult {
+/**
+ * Every job matching the query, best first. Unbounded by design.
+ *
+ * `searchJobs` layers the tool-result page limit on top of this; exports use it
+ * directly, because an export's rows never enter a tool result and so are not
+ * subject to the same output bound (BUILD_CONTRACT #37).
+ */
+export function filterAndRankJobs(catalog: CareersJob[], query: JobSearchQuery): CareersJob[] {
   const tokens = (query.query ?? '')
     .toLowerCase()
     .split(/\s+/)
     .map((t) => t.trim())
     .filter(Boolean);
-
-  const requestedLimit = query.maxResults ?? SEARCH_DEFAULT_LIMIT;
-  const exceededMax = requestedLimit > SEARCH_MAX_LIMIT;
-  const limit = Math.max(0, Math.min(requestedLimit, SEARCH_MAX_LIMIT));
 
   const scored: { job: CareersJob; score: number }[] = [];
   for (const job of catalog) {
@@ -148,8 +150,18 @@ export function searchJobs(catalog: CareersJob[], query: JobSearchQuery): JobSea
     return a.job.id < b.job.id ? -1 : a.job.id > b.job.id ? 1 : 0;
   });
 
-  const totalMatches = scored.length;
-  const jobs = scored.slice(0, limit).map((s) => toJobSummary(s.job));
+  return scored.map((s) => s.job);
+}
+
+/** Pure, deterministic search over an already-normalized catalog. No AI, no embeddings. */
+export function searchJobs(catalog: CareersJob[], query: JobSearchQuery): JobSearchResult {
+  const requestedLimit = query.maxResults ?? SEARCH_DEFAULT_LIMIT;
+  const exceededMax = requestedLimit > SEARCH_MAX_LIMIT;
+  const limit = Math.max(0, Math.min(requestedLimit, SEARCH_MAX_LIMIT));
+
+  const matches = filterAndRankJobs(catalog, query);
+  const totalMatches = matches.length;
+  const jobs = matches.slice(0, limit).map(toJobSummary);
   const truncated = exceededMax || totalMatches > jobs.length;
 
   return { totalMatches, jobs, truncated };

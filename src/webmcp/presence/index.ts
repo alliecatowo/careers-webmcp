@@ -1,0 +1,22 @@
+export { AgentPresenceLayer } from './AgentPresenceLayer';
+export { AgentSpotlight } from './AgentSpotlight';
+export { useAgentHighlight, AGENT_FLASH_CLASS } from './useAgentHighlight';
+export { typeIntoSearch } from './typing';
+export { instrument, instrumentAll } from './instrument';
+export {
+  usePresenceStore,
+  beginActivity,
+  endActivity,
+  dismissActivity,
+  startTyping,
+  advanceTyping,
+  clearTyping,
+  highlight,
+  clearHighlight,
+  setPendingConfirmation,
+  offerExport,
+  requestFocus,
+  clearFocusRequest,
+  resetPresence,
+} from './presence.store';
+export type { AgentActivity, ActivityPhase, PendingConfirmation, TypingState, HighlightState } from './presence.store';

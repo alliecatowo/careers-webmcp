@@ -6,6 +6,8 @@
 import { LIMITS } from './results';
 import { WebMCPError } from './errors';
 import { APPLICATION_FIELD_NAMES } from '@/domain/applications';
+import { SIGNUP_FIELD_NAMES } from '@/domain/session/signup.store';
+import { EXPORT_READ_MAX, JOB_EXPORT_COLUMNS, APPLICATION_EXPORT_COLUMNS } from '@/domain/exports';
 
 const stringArray = { type: 'array', items: { type: 'string' } } as const;
 
@@ -119,6 +121,78 @@ export const submitApplicationSchema = {
   },
 };
 
+
+export const setSearchViewSchema = {
+  type: 'object',
+  additionalProperties: false,
+  properties: {
+    query: { type: 'string', description: 'Free text typed into the visible search box.' },
+    department: { type: 'string', description: 'Department name exactly as the site lists it, e.g. "Engineering".' },
+    country: { type: 'string', description: 'Country name or slug, e.g. "United States".' },
+    level: { type: 'string' },
+    workplace: { type: 'string', enum: ['On-site', 'Hybrid', 'Remote'] },
+    employmentType: { type: 'string' },
+  },
+};
+
+export const focusApplicationFieldSchema = {
+  type: 'object',
+  additionalProperties: false,
+  required: ['field'],
+  properties: {
+    applicationId: { type: 'string', description: 'Defaults to the application currently open on the page.' },
+    field: { type: 'string', enum: [...APPLICATION_FIELD_NAMES] },
+  },
+};
+
+export const createAccountSchema = {
+  type: 'object',
+  additionalProperties: false,
+  required: ['fullName', 'email'],
+  properties: {
+    fullName: { type: 'string' },
+    email: { type: 'string' },
+    phone: { type: 'string' },
+    location: { type: 'string' },
+    linkedinUrl: { type: 'string' },
+    portfolioUrl: { type: 'string' },
+    yearsExperience: { type: ['number', 'null'] },
+  },
+};
+
+const EXPORT_COLUMN_NAMES = Array.from(
+  new Set<string>([...JOB_EXPORT_COLUMNS, ...APPLICATION_EXPORT_COLUMNS]),
+);
+
+export const createExportSchema = {
+  type: 'object',
+  additionalProperties: false,
+  properties: {
+    dataset: { type: 'string', enum: ['jobs', 'applications'], default: 'jobs' },
+    query: {
+      ...searchJobsSchema,
+      description: 'Optional job filters, same shape as careers_search_jobs. Ignored for the applications dataset.',
+    },
+    columns: {
+      type: 'array',
+      items: { type: 'string', enum: EXPORT_COLUMN_NAMES },
+      description: 'Restrict the export to these columns. Defaults to all columns for the dataset.',
+    },
+  },
+};
+
+export const readExportSchema = {
+  type: 'object',
+  additionalProperties: false,
+  required: ['exportId'],
+  properties: {
+    exportId: { type: 'string' },
+    offset: { type: 'number', minimum: 0, default: 0 },
+    limit: { type: 'number', minimum: 1, maximum: EXPORT_READ_MAX, default: EXPORT_READ_MAX },
+    columns: { type: 'array', items: { type: 'string', enum: EXPORT_COLUMN_NAMES } },
+  },
+};
+
 type Validator = (input: Record<string, unknown>) => void;
 
 function requireKeys(input: Record<string, unknown>, keys: string[]): void {
@@ -181,6 +255,69 @@ export const validators: Record<string, Validator> = {
     for (const key of Object.keys(fields as Record<string, unknown>)) {
       if (!APPLICATION_FIELD_NAMES.includes(key as (typeof APPLICATION_FIELD_NAMES)[number])) {
         throw new WebMCPError('VALIDATION_ERROR', `Unknown application field "${key}".`, { field: key });
+      }
+    }
+  },
+  careers_set_search_view: (input) => {
+    checkType(input, 'query', 'string');
+    checkType(input, 'department', 'string');
+    checkType(input, 'country', 'string');
+    checkType(input, 'level', 'string');
+    checkType(input, 'workplace', 'string');
+    checkType(input, 'employmentType', 'string');
+  },
+  careers_focus_application_field: (input) => {
+    requireKeys(input, ['field']);
+    checkType(input, 'field', 'string');
+    if (!APPLICATION_FIELD_NAMES.includes(input.field as (typeof APPLICATION_FIELD_NAMES)[number])) {
+      throw new WebMCPError('VALIDATION_ERROR', `Unknown application field "${String(input.field)}".`, {
+        field: 'field',
+        known: APPLICATION_FIELD_NAMES,
+      });
+    }
+  },
+  careers_create_account: (input) => {
+    requireKeys(input, ['fullName', 'email']);
+    for (const name of SIGNUP_FIELD_NAMES) {
+      if (input[name] === undefined) continue;
+      if (name === 'yearsExperience') {
+        if (input[name] !== null) checkType(input, name, 'number');
+      } else {
+        checkType(input, name, 'string');
+      }
+    }
+    for (const key of Object.keys(input)) {
+      if (!SIGNUP_FIELD_NAMES.includes(key as (typeof SIGNUP_FIELD_NAMES)[number])) {
+        throw new WebMCPError('VALIDATION_ERROR', `Unknown account field "${key}".`, { field: key });
+      }
+    }
+  },
+  careers_create_export: (input) => {
+    if (input.dataset !== undefined) {
+      checkType(input, 'dataset', 'string');
+      if (input.dataset !== 'jobs' && input.dataset !== 'applications') {
+        throw new WebMCPError('VALIDATION_ERROR', 'dataset must be "jobs" or "applications".', { field: 'dataset' });
+      }
+    }
+    if (input.query !== undefined) {
+      if (typeof input.query !== 'object' || input.query === null || Array.isArray(input.query)) {
+        throw new WebMCPError('VALIDATION_ERROR', 'Field "query" must be an object.', { field: 'query' });
+      }
+      // Reuse the search validator so export filters obey the same rules.
+      validators.careers_search_jobs(input.query as Record<string, unknown>);
+    }
+  },
+  careers_read_export: (input) => {
+    requireKeys(input, ['exportId']);
+    checkType(input, 'exportId', 'string');
+    checkType(input, 'offset', 'number');
+    if (input.limit !== undefined) {
+      checkType(input, 'limit', 'number');
+      if ((input.limit as number) > EXPORT_READ_MAX) {
+        throw new WebMCPError('VALIDATION_ERROR', `limit may not exceed ${EXPORT_READ_MAX}.`, {
+          field: 'limit',
+          limit: EXPORT_READ_MAX,
+        });
       }
     }
   },

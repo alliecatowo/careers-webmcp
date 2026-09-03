@@ -1,7 +1,7 @@
 
 'use client';
 
-import { Suspense } from 'react';
+import { Suspense, useEffect, useState } from 'react';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import useSWR from 'swr';
 import { useDebouncedCallback } from 'use-debounce';
@@ -12,16 +12,14 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { Search } from 'lucide-react';
 import { Job, Country, Department } from '@/lib/talent-acquisition';
 import { talentService } from '@/services/talent.service';
-import { JOB_LEVELS } from '@/domain/jobs';
+import { JOB_LEVELS, filterAndRankJobs } from '@/domain/jobs';
+import { normalizeJob } from '@/domain/jobs/normalize';
 import { JobCard } from './JobCard';
 import { PaginationControls } from '@/modules/jobs/components/PaginationControls';
+import { AgentSearchInput } from './AgentSearchInput';
+import { ExportResultsButton } from './ExportResultsButton';
 
 const WORKPLACES = ['On-site', 'Hybrid', 'Remote'] as const;
-
-/** 'On-site' shown to users maps to the upstream Job.workforceType value 'Onsite'. */
-function toWorkforceType(workplace: string): string {
-    return workplace === 'On-site' ? 'Onsite' : workplace;
-}
 
 type GlobalJobListingProps = {
     countries: Country[];
@@ -61,11 +59,9 @@ function JobFilters({ countries, departments }: { countries: Country[], departme
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
             <div className="relative md:col-span-2 lg:col-span-3">
                 <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
-                <Input 
-                    placeholder="Search by title or keyword..."
-                    defaultValue={searchParams.get('q') || ''}
-                    onChange={(e) => debouncedHandleFilterChange('q', e.target.value)}
-                    className="pl-10"
+                <AgentSearchInput
+                    urlQuery={searchParams.get('q') || ''}
+                    onQueryChange={(value) => debouncedHandleFilterChange('q', value)}
                 />
             </div>
              <Select defaultValue={searchParams.get('countryId') || 'all'} onValueChange={(v) => handleFilterChange('countryId', v)}>
@@ -117,12 +113,12 @@ function JobListings({ countries, departments }: { countries: Country[], departm
     const level = searchParams.get('level') || undefined;
     const workplace = searchParams.get('workplace') || undefined;
 
-    // Server-side (adapter) filters. Level/workplace are applied client-side below
-    // since they're derived/demo fields (cheap path, per BUILD_CONTRACT §43) —
-    // fetch a generous page of already-filtered jobs, then filter + paginate locally.
+    // Adapter-side filters are the ones the backend understands. The free-text
+    // query, level and workplace are resolved locally through the SAME
+    // deterministic scorer careers_search_jobs uses, so the agent and the human
+    // never disagree about what matches (BUILD_CONTRACT §11).
     const baseFilters: any = {
         status: 'published',
-        q: searchParams.get('q') || undefined,
         countryId: searchParams.get('countryId') || undefined,
         departmentId: searchParams.get('departmentId') || undefined,
         employmentType: searchParams.get('employmentType') || undefined,
@@ -145,18 +141,30 @@ function JobListings({ countries, departments }: { countries: Country[], departm
     if (error) return <Card><CardContent className="p-6 text-destructive">Failed to load jobs. Please try again later.</CardContent></Card>;
 
     const allJobs = jobsResponse?.data || [];
-    const filteredJobs = allJobs.filter(job => {
-        if (level && (job.seniorityLevel ?? job.experienceBand) !== level) return false;
-        if (workplace && job.workforceType !== toWorkforceType(workplace)) return false;
-        return true;
-    });
+    const query = searchParams.get('q') || undefined;
+    const ranked = filterAndRankJobs(
+        allJobs.map(job => normalizeJob(job, departments, countries)),
+        {
+            query,
+            levels: level ? [level] : undefined,
+            workplace: workplace ? [workplace] : undefined,
+        },
+    );
+    // Render the upstream Job objects JobCard expects, in the ranked order.
+    const byId = new Map(allJobs.map(job => [job.id, job]));
+    const filteredJobs = ranked
+        .map(job => byId.get(job.id))
+        .filter((job): job is NonNullable<typeof job> => !!job);
     const totalJobs = filteredJobs.length;
     const totalPages = Math.max(1, Math.ceil(totalJobs / limit));
     const jobs = filteredJobs.slice((page - 1) * limit, page * limit);
 
     return (
         <div className="space-y-8">
-            <h2 className="text-xl font-semibold tracking-tight">{totalJobs} open position{totalJobs === 1 ? '' : 's'}</h2>
+            <div className="flex flex-wrap items-center justify-between gap-3">
+                <h2 className="text-xl font-semibold tracking-tight">{totalJobs} open position{totalJobs === 1 ? '' : 's'}</h2>
+                <ExportResultsButton jobs={filteredJobs} departments={departments} countries={countries} />
+            </div>
             {jobs.length > 0 ? (
                 <div className="space-y-6">
                     {jobs.map(job => (

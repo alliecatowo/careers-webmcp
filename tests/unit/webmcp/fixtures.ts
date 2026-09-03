@@ -134,6 +134,11 @@ export const jobsModule = {
   getCareersJob: vi.fn(async (jobId: string) => findFakeJob(jobId)),
   jobUrl: (countrySlug: string, jobId: string) => `/careers/countries/${countrySlug}/jobs/${jobId}`,
   toJobSummary: (job: FakeJob) => toFakeSummary(job),
+  filterAndRankJobs: (catalog: FakeJob[], query: { query?: string }) => {
+    if (!query.query) return catalog;
+    const q = query.query.toLowerCase();
+    return catalog.filter((j) => j.title.toLowerCase().includes(q));
+  },
   searchJobs: (catalog: FakeJob[], query: { query?: string; maxResults?: number }) => {
     let jobs = catalog;
     if (query.query) {

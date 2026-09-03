@@ -73,4 +73,4 @@ export const SEARCH_MAX_LIMIT = 30;
 
 export { getJobCatalog, getCareersJob, jobUrl } from './catalog';
 export { normalizeJob } from './normalize';
-export { searchJobs, toJobSummary } from './search';
+export { searchJobs, filterAndRankJobs, toJobSummary } from './search';

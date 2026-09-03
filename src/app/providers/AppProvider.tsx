@@ -10,6 +10,7 @@ import { ThemeProvider } from '@/lib/context/ThemeContext';
 import { UIProvider } from '@/context/UIContext';
 import { PageContextBridge } from '@/domain/ui-context/bridges';
 import { WebMCPProvider } from '@/webmcp/WebMCPProvider';
+import { AgentPresenceLayer } from '@/webmcp/presence';
 
 export const AppProvider = ({ children }: { children: ReactNode }) => {
   return (
@@ -28,6 +29,8 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
                 <Suspense fallback={null}>
                   <WebMCPProvider />
                 </Suspense>
+                {/* Transient echo of agent activity. Renders nothing until a tool runs. */}
+                <AgentPresenceLayer />
               </AuthProvider>
               <NetworkListener />
             </ToastProvider>

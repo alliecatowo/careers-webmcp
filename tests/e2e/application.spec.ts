@@ -2,7 +2,7 @@ import { test, expect } from '@playwright/test';
 import { installWebMCPShim, callTool, signInAsDemoCandidate, DEMO_JOBS } from './helpers';
 
 test.describe('human + agent shared application flow', () => {
-  test('start, agent update, human edit, stale protection, submit', async ({ page }) => {
+  test('start, agent update, human edit, stale protection, human submit', async ({ page }) => {
     await installWebMCPShim(page);
     await page.goto('/careers/open-positions');
     await page.waitForFunction(() => Boolean((window as unknown as { __webmcp?: unknown }).__webmcp));
@@ -72,7 +72,7 @@ test.describe('human + agent shared application flow', () => {
     );
     expect(retried.fields.location).toBe('San Francisco, CA');
 
-    // Fill the remaining required fields and submit.
+    // Fill the remaining required fields, then hand off to the human.
     await page.locator('input[name="availability"]').fill('Available immediately');
     await page.locator('input[name="availability"]').blur();
 
@@ -80,12 +80,21 @@ test.describe('human + agent shared application flow', () => {
       applicationId: started.id,
     });
 
-    const submitted = await callTool<{ status: string }>(page, 'careers_submit_application', {
-      applicationId: started.id,
-      expectedRevision: beforeSubmit.revision,
-    });
-    expect(submitted.status).toBe('submitted');
+    const handedOff = await callTool<{ status: string; applicationStatus: string }>(
+      page,
+      'careers_submit_application',
+      { applicationId: started.id, expectedRevision: beforeSubmit.revision },
+    );
+    expect(handedOff.status).toBe('awaiting_human_confirmation');
+    expect(handedOff.applicationStatus).toBe('draft');
 
+    // The page tells the human it is their turn, and the draft is untouched.
+    await expect(page.getByTestId('submit-handoff-note')).toBeVisible();
+    await expect(page.getByTestId('agent-pending-confirmation')).toBeVisible();
+    await expect(page).not.toHaveURL(/success/);
+
+    // Only the human's click submits.
+    await page.getByTestId('submit-application').click();
     await expect(page).toHaveURL(new RegExp(`/careers/application/united-states/success\\?appId=${started.id}`));
     await expect(page.getByTestId('application-submitted')).toBeVisible();
   });

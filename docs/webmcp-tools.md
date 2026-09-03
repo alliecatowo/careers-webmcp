@@ -1,6 +1,6 @@
 # Careers WebMCP tool reference
 
-All tools are registered once per page load on `document.modelContext` (see
+All 16 tools are registered once per page load on `document.modelContext` (see
 `src/webmcp/register.ts`) and are feature-detected — the normal careers site
 works identically with no WebMCP-capable browser present.
 
@@ -340,7 +340,7 @@ Both optional; if neither is supplied, falls back to the current application fro
 
 ## careers_submit_application
 
-**Purpose:** Submit the candidate's own draft using the same validation/submission logic as the normal submit button. Consequential — not read-only.
+**Purpose:** Validate the candidate's own draft against the same rules as the human Submit button, then open it for the person to send. **This tool does not submit.** The site deliberately reserves the irreversible click for the human — see docs/DECISIONS.md.
 
 **Annotations:** none
 
@@ -355,13 +355,238 @@ Both optional; if neither is supplied, falls back to the current application fro
 }
 ```
 
+**Behaviour:** enforces `expectedRevision`, runs `validateApplicationFields`, navigates to the application page, and highlights the real Submit button.
+
 **Example output:**
 
 ```json
-{ "id": "app_1", "status": "submitted", "revision": 6, "submittedAt": "2026-09-02T10:00:00.000Z" }
+{
+  "id": "app_1",
+  "status": "awaiting_human_confirmation",
+  "applicationStatus": "draft",
+  "revision": 6,
+  "url": "/careers/application/united-states?jobId=job_staff_platform",
+  "message": "The application is filled in and valid. The person needs to press Submit on the page to send it."
+}
 ```
 
-**Errors:** `AUTH_REQUIRED`, `APPLICATION_NOT_FOUND`, `APPLICATION_ALREADY_SUBMITTED`, `VALIDATION_ERROR` (missing required fields), `STALE_APPLICATION`.
+If the application was already submitted it returns `{ "status": "submitted", "alreadySubmitted": true, ... }` instead.
+
+**Errors:** `AUTH_REQUIRED`, `APPLICATION_NOT_FOUND`, `STALE_APPLICATION`, `VALIDATION_ERROR` — the last carries what is still missing:
+
+```json
+{ "error": "VALIDATION_ERROR", "message": "The application is not ready to submit.", "missingRequiredFields": ["availability"], "invalidFields": [] }
+```
+
+---
+
+## careers_set_search_view
+
+**Purpose:** Put a search on the site's own jobs page — types the query into the visible search box and applies the visible filters. Read results from `careers_search_jobs`; use this to *show* them.
+
+**Annotations:** none
+
+**Input schema:**
+
+```json
+{
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "query": { "type": "string" },
+    "department": { "type": "string" },
+    "country": { "type": "string" },
+    "level": { "type": "string" },
+    "workplace": { "type": "string", "enum": ["On-site", "Hybrid", "Remote"] },
+    "employmentType": { "type": "string" }
+  }
+}
+```
+
+`department` and `country` take the names the site displays, not ids; the tool resolves them.
+
+**Example output:**
+
+```json
+{
+  "applied": true,
+  "url": "/careers/open-positions?departmentId=dept_eng_it&page=1&q=inference",
+  "view": { "query": "inference", "department": "Engineering", "country": null, "level": null, "workplace": null, "employmentType": null },
+  "totalMatches": 1
+}
+```
+
+`totalMatches` is computed with the same scorer the visible list uses, so the number the agent reports and the number on the page always agree.
+
+**Errors:** `VALIDATION_ERROR` — an unknown department or country, with a `known` array of the valid names.
+
+---
+
+## careers_focus_application_field
+
+**Purpose:** Move the cursor to one field of the candidate's application and highlight it — for things the agent should not invent, like a phone number or a notice period.
+
+**Annotations:** none
+
+**Input schema:**
+
+```json
+{
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["field"],
+  "properties": {
+    "applicationId": { "type": "string" },
+    "field": { "type": "string", "enum": ["fullName", "email", "phone", "location", "linkedinUrl", "portfolioUrl", "yearsExperience", "coverNote", "availability"] }
+  }
+}
+```
+
+`applicationId` defaults to the application currently open on the page.
+
+**Example output:**
+
+```json
+{ "focused": true, "applicationId": "app_1", "field": "availability", "currentValue": "", "url": "/careers/application/united-states?jobId=job_staff_platform" }
+```
+
+**Errors:** `AUTH_REQUIRED`, `APPLICATION_NOT_FOUND`, `VALIDATION_ERROR` (unknown field name).
+
+---
+
+## careers_create_account
+
+**Purpose:** Fill the site's normal sign-up form with details the person supplied and open it for them to confirm. **This tool does not create an account.** Only the human-clicked Create account button creates a session.
+
+**Annotations:** none
+
+**Input schema:**
+
+```json
+{
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["fullName", "email"],
+  "properties": {
+    "fullName": { "type": "string" },
+    "email": { "type": "string" },
+    "phone": { "type": "string" },
+    "location": { "type": "string" },
+    "linkedinUrl": { "type": "string" },
+    "portfolioUrl": { "type": "string" },
+    "yearsExperience": { "type": ["number", "null"] }
+  }
+}
+```
+
+**Example output:**
+
+```json
+{
+  "status": "awaiting_human_confirmation",
+  "url": "/careers/signup",
+  "fields": { "fullName": "Sam Rivera", "email": "sam.rivera@example.test", "phone": "", "location": "Austin, TX", "linkedinUrl": "", "portfolioUrl": "", "yearsExperience": 6 },
+  "missingRequiredFields": [],
+  "invalidFields": [],
+  "readyToConfirm": true,
+  "message": "The sign-up form is filled in. The person needs to press Create account to finish."
+}
+```
+
+If a candidate is already signed in the tool is a no-op and returns `{ "alreadySignedIn": true, "candidate": { "id": "...", "displayName": "..." } }`.
+
+After the human confirms, `careers_get_context` reports `session.signedIn: true` — that is how the agent learns the account exists.
+
+**Errors:** `VALIDATION_ERROR` — missing `fullName`/`email`, or an unknown field name. A malformed email is not an error: it comes back in `invalidFields` with `readyToConfirm: false`, so the agent can correct it.
+
+---
+
+## careers_create_export
+
+**Purpose:** Build a downloadable CSV and return a **handle** to it — row count, columns and a three-row preview — instead of the rows. Lets an agent work over a whole result set without any tool result approaching the output bound.
+
+**Annotations:** `untrustedContentHint: true`
+
+**Input schema:**
+
+```json
+{
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "dataset": { "type": "string", "enum": ["jobs", "applications"], "default": "jobs" },
+    "query": { "description": "Optional job filters, same shape as careers_search_jobs. Ignored for the applications dataset." },
+    "columns": { "type": "array", "items": { "type": "string" } }
+  }
+}
+```
+
+The `jobs` dataset is ranked with `filterAndRankJobs` — the same scorer as `careers_search_jobs`, but without the search page limit, because these rows never enter a tool result. The registry still caps an export at 500 rows.
+
+**Example output:**
+
+```json
+{
+  "exportId": "exp_1",
+  "dataset": "jobs",
+  "format": "csv",
+  "label": "All open positions",
+  "rowCount": 20,
+  "columns": ["id", "title", "department", "team", "level", "location", "workplace", "employmentType", "compensationMin", "compensationMax", "currency", "skills", "postedAt", "url"],
+  "byteSize": 4820,
+  "downloadUrl": "/careers/exports/exp_1",
+  "preview": [{ "id": "job_staff_platform", "title": "Staff Platform Engineer", "...": "..." }],
+  "readHint": "Rows are not included here. Call careers_read_export with this exportId, an offset, a limit of up to 100, and only the columns you need."
+}
+```
+
+The same file is reachable by the human from the **Export CSV** button on the jobs page and from `downloadUrl`. Exports live in `sessionStorage` — they are scoped to the tab and gone when it closes.
+
+**Errors:** `AUTH_REQUIRED` (applications dataset while signed out), `VALIDATION_ERROR` (unknown dataset, or a bad `query`).
+
+---
+
+## careers_read_export
+
+**Purpose:** Read a bounded window of rows from an export, projected to only the columns you need.
+
+**Annotations:** `readOnlyHint: true`, `untrustedContentHint: true`
+
+**Input schema:**
+
+```json
+{
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["exportId"],
+  "properties": {
+    "exportId": { "type": "string" },
+    "offset": { "type": "number", "minimum": 0, "default": 0 },
+    "limit": { "type": "number", "minimum": 1, "maximum": 100, "default": 100 },
+    "columns": { "type": "array", "items": { "type": "string" } }
+  }
+}
+```
+
+Unknown column names are ignored; if the projection matches nothing, all columns are returned.
+
+**Example output:**
+
+```json
+{
+  "exportId": "exp_1",
+  "dataset": "jobs",
+  "columns": ["title", "compensationMax"],
+  "offset": 0,
+  "limit": 5,
+  "rowCount": 20,
+  "returnedRows": 5,
+  "hasMore": true,
+  "rows": [{ "title": "Member of Technical Staff, Post-Training", "compensationMax": "575000" }]
+}
+```
+
+**Errors:** `EXPORT_NOT_FOUND`, `AUTH_REQUIRED` (an applications export belonging to a different candidate session), `VALIDATION_ERROR` (`limit` above 100).
 
 ---
 
@@ -379,6 +604,7 @@ Every tool failure returns `{ "error": "<CODE>", "message": "human-readable, no 
 | `STALE_APPLICATION` | `expectedRevision` doesn't match the current draft revision; reread and retry. |
 | `VALIDATION_ERROR` | Bad input shape or a field failed the same per-field rules the human form uses. |
 | `SEARCH_LIMIT_EXCEEDED` | `maxResults` above the hard cap (30). |
+| `EXPORT_NOT_FOUND` | Unknown `exportId`. Exports are per-tab and do not survive closing it. |
 | `UNSUPPORTED_ACTION` | Reserved for future tools. |
 | `INTERNAL_ERROR` | Anything unexpected — generic message only. |
 
@@ -387,3 +613,17 @@ Every tool failure returns `{ "error": "<CODE>", "message": "human-readable, no 
 - Search results: default 10, max 30.
 - Job/application prose fields: capped at ~20KB each.
 - Any tool result: capped at ~50KB total; bounding sets `"truncated": true` on the payload.
+- Exports: 500 rows retained per export, 100 rows per `careers_read_export` call. Export rows never travel inside a tool result — only handles, previews and requested slices do.
+
+## Actions the agent cannot take
+
+Two capabilities are exposed but deliberately stop short of completing:
+
+| Tool | What it does | What only the human can do |
+| --- | --- | --- |
+| `careers_create_account` | Fills the real sign-up form and opens it | Press **Create account**, which creates the session |
+| `careers_submit_application` | Validates the draft and opens it for review | Press **Submit Application**, which sends it |
+
+Both return `status: "awaiting_human_confirmation"`. There is no `confirm: true`
+escape hatch and no second code path — the site has exactly one way to create a
+session and one way to submit an application, and both are behind a human click.

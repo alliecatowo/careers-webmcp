@@ -1,6 +1,7 @@
 import { describe, expect, it, beforeAll } from 'vitest';
 import {
   searchJobs,
+  filterAndRankJobs,
   getJobCatalog,
   getCareersJob,
   SEARCH_DEFAULT_LIMIT,
@@ -153,7 +154,7 @@ describe('searchJobs (real seeded catalog)', () => {
     expect(catalog.length).toBeGreaterThanOrEqual(12);
   });
 
-  it('runs the BUILD_CONTRACT §41 demo query and returns exactly the 4 expected jobs', () => {
+  it('runs the BUILD_CONTRACT §41 demo query and returns exactly the 6 expected jobs', () => {
     const result = searchJobs(catalog, {
       departments: ['Engineering'],
       levels: ['Staff', 'Senior Staff', 'Principal'],
@@ -166,10 +167,13 @@ describe('searchJobs (real seeded catalog)', () => {
         'job_staff_platform',
         'job_staff_ai_infra',
         'job_principal_reliability',
+        // Frontier roles seeded for the demo also clear the staff+/$220k bar.
+        'job_research_engineer_inference',
+        'job_member_technical_staff',
         'job_senior_staff_platform',
       ].sort(),
     );
-    expect(result.totalMatches).toBe(4);
+    expect(result.totalMatches).toBe(6);
   });
 
   it('getCareersJob returns null for an unknown id', async () => {
@@ -181,5 +185,29 @@ describe('searchJobs (real seeded catalog)', () => {
     expect(job).not.toBeNull();
     expect(job?.title).toBe('Staff Platform Engineer');
     expect(job?.compensation).toEqual({ min: 230000, max: 285000, currency: 'USD' });
+  });
+});
+
+describe('filterAndRankJobs', () => {
+  it('returns every match, not just the first search page', async () => {
+    const catalog = await getJobCatalog();
+    const all = filterAndRankJobs(catalog, {});
+    expect(all).toHaveLength(catalog.length);
+    // searchJobs deliberately pages; filterAndRankJobs deliberately does not.
+    expect(searchJobs(catalog, {}).jobs.length).toBeLessThan(all.length);
+  });
+
+  it('applies the same hard filters as searchJobs', async () => {
+    const catalog = await getJobCatalog();
+    const query = { departments: ['Engineering'], minCompensation: 300000 };
+    expect(filterAndRankJobs(catalog, query)).toHaveLength(searchJobs(catalog, query).totalMatches);
+  });
+
+  it('ranks in the same order searchJobs presents', async () => {
+    const catalog = await getJobCatalog();
+    const query = { query: 'platform' };
+    const ranked = filterAndRankJobs(catalog, query).map((j) => j.id);
+    const paged = searchJobs(catalog, query).jobs.map((j) => j.id);
+    expect(ranked.slice(0, paged.length)).toEqual(paged);
   });
 });

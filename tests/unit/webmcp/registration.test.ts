@@ -14,11 +14,11 @@ describe('webmcp tool registration', () => {
     vi.clearAllMocks();
   });
 
-  it('registers exactly 11 tools with the exact stable names', async () => {
+  it('registers exactly 16 tools with the exact stable names', async () => {
     const shim = createModelContextShim();
     await registerCareersTools(shim as unknown as WebMCP.ModelContext);
     const registered = await shim.getTools();
-    expect(registered).toHaveLength(11);
+    expect(registered).toHaveLength(16);
 
     const names = registered.map((t) => t.name).sort();
     expect(names).toEqual(
@@ -34,6 +34,11 @@ describe('webmcp tool registration', () => {
         'careers_start_application',
         'careers_update_application',
         'careers_submit_application',
+        'careers_set_search_view',
+        'careers_focus_application_field',
+        'careers_create_account',
+        'careers_create_export',
+        'careers_read_export',
       ].sort(),
     );
   });
@@ -43,7 +48,7 @@ describe('webmcp tool registration', () => {
     await registerCareersTools(shim as unknown as WebMCP.ModelContext);
     await registerCareersTools(shim as unknown as WebMCP.ModelContext);
     const registered = await shim.getTools();
-    expect(registered).toHaveLength(11);
+    expect(registered).toHaveLength(16);
   });
 
   it('registers a fresh ModelContext independently', async () => {
@@ -51,11 +56,11 @@ describe('webmcp tool registration', () => {
     const shimB = createModelContextShim();
     await registerCareersTools(shimA as unknown as WebMCP.ModelContext);
     await registerCareersTools(shimB as unknown as WebMCP.ModelContext);
-    expect(await shimA.getTools()).toHaveLength(11);
-    expect(await shimB.getTools()).toHaveLength(11);
+    expect(await shimA.getTools()).toHaveLength(16);
+    expect(await shimB.getTools()).toHaveLength(16);
   });
 
-  it('sets readOnlyHint exactly on the 6 read tools', () => {
+  it('sets readOnlyHint exactly on the 7 read tools', () => {
     const readOnlyNames = [
       'careers_get_context',
       'careers_search_jobs',
@@ -63,6 +68,7 @@ describe('webmcp tool registration', () => {
       'careers_get_saved_jobs',
       'careers_get_my_applications',
       'careers_get_application',
+      'careers_read_export',
     ];
     for (const tool of getToolDefinitions()) {
       if (readOnlyNames.includes(tool.name)) {
@@ -80,6 +86,8 @@ describe('webmcp tool registration', () => {
       'careers_get_saved_jobs',
       'careers_get_my_applications',
       'careers_get_application',
+      'careers_create_export',
+      'careers_read_export',
     ];
     for (const tool of getToolDefinitions()) {
       if (untrustedNames.includes(tool.name)) {
@@ -97,6 +105,10 @@ describe('webmcp tool registration', () => {
       'careers_start_application',
       'careers_update_application',
       'careers_submit_application',
+      'careers_set_search_view',
+      'careers_focus_application_field',
+      'careers_create_account',
+      'careers_create_export',
     ];
     for (const tool of getToolDefinitions()) {
       if (mutatingNames.includes(tool.name)) {

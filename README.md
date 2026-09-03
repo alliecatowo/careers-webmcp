@@ -30,7 +30,7 @@ Visit the site, and the site explains itself.
 A fictional employer's careers site (built on the MIT-licensed
 [Baalvion Jobs Portal](https://github.com/baalvionservice/Baalvion-Jobs-Portal))
 running in a deterministic demo mode, plus a WebMCP layer that registers
-eleven candidate-facing tools on `document.modelContext`:
+sixteen candidate-facing tools on `document.modelContext`:
 
 | Tool | Kind | What it does |
 | --- | --- | --- |
@@ -44,7 +44,74 @@ eleven candidate-facing tools on `document.modelContext`:
 | `careers_get_application` | read | One application: fields, revision, missing required fields |
 | `careers_start_application` | mutate | Starts (or reopens) a draft and opens the normal application form |
 | `careers_update_application` | mutate | Patches only the supplied fields; rejects stale revisions |
-| `careers_submit_application` | mutate | Same validation gate and submission as the human Submit button |
+| `careers_submit_application` | hand-off | Runs the human Submit button's validation gate, then opens the draft for the person to send; does not submit |
+| `careers_set_search_view` | navigate | Puts a search on the site's own jobs page: types the query into the visible box and applies the visible filters |
+| `careers_focus_application_field` | navigate | Moves the cursor to one application field and highlights it, for answers the agent should not invent |
+| `careers_create_account` | hand-off | Fills the normal sign-up form with details the person supplied; does not create the account |
+| `careers_create_export` | mutate | Builds a downloadable CSV of jobs or applications and returns a handle: row count, columns, three-row preview, download URL |
+| `careers_read_export` | read | Reads a bounded window of an export's rows, projected to the requested columns (max 100 per call) |
+
+## What the agent cannot do
+
+Two of the sixteen tools stop one step short of finishing. `careers_create_account`
+fills the site's real sign-up form and returns; `careers_submit_application`
+validates the draft against the same rules the human form uses, opens the
+application page and highlights the real Submit button. Both return
+`status: "awaiting_human_confirmation"`. Neither completes.
+
+There is no `confirm: true` escape hatch, because there is no second code path
+to reach. The site has exactly one function that creates a session, called only
+by the human-clicked **Create account** button, and exactly one that submits an
+application, called only by the human-clicked **Submit Application** button. The
+tools write drafts; the buttons commit.
+
+| Tool | What it does | What only the human can do |
+| --- | --- | --- |
+| `careers_create_account` | Fills the real sign-up form and opens it | Press **Create account**, which creates the session |
+| `careers_submit_application` | Validates the draft and opens it for review | Press **Submit Application**, which sends it |
+
+This is a design position, not an unfinished feature. An agent that can silently
+create accounts and fire off job applications on a real careers site is a
+liability for the candidate and the employer both, and the identity and the
+irreversible send are the two steps a person actually wants to own. It is also
+the better demo: the human stays visibly in the loop, and the agent's work is
+something you approve rather than something you discover afterwards.
+
+## Seeing the agent work
+
+With no agent, the site renders zero extra DOM. The presence layer returns
+`null` until a tool is actually invoked, so a normal visitor never sees a trace
+of it and there is nothing to opt out of.
+
+When a tool does run, the page shows what happened: a scan bar across the top,
+one activity pill at a time naming the action, the query typed
+character-by-character into the site's own search box, and a flash on exactly
+the form fields that changed. The pill is a report, not a control.
+
+Presence labels and captions are authored strings and counts only. Nothing in
+them is interpolated from job descriptions or application text, because that
+content is untrusted (BUILD_CONTRACT §36) and a caption is still a place a
+prompt injection could land. The layer also cannot summon or prompt an agent —
+there is no chat panel, no prompt box, no way to start anything. It only
+reports what already happened.
+
+## Exports without dumping rows
+
+A WebMCP tool result is a plain JavaScript value. There is no file handle in
+the protocol and no streaming, so "give me every matching job" would mean
+serializing the whole result set into one payload — which blows the output
+bounds long before it is useful.
+
+So `careers_create_export` builds a real CSV once and returns a handle instead
+of rows: `exportId`, `rowCount`, `columns`, a three-row preview and a
+`downloadUrl`. The agent then pulls windows out of it with
+`careers_read_export`, choosing an offset, a limit of up to 100 rows, and only
+the columns it needs. The human downloads the identical file from the **Export
+CSV** button on the jobs page or from `/careers/exports/[id]`.
+
+The effect is that an agent can reason over a full result set — count it, scan
+it column by column, page through all of it — without any single tool result
+approaching the 50KB bound.
 
 ## Why this is WebMCP
 
@@ -167,7 +234,7 @@ pnpm test:e2e     # playwright: no-WebMCP, registration, shared route, shared sa
 
 ## Limitations
 
-- Fictional, deterministic 15-job catalog for a single employer
+- Fictional, deterministic 20-job catalog for a single employer, spanning $165k-$575k and including five frontier-lab roles
 - Demo candidate session (no real identity provider)
 - No real employer submission pipeline; no resume upload through WebMCP v1
 - No demographic or sensitive hiring fields by design

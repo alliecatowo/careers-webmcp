@@ -49,14 +49,36 @@ export const DEMO_CANDIDATE: CandidateSession = {
 
 export const SESSION_STORAGE_KEY = 'careers.session.v1';
 
+/** Profile values a new candidate supplies at signup. */
+export interface SignUpProfile extends CandidateProfile {}
+
 interface SessionState {
   /** `hydrating` until the persisted session has been read on the client. */
   status: 'hydrating' | 'ready';
   candidate: CandidateSession | null;
   signInAsDemoCandidate: () => CandidateSession;
+  /**
+   * Create a real (non-demo) candidate session. Only ever called from the
+   * human-clicked Create account button — see domain/session/signup.store.ts.
+   */
+  signUp: (profile: SignUpProfile) => CandidateSession;
   signOut: () => void;
   /** internal */
   _setHydrated: () => void;
+}
+
+/**
+ * Stable per-browser candidate id. Derived from the email so a candidate who
+ * signs up twice with the same address keeps their saved jobs and drafts,
+ * rather than orphaning them under a fresh id.
+ */
+export function candidateIdForEmail(email: string): string {
+  const normalized = email.trim().toLowerCase();
+  let hash = 0;
+  for (let i = 0; i < normalized.length; i += 1) {
+    hash = (hash * 31 + normalized.charCodeAt(i)) | 0;
+  }
+  return `candidate-${(hash >>> 0).toString(36)}`;
 }
 
 export const useSessionStore = create<SessionState>()(
@@ -67,6 +89,17 @@ export const useSessionStore = create<SessionState>()(
       signInAsDemoCandidate: () => {
         set({ candidate: DEMO_CANDIDATE, status: 'ready' });
         return DEMO_CANDIDATE;
+      },
+      signUp: (profile) => {
+        const email = profile.email.trim();
+        const candidate: CandidateSession = {
+          id: candidateIdForEmail(email),
+          displayName: profile.fullName.trim() || email,
+          email,
+          profile: { ...profile, email },
+        };
+        set({ candidate, status: 'ready' });
+        return candidate;
       },
       signOut: () => set({ candidate: null, status: 'ready' }),
       _setHydrated: () => set({ status: 'ready' }),

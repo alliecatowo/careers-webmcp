@@ -1,8 +1,8 @@
 'use client';
 
-import { Suspense, useEffect, useState } from 'react';
+import { Suspense, useCallback, useEffect, useRef, useState } from 'react';
 import { useParams, useRouter, useSearchParams } from 'next/navigation';
-import { useForm } from 'react-hook-form';
+import { useForm, type UseFormRegister, type FieldErrors } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import Link from 'next/link';
 import { Loader2, CheckCircle } from 'lucide-react';
@@ -19,6 +19,13 @@ import { talentService } from '@/services/talent.service';
 import { Job, Country } from '@/lib/talent-acquisition';
 import { useSessionStore } from '@/domain/session/session.store';
 import { CurrentApplicationBridge } from '@/domain/ui-context/bridges';
+import {
+  useAgentHighlight,
+  AGENT_FLASH_CLASS,
+  usePresenceStore,
+  clearFocusRequest,
+  setPendingConfirmation,
+} from '@/webmcp/presence';
 import {
   ApplicationError,
   ApplicationFields,
@@ -47,6 +54,83 @@ const FIELD_ORDER: {
   { name: 'coverNote', label: 'Cover Note', required: false, type: 'textarea', placeholder: "Briefly tell us why you're a great fit." },
 ];
 
+
+type FieldSpec = (typeof FIELD_ORDER)[number];
+
+/**
+ * One application field.
+ *
+ * Split out of the form so each input can subscribe to agent activity on its
+ * own: it flashes when `careers_update_application` writes it, and takes focus
+ * when `careers_focus_application_field` points at it. The focus is performed
+ * here, by the component that owns the ref — the tool never touches the DOM.
+ */
+function ApplicationFormField({
+  field,
+  register,
+  errors,
+  onCommit,
+}: {
+  field: FieldSpec;
+  register: UseFormRegister<ApplicationFields>;
+  errors: FieldErrors<ApplicationFields>;
+  onCommit: (name: keyof ApplicationFields, value: string | number | null) => void;
+}) {
+  const flashing = useAgentHighlight(field.name);
+  const focusRequest = usePresenceStore((s) => s.focusRequest);
+  const elementRef = useRef<HTMLInputElement | HTMLTextAreaElement | null>(null);
+
+  const requestedAt = focusRequest?.key === field.name ? focusRequest.at : null;
+  useEffect(() => {
+    if (requestedAt === null) return;
+    const element = elementRef.current;
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      element.focus({ preventScroll: true });
+    }
+    clearFocusRequest();
+  }, [requestedAt]);
+
+  const isTextarea = field.type === 'textarea';
+  const registration = register(field.name, {
+    valueAsNumber: field.type === 'number',
+    onChange: (e: { target: { value: string } }) => {
+      const value =
+        field.type === 'number' ? (e.target.value === '' ? null : Number(e.target.value)) : e.target.value;
+      onCommit(field.name, value);
+    },
+  });
+  // Keep react-hook-form's ref working while also holding our own.
+  const ref = (element: HTMLInputElement | HTMLTextAreaElement | null) => {
+    registration.ref(element);
+    elementRef.current = element;
+  };
+
+  const className = flashing ? AGENT_FLASH_CLASS : 'transition-[box-shadow,background-color] duration-300';
+
+  return (
+    <div className="space-y-2">
+      <Label htmlFor={field.name}>
+        {field.label}
+        {field.required && <span className="text-destructive"> *</span>}
+      </Label>
+      {isTextarea ? (
+        <Textarea id={field.name} placeholder={field.placeholder} className={className} {...registration} ref={ref} />
+      ) : (
+        <Input
+          id={field.name}
+          type={field.type === 'number' ? 'number' : field.type}
+          placeholder={field.placeholder}
+          className={className}
+          {...registration}
+          ref={ref}
+        />
+      )}
+      {errors[field.name] && <p className="text-sm text-destructive">{errors[field.name]?.message as string}</p>}
+    </div>
+  );
+}
+
 function ApplicationLoadingSkeleton() {
   return (
     <div className="space-y-8">
@@ -71,9 +155,12 @@ function SignInToApply() {
         <CardTitle>Sign in to apply</CardTitle>
         <CardDescription>You need a candidate session to start or continue an application.</CardDescription>
       </CardHeader>
-      <CardContent>
+      <CardContent className="flex flex-col items-center gap-3">
         <Button data-testid="demo-sign-in" onClick={() => signInAsDemoCandidate()}>
           Continue as demo candidate
+        </Button>
+        <Button variant="link" size="sm" asChild>
+          <Link href="/careers/signup">Or create an account</Link>
         </Button>
       </CardContent>
     </Card>
@@ -97,6 +184,8 @@ function ApplicationForm() {
   const [draftId, setDraftId] = useState<string | null>(null);
   const [submitError, setSubmitError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const pendingConfirmation = usePresenceStore((s) => s.pendingConfirmation);
+  const awaitingSubmit = pendingConfirmation?.kind === 'submit_application';
 
   // Load job + country for this route.
   useEffect(() => {
@@ -160,6 +249,7 @@ function ApplicationForm() {
     setIsSubmitting(true);
     try {
       submitApplication(candidate.id, draft.id, null);
+      setPendingConfirmation(null);
       router.push(`/careers/application/${slug}/success?appId=${draft.id}`);
     } catch (err) {
       if (err instanceof ApplicationError && err.code === 'VALIDATION_ERROR') {
@@ -241,48 +331,31 @@ function ApplicationForm() {
         }}
       >
         {FIELD_ORDER.map((field) => (
-          <div key={field.name} className="space-y-2">
-            <Label htmlFor={field.name}>
-              {field.label}
-              {field.required && <span className="text-destructive"> *</span>}
-            </Label>
-            {field.type === 'textarea' ? (
-              <Textarea
-                id={field.name}
-                placeholder={field.placeholder}
-                {...register(field.name, {
-                  onChange: (e) => handleFieldCommit(field.name, e.target.value),
-                })}
-              />
-            ) : (
-              <Input
-                id={field.name}
-                type={field.type === 'number' ? 'number' : field.type}
-                placeholder={field.placeholder}
-                {...register(field.name, {
-                  valueAsNumber: field.type === 'number',
-                  onChange: (e) => {
-                    const value =
-                      field.type === 'number'
-                        ? e.target.value === ''
-                          ? null
-                          : Number(e.target.value)
-                        : e.target.value;
-                    handleFieldCommit(field.name, value);
-                  },
-                })}
-              />
-            )}
-            {errors[field.name] && (
-              <p className="text-sm text-destructive">{errors[field.name]?.message as string}</p>
-            )}
-          </div>
+          <ApplicationFormField
+            key={field.name}
+            field={field}
+            register={register}
+            errors={errors}
+            onCommit={handleFieldCommit}
+          />
         ))}
 
         {submitError && <p className="text-sm text-destructive">{submitError}</p>}
 
-        <div className="flex justify-end items-center pt-6 mt-6 border-t">
-          <Button type="submit" disabled={isSubmitting} data-testid="submit-application">
+        <div className="flex flex-wrap items-center justify-end gap-3 border-t pt-6 mt-6">
+          {awaitingSubmit && (
+            <p className="mr-auto text-sm text-muted-foreground" data-testid="submit-handoff-note">
+              Everything checks out. Sending it is your call.
+            </p>
+          )}
+          <Button
+            type="submit"
+            disabled={isSubmitting}
+            data-testid="submit-application"
+            className={
+              awaitingSubmit ? 'animate-pulse ring-2 ring-amber-400/80 ring-offset-2 ring-offset-background' : undefined
+            }
+          >
             {isSubmitting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
             Submit Application
           </Button>

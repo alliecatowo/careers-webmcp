@@ -229,7 +229,7 @@ describe('careers webmcp tools', () => {
       expect((result.structuredContent as { error: string }).error).toBe('VALIDATION_ERROR');
     });
 
-    it('careers_submit_application requires the required fields and then succeeds once filled', async () => {
+    it('careers_submit_application validates, then hands off to the human rather than submitting', async () => {
       const started = (await call('careers_start_application', { jobId: 'job_staff_platform' })).structuredContent as {
         id: string;
         revision: number;
@@ -247,13 +247,18 @@ describe('careers webmcp tools', () => {
         fields: { phone: '+1 555 0100', availability: '2 weeks notice' },
       })).structuredContent as { revision: number };
 
-      const submitted = await call('careers_submit_application', {
+      const handedOff = await call('careers_submit_application', {
         applicationId: started.id,
         expectedRevision: updated.revision,
       });
-      expect(submitted.isError).toBeUndefined();
-      const data = submitted.structuredContent as { status: string };
-      expect(data.status).toBe('submitted');
+      expect(handedOff.isError).toBeUndefined();
+      const data = handedOff.structuredContent as { status: string; applicationStatus: string };
+      // The agent never presses Submit: it validates and hands the form back.
+      expect(data.status).toBe('awaiting_human_confirmation');
+      expect(data.applicationStatus).toBe('draft');
+
+      const readBack = await call('careers_get_application', { applicationId: started.id });
+      expect((readBack.structuredContent as { status: string }).status).toBe('draft');
     });
   });
 

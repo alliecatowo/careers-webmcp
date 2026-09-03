@@ -57,13 +57,6 @@ export function boundText(s: string, max: number): { text: string; truncated: bo
   return { text: sliced, truncated: true };
 }
 
-const PROSE_KEYS = new Set([
-  'summary',
-  'description',
-  'coverNote',
-  'message',
-]);
-
 const ARRAY_MAX_ITEMS = 50;
 
 /**
@@ -76,10 +69,9 @@ const ARRAY_MAX_ITEMS = 50;
 export function boundResult<T>(data: T): T & { truncated?: boolean } {
   let truncatedFlag = false;
 
-  function walk(value: unknown, keyHint?: string): unknown {
+  function walk(value: unknown): unknown {
     if (typeof value === 'string') {
-      const max = keyHint && PROSE_KEYS.has(keyHint) ? LIMITS.proseBytes : LIMITS.proseBytes;
-      const { text, truncated } = boundText(value, max);
+      const { text, truncated } = boundText(value, LIMITS.proseBytes);
       if (truncated) truncatedFlag = true;
       return text;
     }
@@ -94,7 +86,7 @@ export function boundResult<T>(data: T): T & { truncated?: boolean } {
     if (value && typeof value === 'object') {
       const out: Record<string, unknown> = {};
       for (const [k, v] of Object.entries(value as Record<string, unknown>)) {
-        out[k] = walk(v, k);
+        out[k] = walk(v);
       }
       return out;
     }

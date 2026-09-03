@@ -6,6 +6,7 @@
  * stack traces or internal messages to the model.
  */
 import { ApplicationError } from '@/domain/applications';
+import { SignUpError } from '@/domain/session/signup.store';
 
 export const WEBMCP_ERROR_CODES = [
   'WEBMCP_UNAVAILABLE',
@@ -16,6 +17,7 @@ export const WEBMCP_ERROR_CODES = [
   'STALE_APPLICATION',
   'VALIDATION_ERROR',
   'SEARCH_LIMIT_EXCEEDED',
+  'EXPORT_NOT_FOUND',
   'UNSUPPORTED_ACTION',
   'INTERNAL_ERROR',
 ] as const;
@@ -49,6 +51,9 @@ export function toErrorResult(err: unknown): ErrorResult {
     return { error: err.code, message: err.message, ...err.details };
   }
   if (err instanceof ApplicationError) {
+    return { error: err.code, message: err.message, ...err.details };
+  }
+  if (err instanceof SignUpError) {
     return { error: err.code, message: err.message, ...err.details };
   }
   return {
