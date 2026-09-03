@@ -81,11 +81,15 @@ describe('webmcp tool registration', () => {
 
   it('sets untrustedContentHint exactly on tools returning job/user content', () => {
     const untrustedNames = [
+      'careers_get_context',
       'careers_search_jobs',
       'careers_get_job',
+      'careers_open_job',
       'careers_get_saved_jobs',
       'careers_get_my_applications',
       'careers_get_application',
+      'careers_update_application',
+      'careers_focus_application_field',
       'careers_create_export',
       'careers_read_export',
     ];

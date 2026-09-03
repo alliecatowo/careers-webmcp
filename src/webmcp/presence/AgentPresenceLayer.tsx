@@ -16,6 +16,7 @@ import {
   usePresenceStore,
   dismissActivity,
   offerExport,
+  setPendingConfirmation,
   type AgentActivity,
   type PendingConfirmation,
 } from './presence.store';
@@ -73,14 +74,25 @@ function useExpiringExportOffer(exportId: string | null) {
 /**
  * Bring the control the human has to press into the middle of the viewport.
  * Without this the hand-off pill can end up sitting on top of the very button
- * it is pointing at.
+ * it is pointing at. The hand-off usually fires in the same tick as the
+ * navigation, so retry briefly until the target page has mounted it.
  */
 function useScrollToPendingTarget(pending: PendingConfirmation | null) {
   const testId = pending?.targetTestId ?? null;
   useEffect(() => {
     if (!testId) return;
-    const element = document.querySelector(`[data-testid="${testId}"]`);
-    element?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    let attempts = 0;
+    let timer = 0;
+    const tryScroll = () => {
+      const element = document.querySelector(`[data-testid="${testId}"]`);
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        return;
+      }
+      if (++attempts < 20) timer = window.setTimeout(tryScroll, 100);
+    };
+    tryScroll();
+    return () => window.clearTimeout(timer);
   }, [testId]);
 }
 
@@ -153,6 +165,15 @@ export function AgentPresenceLayer() {
               <CornerDownRight className="h-3.5 w-3.5 shrink-0 text-amber-300" />
               <span>{pending.label}</span>
               <span className="text-amber-300/70">Your move.</span>
+              <button
+                type="button"
+                onClick={() => setPendingConfirmation(null)}
+                aria-label="Dismiss"
+                data-testid="agent-pending-dismiss"
+                className="-mr-1 rounded-full p-1 text-amber-300/60 transition-colors hover:bg-amber-400/10 hover:text-amber-200"
+              >
+                <X className="h-3 w-3" strokeWidth={3} />
+              </button>
             </motion.div>
           )}
 

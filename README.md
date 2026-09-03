@@ -21,9 +21,9 @@ No AI SDK.
 
 Visit the site, and the site explains itself.
 
-| Normal careers site | Agent + human co-editing one application draft |
+| Careers site with an agent search in flight | Agent + human co-editing one application draft |
 | --- | --- |
-| ![Jobs index](docs/media/01-jobs-index.png) | ![Application co-edit](docs/media/03-application-coedit.png) |
+| ![Jobs index with an agent search](docs/media/01-jobs-index.png) | ![Application co-edit](docs/media/03-application-coedit.png) |
 
 ## What it is
 
@@ -112,6 +112,8 @@ CSV** button on the jobs page or from `/careers/exports/[id]`.
 The effect is that an agent can reason over a full result set — count it, scan
 it column by column, page through all of it — without any single tool result
 approaching the 50KB bound.
+
+![The human view of an agent-prepared export](docs/media/05-export-view.png)
 
 ## Why this is WebMCP
 

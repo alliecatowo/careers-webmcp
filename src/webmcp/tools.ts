@@ -114,7 +114,7 @@ export const tools: CareersTool[] = [
     description:
       'Get a bounded snapshot of where the current user is on the careers site: sign-in state, current page, current job/application, and active search filters.',
     inputSchema: getContextSchema,
-    annotations: { readOnlyHint: true },
+    annotations: { readOnlyHint: true, untrustedContentHint: true },
     execute: async (input, options) => {
       try {
         validateInput('careers_get_context', input);
@@ -199,7 +199,7 @@ export const tools: CareersTool[] = [
     description:
       'Navigate the current browser tab to the normal job detail page for the given job so the human can read it. Does not create an application.',
     inputSchema: openJobSchema,
-    annotations: {},
+    annotations: { untrustedContentHint: true },
     execute: async (input, options) => {
       try {
         const parsed = validateInput('careers_open_job', input) as { jobId: string };
@@ -376,7 +376,7 @@ export const tools: CareersTool[] = [
     title: 'Update a job application draft',
     description: 'Update fields on the signed-in candidate own draft application. Requires the last-read revision; rejected if the human has changed the draft since.',
     inputSchema: updateApplicationSchema,
-    annotations: {},
+    annotations: { untrustedContentHint: true },
     execute: async (input, options) => {
       try {
         const parsed = validateInput('careers_update_application', input) as {
@@ -584,7 +584,7 @@ export const tools: CareersTool[] = [
     description:
       "Open the candidate's application and move the cursor to one field, highlighting it. Use this when the person has to supply something you should not invent — for example their phone number or notice period — so they can see exactly where to type.",
     inputSchema: focusApplicationFieldSchema,
-    annotations: {},
+    annotations: { untrustedContentHint: true },
     execute: async (input, options) => {
       try {
         const parsed = validateInput('careers_focus_application_field', input) as {

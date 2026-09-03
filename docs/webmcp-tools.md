@@ -19,7 +19,7 @@ See "Errors" at the bottom for the full code list.
 
 **Purpose:** Tell the agent where the human currently is — sign-in state, current page, current job/application, active search filters. Read-only.
 
-**Annotations:** `readOnlyHint: true`
+**Annotations:** `readOnlyHint: true`, `untrustedContentHint: true` (the current job title is site content)
 
 **Input schema:**
 
@@ -140,7 +140,7 @@ See "Errors" at the bottom for the full code list.
 
 **Purpose:** Navigate the current browser tab to the normal job detail page so the human can read it. View-state only — does not create an application.
 
-**Annotations:** none (`readOnlyHint` intentionally omitted — it changes the visible page)
+**Annotations:** `untrustedContentHint: true` (`readOnlyHint` intentionally omitted — it changes the visible page; the returned job summary is site content)
 
 **Input schema:**
 
@@ -299,7 +299,7 @@ Both optional; if neither is supplied, falls back to the current application fro
 
 **Purpose:** Patch fields on the candidate's own draft. Only supplied keys change; unspecified fields are preserved. Requires the caller's last-read `expectedRevision` — rejected if the human has edited the draft since.
 
-**Annotations:** none
+**Annotations:** `untrustedContentHint: true` (the echoed draft fields are candidate content)
 
 **Input schema:**
 
@@ -426,7 +426,7 @@ If the application was already submitted it returns `{ "status": "submitted", "a
 
 **Purpose:** Move the cursor to one field of the candidate's application and highlight it — for things the agent should not invent, like a phone number or a notice period.
 
-**Annotations:** none
+**Annotations:** `untrustedContentHint: true` (`currentValue` is candidate content)
 
 **Input schema:**
 
