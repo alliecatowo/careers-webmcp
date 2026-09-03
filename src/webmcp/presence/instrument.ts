@@ -24,7 +24,7 @@ const LABELS: Record<string, string> = {
   careers_start_application: 'Starting an application',
   careers_update_application: 'Filling in your application',
   careers_focus_application_field: 'Pointing at a field',
-  careers_submit_application: 'Submitting your application',
+  careers_submit_application: 'Preparing your application — waiting for you',
   careers_create_account: 'Setting up your account',
   careers_create_export: 'Preparing an export',
   careers_read_export: 'Reading the export',
