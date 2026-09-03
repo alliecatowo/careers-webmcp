@@ -49,6 +49,17 @@ import {
   EXPORT_READ_MAX,
   type ExportDataset,
 } from '@/domain/exports';
+import {
+  SITE_DESTINATIONS,
+  destinationPath,
+  getDestination,
+  HIRING_PROCESS_STEPS,
+  INTERNSHIP_SPECIALIZATIONS,
+  INTERNSHIP_COMPETENCIES,
+  INTERNSHIP_SUMMARY,
+  type SiteDestinationId,
+  type SiteInfoTopic,
+} from '@/domain/site';
 import { getContext } from './context';
 import { navigate, scrollToTop } from './navigation';
 import { ok, fail, boundResult } from './results';
@@ -72,6 +83,8 @@ import {
   createAccountSchema,
   createExportSchema,
   readExportSchema,
+  openPageSchema,
+  getSiteInfoSchema,
   validateInput,
 } from './schemas';
 
@@ -213,6 +226,97 @@ export const tools: CareersTool[] = [
         // Flash the job title on arrival so the human's eye lands where the agent looked.
         highlight('job', ['job-title']);
         return ok(boundResult({ opened: true, job: toJobSummary(job) }));
+      } catch (err) {
+        return fail(toErrorResult(err));
+      }
+    },
+  },
+  {
+    name: 'careers_open_page',
+    title: 'Go to a page on this careers site',
+    description:
+      "Navigate the person's tab to one of this site's own pages by name: the job board, their applications, their saved jobs, the sign-up form, the hiring-process or internship pages, or a prepared export. Use it instead of building a link yourself; careers_get_context lists which pages are available.",
+    inputSchema: openPageSchema,
+    annotations: {},
+    execute: async (input, options) => {
+      try {
+        const parsed = validateInput('careers_open_page', input) as {
+          page: SiteDestinationId;
+          exportId?: string;
+        };
+        if (isAborted(options?.signal)) return ok(boundResult({ opened: false }));
+
+        const destination = getDestination(parsed.page);
+        if (!destination) {
+          throw new WebMCPError('VALIDATION_ERROR', `Unknown page "${parsed.page}".`, {
+            field: 'page',
+            known: SITE_DESTINATIONS.map((d) => d.id),
+          });
+        }
+        // Same rule as every other candidate-scoped tool: no agent-only path.
+        if (destination.requiresAuth) requireCandidate();
+
+        const path = destinationPath(parsed.page, parsed.exportId);
+        if (!path) {
+          throw new WebMCPError('VALIDATION_ERROR', `page "${parsed.page}" requires an exportId.`, {
+            field: 'exportId',
+          });
+        }
+
+        navigate(path);
+        scrollToTop();
+        return ok(
+          boundResult({
+            opened: true,
+            page: destination.id,
+            label: destination.label,
+            url: path,
+          }),
+        );
+      } catch (err) {
+        return fail(toErrorResult(err));
+      }
+    },
+  },
+  {
+    name: 'careers_get_site_info',
+    title: 'Read this site\'s own information pages',
+    description:
+      "Read the employer's authored careers content as structured data: the hiring process end to end, the internship program, and the full list of pages you can send the person to. Use it to answer questions about how hiring works here instead of guessing or reading the rendered page.",
+    inputSchema: getSiteInfoSchema,
+    annotations: { readOnlyHint: true, untrustedContentHint: true },
+    execute: async (input, options) => {
+      try {
+        const parsed = validateInput('careers_get_site_info', input) as { topic?: SiteInfoTopic };
+        if (isAborted(options?.signal)) return ok(boundResult(null));
+
+        const signedIn = !!getCurrentCandidate();
+        const all = {
+          hiring_process: {
+            label: 'How hiring works here',
+            url: '/careers/hiring-process',
+            steps: HIRING_PROCESS_STEPS,
+          },
+          internship_program: {
+            label: 'Internship program',
+            url: '/careers/internship-program',
+            summary: INTERNSHIP_SUMMARY,
+            specializations: INTERNSHIP_SPECIALIZATIONS,
+            competencies: INTERNSHIP_COMPETENCIES,
+          },
+          destinations: SITE_DESTINATIONS.map((d) => ({
+            id: d.id,
+            label: d.label,
+            description: d.description,
+            requiresAuth: d.requiresAuth,
+            available: d.id === 'export' ? false : !d.requiresAuth || signedIn,
+          })),
+        };
+
+        if (parsed.topic) {
+          return ok(boundResult({ topic: parsed.topic, [parsed.topic]: all[parsed.topic] }));
+        }
+        return ok(boundResult(all));
       } catch (err) {
         return fail(toErrorResult(err));
       }

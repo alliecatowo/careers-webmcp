@@ -29,7 +29,7 @@ brand was renamed to the fictional "Northwind" (string replacement only).
 
 WebMCP layer (`src/webmcp/`)
 - Tool registration via `document.modelContext.registerTool`, feature-detected, registered once per page load, unregistered via AbortSignal
-- 16 candidate-facing tools: `careers_get_context`, `careers_search_jobs`, `careers_get_job`, `careers_open_job`, `careers_set_search_view`, `careers_get_saved_jobs`, `careers_set_saved_job`, `careers_get_my_applications`, `careers_get_application`, `careers_start_application`, `careers_update_application`, `careers_focus_application_field`, `careers_submit_application`, `careers_create_account`, `careers_create_export`, `careers_read_export`
+- 18 candidate-facing tools: `careers_get_context`, `careers_search_jobs`, `careers_get_job`, `careers_open_job`, `careers_open_page`, `careers_get_site_info`, `careers_set_search_view`, `careers_get_saved_jobs`, `careers_set_saved_job`, `careers_get_my_applications`, `careers_get_application`, `careers_start_application`, `careers_update_application`, `careers_focus_application_field`, `careers_submit_application`, `careers_create_account`, `careers_create_export`, `careers_read_export`
 - JSON Schema inputs, structured error model, `readOnlyHint` / `untrustedContentHint` annotations, central output bounds with explicit `truncated`
 - Router bridge so tools navigate the real site (`careers_open_job`, `careers_start_application`)
 - Human-confirmation hand-off: `careers_create_account` and `careers_submit_application` stage the real form and return `awaiting_human_confirmation`; neither can complete without a human click

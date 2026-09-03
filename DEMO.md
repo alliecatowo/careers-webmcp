@@ -132,7 +132,7 @@ level, location and compensation.
 
 > "I never installed a connector for this site. I never pasted a key. Normally
 > an agent helps here by taking my whole session and guessing at the markup.
-> This one didn't have to — the page handed it sixteen tools on
+> This one didn't have to — the page handed it eighteen tools on
 > document-dot-model-context, and every one of them calls the same functions
 > the site's own buttons call."
 
@@ -394,7 +394,7 @@ narrate around the missing agent panel.
 >
 > I never installed a connector for this site. I never pasted a key. Normally
 > an agent helps here by taking my whole session and guessing at the markup.
-> This one didn't have to — the page handed it sixteen tools on
+> This one didn't have to — the page handed it eighteen tools on
 > document-dot-model-context, and every one of them calls the same functions
 > the site's own buttons call.
 >
@@ -456,7 +456,7 @@ connector takes a token you pasted and acts out of sight of the page. WebMCP
 inverts that: the publisher defines the capabilities, so the publisher defines
 the limits.
 
-The site registers 16 candidate-facing tools on document.modelContext —
+The site registers 18 candidate-facing tools on document.modelContext —
 semantic job search, navigation, control of the site's own search view, saved
 jobs, application drafts, field focus, account sign-up and bulk CSV export.
 Nothing reads the DOM. The human UI and the tools import the same domain

@@ -13,7 +13,11 @@ export type PageKind =
   | 'job_detail'
   | 'application'
   | 'my_applications'
+  | 'saved_jobs'
   | 'profile'
+  | 'sign_up'
+  | 'export'
+  | 'careers_info'
   | 'other';
 
 export interface SearchViewState {
@@ -50,8 +54,11 @@ export function classifyPathname(pathname: string): PageKind {
   if (/^\/job\/[^/]+/.test(pathname)) return 'job_detail';
   if (/^\/careers\/application\//.test(pathname)) return 'application';
   if (pathname === '/careers' || pathname.startsWith('/careers/open-positions') || /^\/careers\/countries\/[^/]+\/?$/.test(pathname)) return 'jobs_index';
+  if (/^\/careers\/exports\//.test(pathname)) return 'export';
+  if (pathname.startsWith('/careers/signup')) return 'sign_up';
   if (pathname.startsWith('/my-account/applications')) return 'my_applications';
   if (pathname.startsWith('/my-account')) return 'profile';
+  if (pathname.startsWith('/careers/')) return 'careers_info';
   return 'other';
 }
 

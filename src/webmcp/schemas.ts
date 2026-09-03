@@ -8,6 +8,7 @@ import { WebMCPError } from './errors';
 import { APPLICATION_FIELD_NAMES } from '@/domain/applications';
 import { SIGNUP_FIELD_NAMES } from '@/domain/session/signup.store';
 import { EXPORT_READ_MAX, JOB_EXPORT_COLUMNS, APPLICATION_EXPORT_COLUMNS } from '@/domain/exports';
+import { SITE_DESTINATION_IDS, SITE_INFO_TOPICS } from '@/domain/site';
 
 const stringArray = { type: 'array', items: { type: 'string' } } as const;
 
@@ -211,8 +212,53 @@ function checkType(input: Record<string, unknown>, key: string, type: 'string' |
   }
 }
 
+export const openPageSchema = {
+  type: 'object',
+  additionalProperties: false,
+  required: ['page'],
+  properties: {
+    page: { type: 'string', enum: SITE_DESTINATION_IDS },
+    exportId: { type: 'string', description: 'Required only when page is "export".' },
+  },
+};
+
+export const getSiteInfoSchema = {
+  type: 'object',
+  additionalProperties: false,
+  properties: {
+    topic: {
+      type: 'string',
+      enum: SITE_INFO_TOPICS,
+      description: 'Omit to get every topic.',
+    },
+  },
+};
+
 export const validators: Record<string, Validator> = {
   careers_get_context: () => {},
+  careers_open_page: (input) => {
+    requireKeys(input, ['page']);
+    const page = input.page as string;
+    if (!SITE_DESTINATION_IDS.includes(page as never)) {
+      throw new WebMCPError('VALIDATION_ERROR', `Unknown page "${page}".`, {
+        field: 'page',
+        known: SITE_DESTINATION_IDS,
+      });
+    }
+    if (page === 'export' && typeof input.exportId !== 'string') {
+      throw new WebMCPError('VALIDATION_ERROR', 'page "export" requires an exportId.', {
+        field: 'exportId',
+      });
+    }
+  },
+  careers_get_site_info: (input) => {
+    if (input.topic !== undefined && !SITE_INFO_TOPICS.includes(input.topic as never)) {
+      throw new WebMCPError('VALIDATION_ERROR', `Unknown topic "${String(input.topic)}".`, {
+        field: 'topic',
+        known: SITE_INFO_TOPICS,
+      });
+    }
+  },
   careers_search_jobs: (input) => {
     checkType(input, 'query', 'string');
     checkType(input, 'minCompensation', 'number');

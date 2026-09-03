@@ -17,6 +17,8 @@ const LABELS: Record<string, string> = {
   careers_set_search_view: 'Filling in the search',
   careers_get_job: 'Reading a job posting',
   careers_open_job: 'Opening a job',
+  careers_open_page: 'Opening a page',
+  careers_get_site_info: 'Reading about the company',
   careers_get_saved_jobs: 'Checking saved jobs',
   careers_set_saved_job: 'Updating saved jobs',
   careers_get_my_applications: 'Checking your applications',
@@ -70,6 +72,8 @@ function captionFor(tool: string, data: unknown): string | null {
       return typeof d.returnedRows === 'number' ? `${pluralize(d.returnedRows, 'row')} read` : null;
     case 'careers_open_job':
       return d.opened ? 'opened' : null;
+    case 'careers_open_page':
+      return typeof d.label === 'string' && d.opened ? 'opened' : null;
     case 'careers_focus_application_field':
       return d.focused ? 'highlighted' : null;
     default:

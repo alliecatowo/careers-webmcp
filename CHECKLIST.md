@@ -6,7 +6,7 @@
 
 ## Project
 
-- [ ] Open the live demo in a **real WebMCP-capable browser** (ChatGPT in-app browser, or Chrome with WebMCP enabled) and confirm all 16 tools register and are callable. Everything so far was verified via the test shim and Playwright — no human has confirmed a real agent end to end.
+- [ ] Open the live demo in a **real WebMCP-capable browser** (ChatGPT in-app browser, or Chrome with WebMCP enabled) and confirm all 18 tools register and are callable. Everything so far was verified via the test shim and Playwright — no human has confirmed a real agent end to end.
 - [ ] Walk the 9 judge-testing steps in `SUBMISSION.md` §6 against the live URL and confirm each one behaves as written.
 - [ ] Confirm the deployed build matches `HEAD` (redeploy with `npx vercel deploy --prod --yes` if not).
 

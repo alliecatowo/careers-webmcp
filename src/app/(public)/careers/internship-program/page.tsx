@@ -1,5 +1,6 @@
 
 import { Metadata } from 'next';
+import { INTERNSHIP_SPECIALIZATIONS, INTERNSHIP_COMPETENCIES } from '@/domain/site';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Check, Zap } from 'lucide-react';
@@ -10,22 +11,6 @@ export const metadata: Metadata = {
     description: "Join Northwind's merit-driven, performance-focused internship program in India. A direct pathway to a full-time role for top performers.",
 };
 
-const specializations = [
-    "Full-Stack Engineering (React, Go)",
-    "Cloud & DevOps Engineering (AWS, Kubernetes)",
-    "Data Science & Machine Learning",
-    "Product Management",
-    "UX/UI Design",
-    "Talent Acquisition & HR Tech"
-];
-
-const competencies = [
-    "Technical Proficiency",
-    "Problem-Solving & Critical Thinking",
-    "Ownership & Accountability",
-    "Communication & Collaboration",
-    "Adaptability & Learning Agility"
-];
 
 export default function InternshipProgramPage() {
     return (
@@ -51,7 +36,7 @@ export default function InternshipProgramPage() {
                 <section>
                      <h2 className="text-3xl font-bold tracking-tight text-center mb-10">6 Specialization Tracks</h2>
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                        {specializations.map(track => (
+                        {INTERNSHIP_SPECIALIZATIONS.map(track => (
                             <Card key={track} className="bg-card">
                                 <CardContent className="p-6 flex items-center gap-4">
                                     <Zap className="h-6 w-6 text-primary" />
@@ -69,7 +54,7 @@ export default function InternshipProgramPage() {
                             You will be rigorously assessed against our five core competencies. Mastery in these areas is non-negotiable for progressing within Northwind.
                         </p>
                         <ul className="space-y-4">
-                           {competencies.map(item => (
+                           {INTERNSHIP_COMPETENCIES.map(item => (
                                <li key={item} className="flex items-start gap-3">
                                    <Check className="h-6 w-6 text-green-500 mt-1 shrink-0" />
                                    <span className="text-lg">{item}</span>

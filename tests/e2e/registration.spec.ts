@@ -6,6 +6,8 @@ const EXPECTED_TOOLS = [
   'careers_search_jobs',
   'careers_get_job',
   'careers_open_job',
+  'careers_open_page',
+  'careers_get_site_info',
   'careers_get_saved_jobs',
   'careers_set_saved_job',
   'careers_get_my_applications',
@@ -21,7 +23,7 @@ const EXPECTED_TOOLS = [
 ];
 
 test.describe('WebMCP tool registration', () => {
-  test('registers all 16 tools exactly once on initial load', async ({ page }) => {
+  test('registers all 18 tools exactly once on initial load', async ({ page }) => {
     await installWebMCPShim(page);
     await page.goto('/careers/open-positions');
     await page.waitForFunction(() => Boolean((window as unknown as { __webmcp?: unknown }).__webmcp));

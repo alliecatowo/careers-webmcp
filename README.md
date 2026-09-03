@@ -182,6 +182,37 @@ byte-for-byte a normal careers site.
 re-registration on route change or sign-in; a tool called on any page sees the
 current truth.
 
+### The whole site is addressable, from any page
+
+`AppProvider` lives in the **root** layout, so the tools register on every page
+of the site — not just the careers board. An agent that meets the user on the
+home page has the full surface immediately: it can search the catalog before
+the human has seen a single job card, then move them somewhere useful.
+
+Moving them is `careers_open_page`, and its `page` enum **is the site map**:
+
+```
+careers_home · jobs · full_time_roles · part_time_roles · hiring_process
+internship_program · life_at_company · sign_up · my_applications
+saved_jobs · profile · export
+```
+
+Because the enum ships in the tool's JSON Schema, the agent discovers where it
+can go the moment tools are registered — no link reconstruction, no guessing at
+routes, no scraping `<a href>`. `careers_get_context` returns the same list
+annotated with `requiresAuth` and `available`, so a signed-out agent can see
+that *My saved jobs* exists and knows it needs a session first rather than
+navigating into an empty page. Candidate destinations call the same
+`requireCandidate()` as every other candidate tool — there is no agent-only way
+in.
+
+`careers_get_site_info` is the read half. Asked "what's the interview process
+here?", the agent gets the employer's four steps as structured data instead of
+inventing an answer or parsing a rendered page. That content lives in
+`src/domain/site/` and **the informational pages import it from there**, so the
+same one-source-two-consumers rule that governs job search governs the prose:
+the agent cannot describe a page the human isn't looking at.
+
 ### Nothing reads the DOM — the page tells you where it is
 
 `careers_get_context` doesn't scrape and doesn't primarily parse the URL. The
@@ -284,6 +315,8 @@ The pill is a report, not a control.
 | `careers_search_jobs` | read | — | Deterministic structured search: department, level, location, workplace, skills, compensation, keywords |
 | `careers_get_job` | read | — | One job, bounded, plus the candidate's saved/applied status |
 | `careers_open_job` | navigate | — | Opens the real job page in the user's tab via the app router |
+| `careers_open_page` | navigate | for candidate pages | Goes to any page on the site by name — job board, saved jobs, applications, sign-up, hiring process, an export. The enum *is* the site map |
+| `careers_get_site_info` | read | — | The employer's authored content as data: the hiring process, the internship program, and every destination the agent can reach |
 | `careers_set_search_view` | navigate | — | Puts a search on the site's own jobs page: types the query into the visible box, applies the visible filters |
 | `careers_get_saved_jobs` | read | ✔ | The candidate's saved roles |
 | `careers_set_saved_job` | mutate | ✔ | The same operation as the Save button |
@@ -400,7 +433,7 @@ This is a protocol demo, not production ATS software.
 Built on a pre-existing open-source careers portal. The careers UI, service
 adapters, admin dashboards and styling are upstream work.
 
-The challenge-period contribution is the WebMCP layer and all 16 tools, the
+The challenge-period contribution is the WebMCP layer and all 18 tools, the
 agent presence layer, the UI-context bridge, the normalized job model and
 deterministic search, the 20-job catalog, the candidate session, saved jobs, the
 shared application draft store with revision protection, the sign-up page and

@@ -9,6 +9,7 @@ import { getSessionSummary, getCurrentCandidate } from '@/domain/session/session
 import { classifyPathname, getSearchViewState, useUiContextStore, type PageKind } from '@/domain/ui-context/ui-context.store';
 import { getJobCatalog, getCareersJob } from '@/domain/jobs';
 import { findApplicationByJob, getApplication } from '@/domain/applications';
+import { SITE_DESTINATIONS, type SiteDestinationId } from '@/domain/site';
 
 export interface CareersContext {
   session: ReturnType<typeof getSessionSummary>;
@@ -21,6 +22,18 @@ export interface CareersContext {
     workplace: string | null;
   };
   application: { id: string; jobId: string; status: string; revision: number } | null;
+  /**
+   * Everywhere the agent can send the person with careers_open_page. Listed
+   * here so an agent that lands on any page — the home page included — can
+   * see the whole site without reconstructing links from markup.
+   */
+  destinations: {
+    id: SiteDestinationId;
+    label: string;
+    description: string;
+    requiresAuth: boolean;
+    available: boolean;
+  }[];
 }
 
 /** Best-effort parse of `/careers/countries/:slug/jobs/:jobId` when the job
@@ -36,7 +49,13 @@ export async function getContext(): Promise<CareersContext> {
   const pathname = ui.pathname ?? '/';
   const queryString = new URLSearchParams(ui.searchParams ?? {}).toString();
   const path = queryString ? `${pathname}?${queryString}` : pathname;
-  const kind = classifyPathname(pathname);
+  let kind = classifyPathname(pathname);
+  // /my-account is one page with tabs; the visible tab is the real location.
+  if (kind === 'profile' || kind === 'my_applications') {
+    const tab = ui.searchParams?.tab;
+    if (tab === 'saved-jobs') kind = 'saved_jobs';
+    else if (tab === 'applications') kind = 'my_applications';
+  }
 
   let currentJob: CareersContext['currentJob'] = null;
   const jobId = ui.currentJobId ?? jobIdFromPathname(pathname);
@@ -84,5 +103,14 @@ export async function getContext(): Promise<CareersContext> {
     }
   }
 
-  return { session, page: { kind, path }, currentJob, search, application };
+  const destinations = SITE_DESTINATIONS.map((d) => ({
+    id: d.id,
+    label: d.label,
+    description: d.description,
+    requiresAuth: d.requiresAuth,
+    // `export` needs an exportId, so it is never reachable without one.
+    available: d.id === 'export' ? false : !d.requiresAuth || session.signedIn,
+  }));
+
+  return { session, page: { kind, path }, currentJob, search, application, destinations };
 }

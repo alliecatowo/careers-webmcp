@@ -1,6 +1,6 @@
 # Careers WebMCP tool reference
 
-All 16 tools are registered once per page load on `document.modelContext` (see
+All 18 tools are registered once per page load on `document.modelContext` (see
 `src/webmcp/register.ts`) and are feature-detected — the normal careers site
 works identically with no WebMCP-capable browser present.
 
@@ -155,6 +155,77 @@ See "Errors" at the bottom for the full code list.
 ```
 
 **Errors:** `JOB_NOT_FOUND`.
+
+---
+
+## careers_open_page
+
+**Purpose:** Go to any page on this careers site by name. The `page` enum is the site's own map, so the agent never reconstructs a link or scrapes an `<a href>`. Candidate-scoped destinations require a session, exactly like every other candidate tool.
+
+**Annotations:** none (`readOnlyHint` omitted — it changes the visible page).
+
+**Destinations:**
+
+| `page` | Path | Requires sign-in |
+| --- | --- | --- |
+| `careers_home` | `/careers` | no |
+| `jobs` | `/careers/open-positions` | no |
+| `full_time_roles` | `/careers/full-time` | no |
+| `part_time_roles` | `/careers/part-time` | no |
+| `hiring_process` | `/careers/hiring-process` | no |
+| `internship_program` | `/careers/internship-program` | no |
+| `life_at_company` | `/careers/life-at-baalvion` | no |
+| `sign_up` | `/careers/signup` | no |
+| `my_applications` | `/my-account?tab=applications` | **yes** |
+| `saved_jobs` | `/my-account?tab=saved-jobs` | **yes** |
+| `profile` | `/my-account?tab=settings` | **yes** |
+| `export` | `/careers/exports/{exportId}` | no (needs `exportId`) |
+
+**Input schema:**
+
+```json
+{ "type": "object", "additionalProperties": false, "required": ["page"],
+  "properties": { "page": { "type": "string", "enum": ["careers_home", "jobs", "..."] },
+                  "exportId": { "type": "string" } } }
+```
+
+**Example output:**
+
+```json
+{ "opened": true, "page": "saved_jobs", "label": "My saved jobs", "url": "/my-account?tab=saved-jobs" }
+```
+
+**Errors:** `AUTH_REQUIRED` (candidate-scoped destination while signed out), `VALIDATION_ERROR` (unknown `page`, carrying the `known` list; or `page: "export"` with no `exportId`).
+
+---
+
+## careers_get_site_info
+
+**Purpose:** Read the employer's own authored careers content as structured data — the hiring process, the internship program, and every destination the agent can reach. Use it to answer "how does hiring work here?" instead of guessing or reading the rendered page.
+
+The content lives in `src/domain/site/` and the informational pages import it from there, so what the agent reads is exactly what the human sees.
+
+**Annotations:** `readOnlyHint: true`, `untrustedContentHint: true` (publisher-authored, but treated as site content — in a real deployment it would come from a CMS an employer edits)
+
+**Input schema:**
+
+```json
+{ "type": "object", "additionalProperties": false,
+  "properties": { "topic": { "type": "string", "enum": ["hiring_process", "internship_program", "destinations"] } } }
+```
+
+Omit `topic` to get all three.
+
+**Example output** (`topic: "hiring_process"`):
+
+```json
+{ "topic": "hiring_process",
+  "hiring_process": { "label": "How hiring works here", "url": "/careers/hiring-process",
+    "steps": [ { "number": "01", "name": "Apply", "description": "Submit your application for an open role..." },
+               { "number": "02", "name": "Interview", "description": "..." } ] } }
+```
+
+**Errors:** `VALIDATION_ERROR` (unknown `topic`, carrying the `known` list).
 
 ---
 

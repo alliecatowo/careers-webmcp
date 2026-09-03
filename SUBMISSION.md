@@ -117,11 +117,12 @@ Execution, Potential Impact, Creativity & Ambition (exact wording in §7).
 > and leaves when the visit ends.
 >
 > **What it is.** A working careers portal for a fictional employer, fully
-> usable with no agent present. When WebMCP is available it registers sixteen
+> usable with no agent present. When WebMCP is available it registers eighteen
 > candidate-facing tools on `document.modelContext`: page context, semantic job
-> search, job detail, navigation, control of the site's own search view, saved
-> jobs, application drafts with revision-safe patching, field focus, account
-> sign-up, submission hand-off, and handle-based CSV export.
+> search, job detail, navigation to any page on the site by name, control of
+> the site's own search view, the employer's own careers content as structured
+> data, saved jobs, application drafts with revision-safe patching, field focus,
+> account sign-up, submission hand-off, and handle-based CSV export.
 >
 > **What people and agents can do together that was hard before.** You ask one
 > compound question the board has no filter UI for, and the agent answers it
@@ -147,7 +148,7 @@ Execution, Potential Impact, Creativity & Ambition (exact wording in §7).
 > typing; the person stays the person, and sends the thing.
 >
 > **How WebMCP was implemented.** A client provider feature-detects
-> `document.modelContext` and registers sixteen tools once per page load,
+> `document.modelContext` and registers eighteen tools once per page load,
 > unregistering via an `AbortSignal`, guarded by a `WeakSet` against React
 > StrictMode double-mounts; registration failure is swallowed so it can never
 > break the site. Nothing reads or drives the DOM. The human UI and the tools
@@ -220,7 +221,7 @@ to obtain.
 ### WebMCP Leverage
 > *"How thoroughly and skillfully does the project use WebMCP? Does the code reflect genuine effort and a working, non-trivial implementation?"*
 
-**Breadth.** 16 tools across five kinds — read, navigate, mutate, focus,
+**Breadth.** 18 tools across five kinds — read, navigate, mutate, focus,
 hand-off — covering the site's whole candidate surface, not one search tool
 with a wrapper.
 
@@ -236,6 +237,17 @@ registration failure swallowed so it can never break the site.
 1. **Bulk data as a handle.** A WebMCP result is a plain JavaScript value — no file handles, no streaming — so a full result set cannot be returned. `careers_create_export` builds a CSV once and returns `{exportId, rowCount, columns, preview, downloadUrl, readHint}`; `careers_read_export` pages through it with column projection and `hasMore`. Exports call the *unbounded* ranker deliberately, because export rows never enter a tool result. The human downloads the identical file.
 2. **Optimistic concurrency in the tool surface.** Every draft carries a monotonic `revision`; every read returns it; every write may carry `expectedRevision` and is rejected with `STALE_APPLICATION` (carrying both revisions) on mismatch. Two deliberate refinements: `expectedRevision: null` skips the check entirely, because *human* writes always win; and a no-op patch doesn't bump the revision, so a controlled-input echo can't spin it out from under a well-behaved agent.
 3. **Publisher-enforced stopping points.** `careers_create_account` and `careers_submit_application` return `awaiting_human_confirmation` and cannot complete — verifiable in one grep: `grep -cE "submitApplication\(|completeSignUp\(" src/webmcp/tools.ts` → 0, and each function has exactly one caller in the app, both inside an onClick.
+
+**The whole site is addressable from anywhere.** The provider is in the root
+layout, so tools register on every page — an agent meeting the user on the home
+page can search the catalog before the human has seen a job card.
+`careers_open_page` takes a destination enum that *is* the site map, shipped in
+the JSON Schema, so the agent never reconstructs a link or scrapes an `<a href>`;
+`careers_get_context` returns the same list annotated with `requiresAuth` and
+`available`. `careers_get_site_info` is the read half — the employer's hiring
+process and internship program as structured data, imported by the
+informational pages themselves, so the agent cannot describe a page the human
+isn't looking at.
 
 **Zero DOM automation, and context that isn't inferred.** Tools call domain
 functions; navigation uses the Next.js router. `careers_get_context` doesn't
@@ -295,7 +307,7 @@ listing and detail pages, country-scoped routes, candidate account area, admin
 and recruiter dashboards, the service/adapter architecture, the visual design
 system.
 
-**Challenge-period contribution:** the WebMCP layer (`src/webmcp/`) and all 16
+**Challenge-period contribution:** the WebMCP layer (`src/webmcp/`) and all 18
 tools; the agent presence layer (`src/webmcp/presence/`); the UI-context bridge;
 the normalized `CareersJob` model and the deterministic weighted scorer; the
 20-job catalog; the candidate session; saved jobs; the shared application draft

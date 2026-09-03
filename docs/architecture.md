@@ -180,7 +180,7 @@ the rows the human is looking at.
 ## Registration lifecycle
 
 `WebMCPProvider` runs once in the root provider tree. It feature-detects
-`document.modelContext`; if present it registers all 16 tools with an
+`document.modelContext`; if present it registers all 18 tools with an
 `AbortSignal` and aborts on unmount. Tools are **not** re-registered on route
 changes, sign-in, or state changes: they read live state at invocation time.
 If WebMCP is absent nothing happens and the site is an ordinary careers portal.

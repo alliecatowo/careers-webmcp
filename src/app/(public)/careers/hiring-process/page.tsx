@@ -1,17 +1,12 @@
 
 import { Metadata } from "next";
+import { HIRING_PROCESS_STEPS } from "@/domain/site";
 
 export const metadata: Metadata = {
     title: "Our Hiring Process | Northwind Careers",
     description: "Learn about Northwind's transparent, four-step hiring process designed to identify the best talent.",
 };
 
-const hiringProcessSteps = [
-    { number: "01", name: "Apply", description: "Submit your application for an open role that matches your skills and interests via our careers portal." },
-    { number: "02", name: "Interview", description: "Meet with our talent acquisition team and hiring managers to discuss your experience, skills, and cultural alignment." },
-    { number: "03", name: "Assessment", description: "Participate in a role-specific, skills-based assessment. This could be a technical challenge, a case study, or a portfolio review." },
-    { number: "04", name: "Offer", description: "Successful candidates receive a competitive, comprehensive offer to join our global team." },
-];
 
 export default function HiringProcessPage() {
     return (
@@ -30,7 +25,7 @@ export default function HiringProcessPage() {
                     <div className="relative">
                         <div className="absolute left-0 top-1/2 w-full h-0.5 bg-border -translate-y-1/2" aria-hidden="true"></div>
                         <div className="relative grid gap-10 grid-cols-1 sm:grid-cols-2 md:grid-cols-4">
-                            {hiringProcessSteps.map((step) => (
+                            {HIRING_PROCESS_STEPS.map((step) => (
                                 <div key={step.name} className="text-center relative bg-background px-4">
                                 <div className="flex justify-center items-center">
                                         <div className="h-16 w-16 rounded-full border-2 border-primary/20 bg-background flex items-center justify-center text-xl font-bold text-primary">
