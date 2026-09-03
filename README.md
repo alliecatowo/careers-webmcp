@@ -1,5 +1,28 @@
 # Careers WebMCP
 
+<p align="center">
+  <img src="docs/media/hero.gif" alt="An agent fills out the Northwind candidate account form live, then a banner reads: Your details are filled in — nothing to type. Your move." width="800">
+</p>
+
+<table>
+<tr>
+<td width="33%" align="center">
+<img src="docs/media/06-account-prefill.png" width="100%" alt="Prefilled candidate sign-up form with the 'nothing to type, your move' banner">
+<br><sub>Account sign-up filled in for you — creating it is still your click.</sub>
+</td>
+<td width="33%" align="center">
+<img src="docs/media/07-coedit-revision.png" width="100%" alt="Application draft cover note with a hand-written edit and an incrementing draft revision counter">
+<br><sub>Human and agent co-edit one draft — every write carries the revision it last read.</sub>
+</td>
+<td width="33%" align="center">
+<img src="docs/media/08-application-submitted.png" width="100%" alt="Application Submitted confirmation screen">
+<br><sub>Submitted — the last irreversible click was always yours.</sub>
+</td>
+</tr>
+</table>
+
+---
+
 > **The careers page is the connector.**
 
 A working careers site that hands its own capabilities to whatever browser
@@ -448,10 +471,7 @@ git log --oneline
 git diff $(git rev-list --max-parents=0 HEAD)..HEAD --stat
 ```
 
-Itemized in [docs/CHALLENGE_DELTA.md](docs/CHALLENGE_DELTA.md) and
-[docs/UPSTREAM.md](docs/UPSTREAM.md); design deviations in
-[docs/DECISIONS.md](docs/DECISIONS.md); longer architecture notes in
-[docs/architecture.md](docs/architecture.md).
+Longer architecture notes in [docs/architecture.md](docs/architecture.md).
 
 ## License / upstream attribution
 
@@ -460,5 +480,4 @@ MIT (see [LICENSE](LICENSE)). Based on
 imported at commit `9108409` (2026-04-14), the last upstream commit published
 under its README's MIT declaration; upstream later switched to a proprietary
 license, which is why this project pins that commit. The visible employer is
-the fictional "Northwind"; "Baalvion" is used only for attribution. Details in
-[docs/UPSTREAM.md](docs/UPSTREAM.md).
+the fictional "Northwind"; "Baalvion" is used only for attribution.

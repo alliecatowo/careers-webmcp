@@ -411,7 +411,7 @@ Both optional; if neither is supplied, falls back to the current application fro
 
 ## careers_submit_application
 
-**Purpose:** Validate the candidate's own draft against the same rules as the human Submit button, then open it for the person to send. **This tool does not submit.** The site deliberately reserves the irreversible click for the human — see docs/DECISIONS.md.
+**Purpose:** Validate the candidate's own draft against the same rules as the human Submit button, then open it for the person to send. **This tool does not submit.** The site deliberately reserves the irreversible click for the human.
 
 **Annotations:** none
 
