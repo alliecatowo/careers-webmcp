@@ -75,8 +75,8 @@ grep -cE "submitApplication\(|completeSignUp\(" src/webmcp/tools.ts   # → 0
 
 # Each has exactly one caller in the whole app, both inside an onClick:
 grep -rnE "submitApplication\(|completeSignUp\(" src/app
-#   src/app/(public)/careers/application/[slug]/page.tsx:251   Submit Application button
-#   src/app/(public)/careers/signup/page.tsx:105               Create account button
+#   src/app/(public)/careers/application/[slug]/page.tsx:262   Submit Application button
+#   src/app/(public)/careers/signup/page.tsx:107               Create account button
 ```
 
 `src/webmcp/tools.ts` imports eight functions from `@/domain/applications` —
