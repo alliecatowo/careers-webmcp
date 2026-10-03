@@ -8,7 +8,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/components/system/Toast/useToast';
 import { Loader2 } from 'lucide-react';
-import { jobCreationSchema, JobCreationData, transformToApiPayload } from './creation/schema';
+import { jobCreationSchema, JobCreationData, JobCreationInput, transformToApiPayload } from './creation/schema';
 import { getInitialValues } from './creation/data';
 
 import { BasicInfoTab } from './creation/tabs/BasicInfoTab';
@@ -41,7 +41,7 @@ export function JobForm({ user, existingJob, onSaveSuccess }: JobFormProps) {
     const [activeTab, setActiveTab] = useState(TABS[0].value);
     const isEditMode = !!existingJob;
 
-    const methods = useForm<JobCreationData>({
+    const methods = useForm<JobCreationInput, unknown, JobCreationData>({
         resolver: zodResolver(jobCreationSchema),
         defaultValues: getInitialValues(existingJob),
     });

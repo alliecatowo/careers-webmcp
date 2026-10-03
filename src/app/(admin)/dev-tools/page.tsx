@@ -73,7 +73,7 @@ type EmailFormData = z.infer<typeof emailSchema>;
 const calendarSchema = z.object({
   candidateName: z.string().min(1, 'Candidate name is required.'),
   jobTitle: z.string().min(1, 'Job title is required.'),
-  scheduledAt: z.date({ required_error: 'A date is required.' }),
+  scheduledAt: z.date({ error: 'A date is required.' }),
 });
 type CalendarFormData = z.infer<typeof calendarSchema>;
 
