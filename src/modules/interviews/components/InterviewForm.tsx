@@ -44,7 +44,7 @@ const interviewFormSchema = z.object({
   candidateId: z.string().min(1, 'Candidate is required.'),
   jobId: z.string().min(1, 'Job is required.'),
   stage: z.string().min(1, 'Interview stage is required.'),
-  scheduledAt: z.date({ required_error: 'A date and time is required.' }),
+  scheduledAt: z.date({ error: 'A date and time is required.' }),
   interviewerIds: z
     .array(z.string())
     .min(1, 'At least one interviewer is required.'),

@@ -81,7 +81,8 @@ export const jobCreationSchema = z.object({
   })
 });
 
-export type JobCreationData = z.infer<typeof jobCreationSchema>;
+export type JobCreationData = z.output<typeof jobCreationSchema>;
+export type JobCreationInput = z.input<typeof jobCreationSchema>;
 
 // Helper function to map form data to the final API payload structure.
 export const transformToApiPayload = (data: JobCreationData): Partial<Job> => {

@@ -18,7 +18,7 @@ const userFormSchema = z.object({
     name: z.string().min(2, "Name must be at least 2 characters."),
     email: z.string().email("Invalid email address."),
     role: z.enum(userRoles, {
-        required_error: "You need to select a user role.",
+        error: "You need to select a user role.",
     }),
 });
 

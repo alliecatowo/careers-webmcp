@@ -16,7 +16,7 @@ import { documentService } from '@/services/document.service';
 
 const uploadSchema = z.object({
     file: z.instanceof(File).refine(file => file.size > 0, "File is required."),
-    documentType: z.enum(documentTypes, { required_error: "Document type is required." }),
+    documentType: z.enum(documentTypes, { error: "Document type is required." }),
     country: z.string().min(1, "Country is required."),
     issueDate: z.string().optional(),
     signature: z.boolean().refine(val => val === true, "You must digitally sign the document."),

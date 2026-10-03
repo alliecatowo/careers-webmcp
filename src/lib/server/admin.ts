@@ -1,5 +1,8 @@
 
-import * as admin from 'firebase-admin';
+import { getApps, initializeApp } from 'firebase-admin/app';
+import { getAuth } from 'firebase-admin/auth';
+import { getFirestore } from 'firebase-admin/firestore';
+import { getStorage } from 'firebase-admin/storage';
 
 // ===================================================================
 // WORLD-CLASS ADMIN SDK INITIALIZATION
@@ -11,15 +14,15 @@ import * as admin from 'firebase-admin';
 // credentials from the environment.
 // For local development with the Emulator Suite, this also works seamlessly.
 
-if (!admin.apps.length) {
+if (!getApps().length) {
   try {
-    admin.initializeApp();
+    initializeApp();
   } catch (e) {
     // In a real scenario, this would trigger a high-priority alert.
     // The application's backend is non-functional without this.
   }
 }
 
-export const adminAuth = admin.auth();
-export const adminDb = admin.firestore();
-export const adminStorage = admin.storage();
+export const adminAuth = getAuth();
+export const adminDb = getFirestore();
+export const adminStorage = getStorage();
