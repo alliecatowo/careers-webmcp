@@ -83,7 +83,7 @@
     "postcss": "^8",
     "tailwindcss": "^3.4.1",
     "tsx": "^4.23.15",
-    "typescript": "^5.9.3",
+    "typescript": "^6.0.3",
     "vitest": "^3.2.7",
     "webmcp-types": "0.1.10"
   },
