@@ -14,6 +14,8 @@ overrides:
   '@opentelemetry/propagator-jaeger@<2.9.0': ^2.9.0
   '@opentelemetry/core@<2.8.0': ^2.8.0
   protobufjs@>=8.0.0 <8.6.6: ^8.6.6
+  uuid@<11.1.1: ^11.1.1
+  '@tootallnate/once@<2.0.1': ^2.0.1
 
 importers:
 
@@ -2740,8 +2742,8 @@ packages:
     resolution: {integrity: sha512-GwdDyGGr6UXAtubF14yAwcXvdaogqfsQgIk89Suebjxob/Rjq2xvfmXsjDF1rQmKmhHsJm9TOY7myxv3i6geJw==}
     engines: {node: '>=20'}
 
-  '@tootallnate/once@2.0.0':
-    resolution: {integrity: sha512-XCuKFP5PS55gnMVu3dty8KPatLqUoy/ZYzDzAGCQ8JNFCkLXzmI7vNHCR+XpbZaMWQK/vQubr7PkYq8g470J/A==}
+  '@tootallnate/once@2.0.1':
+    resolution: {integrity: sha512-HqmEUIGRJ5fSXchkVgR5F7qn48bDBzv0kWj/Kfu5e6uci4UlEeng4331LnBkWffb++Ei3FOVLxo8JJWMFBDMeQ==}
     engines: {node: '>= 10'}
 
   '@tybys/wasm-util@0.10.4':
@@ -5639,14 +5641,8 @@ packages:
     resolution: {integrity: sha512-pMZTvIkT1d+TFGvDOqodOclx0QWkkgi6Tdoa8gC8ffGAAqz9pzPTZWAybbsHHoED/ztMtkv/VoYTYyShUn81hA==}
     engines: {node: '>= 0.4.0'}
 
-  uuid@10.0.0:
-    resolution: {integrity: sha512-8XkAphELsDnEGrDxUOHB3RGvXz6TeuYSGEZBOjtTtPm2lwhGBjLgOzLHB63IUWfBpNucQjND6d3AOudO+H3RWQ==}
-    deprecated: uuid@10 and below is no longer supported.  For ESM codebases, update to uuid@latest.  For CommonJS codebases, use uuid@11 (but be aware this version will likely be deprecated in 2028).
-    hasBin: true
-
-  uuid@9.0.1:
-    resolution: {integrity: sha512-b+1eJOlsR9K8HJpow9Ok3fiWOWSIcIzXodvv0rQjVoOVNpWMpxf1wZNpt4y9h10odCNrqnYp1OBzRktckBe3sA==}
-    deprecated: uuid@10 and below is no longer supported.  For ESM codebases, update to uuid@latest.  For CommonJS codebases, use uuid@11 (but be aware this version will likely be deprecated in 2028).
+  uuid@11.1.1:
+    resolution: {integrity: sha512-vIYxrBCC/N/K+Js3qSN88go7kIfNPssr/hHCesKCQNAjmgvYS2oqr69kIufEG+O4+PfezOH4EbIeHCfFov8ZgQ==}
     hasBin: true
 
   vary@1.1.2:
@@ -6544,7 +6540,7 @@ snapshots:
       node-fetch: 3.3.2
       partial-json: 0.1.7
       uri-templates: 0.2.0
-      uuid: 10.0.0
+      uuid: 11.1.1
     transitivePeerDependencies:
       - '@google-cloud/firestore'
       - bufferutil
@@ -8710,7 +8706,7 @@ snapshots:
     dependencies:
       '@tanstack/store': 0.11.2
 
-  '@tootallnate/once@2.0.0':
+  '@tootallnate/once@2.0.1':
     optional: true
 
   '@tybys/wasm-util@0.10.4':
@@ -10287,7 +10283,7 @@ snapshots:
       https-proxy-agent: 7.0.6
       is-stream: 2.0.1
       node-fetch: 2.7.0
-      uuid: 9.0.1
+      uuid: 11.1.1
     transitivePeerDependencies:
       - encoding
       - supports-color
@@ -10351,7 +10347,7 @@ snapshots:
     dependencies:
       '@genkit-ai/ai': 1.42.0(@google-cloud/firestore@9.3.1)(firebase-admin@14.5.0(@firebase/app-compat@0.5.18)(@firebase/app@0.16.2))(firebase@12.19.0)(genkit@1.42.0(@google-cloud/firestore@9.3.1)(firebase-admin@14.5.0(@firebase/app-compat@0.5.18)(@firebase/app@0.16.2))(firebase@12.19.0))
       '@genkit-ai/core': 1.42.0(@google-cloud/firestore@9.3.1)(firebase-admin@14.5.0(@firebase/app-compat@0.5.18)(@firebase/app@0.16.2))(firebase@12.19.0)(genkit@1.42.0(@google-cloud/firestore@9.3.1)(firebase-admin@14.5.0(@firebase/app-compat@0.5.18)(@firebase/app@0.16.2))(firebase@12.19.0))
-      uuid: 10.0.0
+      uuid: 11.1.1
     transitivePeerDependencies:
       - '@google-cloud/firestore'
       - bufferutil
@@ -10485,7 +10481,7 @@ snapshots:
       proto3-json-serializer: 2.0.2
       protobufjs: 7.6.6
       retry-request: 7.0.2
-      uuid: 9.0.1
+      uuid: 11.1.1
     transitivePeerDependencies:
       - encoding
       - supports-color
@@ -10539,7 +10535,7 @@ snapshots:
       google-auth-library: 9.15.1
       qs: 6.16.0
       url-template: 2.0.8
-      uuid: 9.0.1
+      uuid: 11.1.1
     transitivePeerDependencies:
       - encoding
       - supports-color
@@ -10648,7 +10644,7 @@ snapshots:
 
   http-proxy-agent@5.0.0:
     dependencies:
-      '@tootallnate/once': 2.0.0
+      '@tootallnate/once': 2.0.1
       agent-base: 6.0.2
       debug: 4.4.3
     transitivePeerDependencies:
@@ -12076,7 +12072,7 @@ snapshots:
       https-proxy-agent: 5.0.1
       node-fetch: 2.7.0
       stream-events: 1.0.5
-      uuid: 9.0.1
+      uuid: 11.1.1
     transitivePeerDependencies:
       - encoding
       - supports-color
@@ -12271,9 +12267,7 @@ snapshots:
 
   utils-merge@1.0.1: {}
 
-  uuid@10.0.0: {}
-
-  uuid@9.0.1: {}
+  uuid@11.1.1: {}
 
   vary@1.1.2: {}
 
