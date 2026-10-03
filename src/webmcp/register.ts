@@ -31,6 +31,10 @@ export async function registerCareersTools(mc: WebMCP.ModelContext, opts?: { sig
   // ModelContext, so release the guard to allow a clean re-registration.
   opts?.signal?.addEventListener('abort', () => registered.delete(mc), { once: true });
   for (const tool of registrableTools) {
+    // A superseded registration (StrictMode remount) must stop here: an
+    // aborted registerTool would otherwise remove the same-named tool that
+    // the newer registration already added.
+    if (opts?.signal?.aborted) return;
     await mc.registerTool(
       {
         name: tool.name,
