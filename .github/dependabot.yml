@@ -21,3 +21,14 @@ updates:
       update-types:
       - minor
       - patch
+  ignore:
+  # Blocked upstream: eslint-config-next 16 bundles eslint-plugin-import,
+  # jsx-a11y and react, whose peer ranges stop at eslint 9.
+  - dependency-name: eslint
+    update-types:
+    - version-update:semver-major
+  # Blocked upstream: typescript-eslint 8 supports typescript <6.1; with
+  # TypeScript 7 (native) eslint-config-next crashes at load time.
+  - dependency-name: typescript
+    update-types:
+    - version-update:semver-major
