@@ -5,10 +5,8 @@ import { NextRequest } from 'next/server';
 // Simulate API latency
 const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
-export async function GET(
-  request: NextRequest,
-  { params }: { params: { slug: string } }
-) {
+export async function GET(request: NextRequest, props: { params: Promise<{ slug: string }> }) {
+  const params = await props.params;
   await delay(500);
   const { slug } = params;
   const country = await talentService.getCountryBySlug(slug);

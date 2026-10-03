@@ -27,10 +27,11 @@ import Link from 'next/link';
 import { AppConfig } from '@/config/app.config';
 
 type Props = {
-  params: { candidateId: string };
+  params: Promise<{ candidateId: string }>;
 };
 
-export async function generateMetadata({ params }: Props): Promise<Metadata> {
+export async function generateMetadata(props: Props): Promise<Metadata> {
+  const params = await props.params;
   const profile = await candidateService.getCandidateProfile(
     params.candidateId,
   );
@@ -70,7 +71,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
-export default async function PublicProfilePage({ params }: Props) {
+export default async function PublicProfilePage(props: Props) {
+  const params = await props.params;
   const profileData = await candidateService.getCandidateProfile(
     params.candidateId,
   );
