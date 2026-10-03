@@ -43,8 +43,8 @@ export function CollegeStatsBarChart({ data }: CollegeStatsBarChartProps) {
                             />
                             <XAxis dataKey="applications" type="number" hide />
                             <ChartTooltip cursor={false} content={<ChartTooltipContent />} />
-                            <Bar dataKey="applications" fill="var(--color-applications)" radius={4} layout="vertical" />
-                            <Bar dataKey="placed" fill="var(--color-placed)" radius={4} layout="vertical" />
+                            <Bar dataKey="applications" fill="var(--color-applications)" radius={4} />
+                            <Bar dataKey="placed" fill="var(--color-placed)" radius={4} />
                         </BarChart>
                     </ChartContainer>
                 </ScrollArea>

@@ -3,7 +3,7 @@ import { Dialog, DialogContent } from '@/components/ui/dialog';
 import { TeamMember } from '@/lib/team.data';
 import Image from 'next/image';
 import { Badge } from '@/components/ui/badge';
-import { Linkedin, Globe } from 'lucide-react';
+import { Link2, Globe } from 'lucide-react';
 import Link from 'next/link';
 import { Separator } from '@/components/ui/separator';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
@@ -56,7 +56,7 @@ export function TeamMemberModal({
             </div> */}
             {/* <div className="flex items-center gap-4 pt-4 border-t">
               <Link href={member.socials.linkedin} target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-foreground transition-colors" aria-label={`${member.name}'s LinkedIn Profile`}>
-                <Linkedin />
+                <Link2 />
               </Link>
               {member.socials.portfolio && (
                 <Link href={member.socials.portfolio} target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-foreground transition-colors" aria-label={`${member.name}'s Portfolio`}>

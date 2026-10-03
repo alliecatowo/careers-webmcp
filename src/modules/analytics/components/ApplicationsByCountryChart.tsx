@@ -41,7 +41,6 @@ export function ApplicationsByCountryChart({
           <BarChart
             accessibilityLayer
             data={data}
-            layout="vertical"
             margin={{ left: 30 }}
           >
             <CartesianGrid horizontal={false} />
@@ -63,7 +62,6 @@ export function ApplicationsByCountryChart({
               dataKey="applications"
               fill="var(--color-applications)"
               radius={5}
-              layout="vertical"
             />
           </BarChart>
         </ChartContainer>

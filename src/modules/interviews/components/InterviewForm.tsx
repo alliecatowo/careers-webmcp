@@ -231,7 +231,7 @@ export function InterviewForm({ onSaveSuccess }: InterviewFormProps) {
                     mode="single"
                     selected={field.value}
                     onSelect={field.onChange}
-                    initialFocus
+                    autoFocus
                   />
                   {/* In real app, add time picker here */}
                 </PopoverContent>

@@ -104,8 +104,22 @@ const ChartTooltip = RechartsPrimitive.Tooltip
 
 const ChartTooltipContent = React.forwardRef<
   HTMLDivElement,
-  React.ComponentProps<typeof RechartsPrimitive.Tooltip> &
-    React.ComponentProps<"div"> & {
+  React.ComponentProps<"div"> & {
+      // Recharts 3 no longer exposes these on Tooltip's public props type;
+      // it injects them into the content element at render time.
+      active?: boolean
+      payload?: any[]
+      label?: any
+      labelFormatter?: (label: any, payload: any[]) => React.ReactNode
+      formatter?: (
+        value: any,
+        name: any,
+        item: any,
+        index: number,
+        payload: any
+      ) => React.ReactNode
+      color?: string
+      labelClassName?: string
       hideLabel?: boolean
       hideIndicator?: boolean
       indicator?: "line" | "dot" | "dashed"
@@ -260,8 +274,9 @@ const ChartLegend = RechartsPrimitive.Legend
 
 const ChartLegendContent = React.forwardRef<
   HTMLDivElement,
-  React.ComponentProps<"div"> &
-    Pick<RechartsPrimitive.LegendProps, "payload" | "verticalAlign"> & {
+  React.ComponentProps<"div"> & {
+      payload?: any[]
+      verticalAlign?: "top" | "middle" | "bottom"
       hideIcon?: boolean
       nameKey?: string
     }

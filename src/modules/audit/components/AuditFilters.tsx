@@ -102,7 +102,7 @@ export function AuditFilters({ onFilterChange }: AuditFiltersProps) {
                             mode="single"
                             selected={filters.startDate}
                             onSelect={(date) => handleDateChange('startDate', date)}
-                            initialFocus
+                            autoFocus
                           />
                         </PopoverContent>
                       </Popover>
@@ -127,7 +127,7 @@ export function AuditFilters({ onFilterChange }: AuditFiltersProps) {
                             mode="single"
                             selected={filters.endDate}
                             onSelect={(date) => handleDateChange('endDate', date)}
-                            initialFocus
+                            autoFocus
                           />
                         </PopoverContent>
                       </Popover>
