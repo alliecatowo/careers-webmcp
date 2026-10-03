@@ -47,8 +47,14 @@ service cloud.firestore {
     match /users/{userId} {
       allow get: if isOwner(userId) || isRecruiter() || isSuperAdmin();
       allow list: if isRecruiter() || isSuperAdmin();
-      allow create: if true; // Anyone can sign up
-      allow update: if isOwner(userId) || isSuperAdmin();
+      // Sign-up: a user may only create their own doc, and only as a CANDIDATE.
+      // Privileged roles are granted server-side (admin SDK bypasses these rules).
+      allow create: if isOwner(userId)
+        && (!('role' in request.resource.data) || request.resource.data.role == 'CANDIDATE');
+      // Owners may edit their profile but never change their own role.
+      allow update: if (isOwner(userId)
+          && request.resource.data.get('role', null) == resource.data.get('role', null))
+        || isSuperAdmin();
       allow delete: if isSuperAdmin();
     }
 
