@@ -1,7 +1,7 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Candidate } from "@/types";
-import { Globe, Linkedin } from "lucide-react";
+import { Globe, Link2 } from "lucide-react";
 import Link from "next/link";
 
 interface InfoRowProps {
@@ -32,7 +32,7 @@ export function CandidateInfoCard({ candidate }: { candidate: Candidate }) {
                 <InfoRow label="Total Experience" value={parsedData ? `${Math.floor(parsedData.totalExperienceMonths / 12)} years` : 'N/A'} />
                 <InfoRow label="LinkedIn" value={parsedData?.linkedin ? (
                     <Link href={parsedData.linkedin} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1 text-primary hover:underline">
-                        <Linkedin className="h-3 w-3"/> Profile
+                        <Link2 className="h-3 w-3"/> Profile
                     </Link>
                 ) : 'N/A'} />
                  <InfoRow label="Portfolio/GitHub" value={parsedData?.github ? (

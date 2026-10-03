@@ -37,7 +37,7 @@ export function DepartmentHiringChart({ data }: DepartmentHiringChartProps) {
             />
             <XAxis dataKey="hires" type="number" hide />
             <ChartTooltip cursor={false} content={<ChartTooltipContent hideLabel />} />
-            <Bar dataKey="hires" fill="var(--color-hires)" radius={5} layout="vertical" />
+            <Bar dataKey="hires" fill="var(--color-hires)" radius={5} />
           </BarChart>
         </ChartContainer>
       </CardContent>

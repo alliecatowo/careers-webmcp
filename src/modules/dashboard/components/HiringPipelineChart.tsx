@@ -36,7 +36,7 @@ export function HiringPipelineChart({ data }: HiringPipelineChartProps) {
             />
             <XAxis dataKey="count" type="number" hide />
             <ChartTooltip cursor={false} content={<ChartTooltipContent hideLabel />} />
-            <Bar dataKey="count" fill="var(--color-count)" radius={5} layout="vertical" />
+            <Bar dataKey="count" fill="var(--color-count)" radius={5} />
           </BarChart>
         </ChartContainer>
       </CardContent>

@@ -16,7 +16,7 @@ import {
   Building,
   Mail,
   Globe,
-  Linkedin,
+  Link2,
   Award,
   Code,
   CheckCircle,
@@ -132,7 +132,7 @@ export default async function PublicProfilePage({ params }: Props) {
               </div>
               {parsedData?.linkedin && (
                 <div className="flex items-center gap-1.5">
-                  <Linkedin className="h-4 w-4" />
+                  <Link2 className="h-4 w-4" />
                   <Link
                     href={parsedData.linkedin}
                     target="_blank"

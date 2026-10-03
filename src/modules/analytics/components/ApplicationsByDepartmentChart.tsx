@@ -37,7 +37,7 @@ export function ApplicationsByDepartmentChart({ data }: ApplicationsByDepartment
             />
             <XAxis dataKey="applications" type="number" hide />
             <ChartTooltip cursor={false} content={<ChartTooltipContent hideLabel />} />
-            <Bar dataKey="applications" fill="var(--color-applications)" radius={5} layout="vertical" />
+            <Bar dataKey="applications" fill="var(--color-applications)" radius={5} />
           </BarChart>
         </ChartContainer>
       </CardContent>
