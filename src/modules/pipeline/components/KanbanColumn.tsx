@@ -17,7 +17,7 @@ export function KanbanColumn({ id, title, applications }: KanbanColumnProps) {
     const { setNodeRef } = useDroppable({ id });
 
     return (
-        <div className="w-72 flex-shrink-0">
+        <div className="w-72 shrink-0">
             <div className="bg-muted rounded-t-lg p-3 flex items-center justify-between">
                 <h3 className="font-semibold text-sm">{title}</h3>
                 <span className="text-xs font-semibold bg-primary/10 text-primary px-2 py-1 rounded-full">{applications.length}</span>

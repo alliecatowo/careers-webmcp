@@ -86,7 +86,7 @@ export default function HeroSection() {
                 borderColor: `${c}59`,
               }}
             >
-              <span className="w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ background: c }} />
+              <span className="w-1.5 h-1.5 rounded-full shrink-0" style={{ background: c }} />
               {p.label}
             </div>
           );
@@ -98,7 +98,7 @@ export default function HeroSection() {
         initial={{ opacity: 0, y: 12 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, delay: 0.4 }}
-        className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-[1px] border border-[#1e2d47]"
+        className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-px border border-[#1e2d47]"
         style={{ background: "#1e2d47" }}
       >
         {KPI_ITEMS.map((k) => (

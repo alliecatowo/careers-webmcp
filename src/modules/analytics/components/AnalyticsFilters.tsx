@@ -100,7 +100,7 @@ export function AnalyticsFilters({ filters, setFilters }: AnalyticsFiltersProps)
                 </Select>
             </div>
 
-            <div className="flex-grow" />
+            <div className="grow" />
 
             <div className="flex items-center gap-2">
                 <Button variant="ghost" onClick={handleReset}><FilterX className="mr-2 h-4 w-4" /> Reset</Button>

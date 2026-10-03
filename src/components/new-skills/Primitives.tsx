@@ -58,7 +58,7 @@ export function TaskList({ items }: { items: { role: RoleKey; text: string }[] }
           style={{ fontFamily: "'Syne', sans-serif" }}
         >
           <span
-            className="absolute left-0 top-[0.5rem] text-[0.7rem]"
+            className="absolute left-0 top-2 text-[0.7rem]"
             style={{ color: ROLE_COLORS[item.role] }}
           >
             ▸
@@ -119,7 +119,7 @@ export function LaneTitle({ role, label }: { role: RoleKey; label: string }) {
       className="flex items-center gap-2 text-[0.63rem] uppercase tracking-[2px] mb-3 pb-2 border-b border-[#172035]"
       style={{ fontFamily: "'JetBrains Mono', monospace", color: c }}
     >
-      <span className="w-1.5 h-1.5 rounded-full inline-block flex-shrink-0" style={{ background: c }} />
+      <span className="w-1.5 h-1.5 rounded-full inline-block shrink-0" style={{ background: c }} />
       {label}
     </div>
   );

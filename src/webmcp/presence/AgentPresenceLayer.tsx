@@ -92,7 +92,7 @@ function ScanBar({ active }: { active: boolean }) {
       {active && (
         <motion.div
           key="scan"
-          className="pointer-events-none fixed inset-x-0 top-0 z-[60] h-0.5 overflow-hidden"
+          className="pointer-events-none fixed inset-x-0 top-0 z-60 h-0.5 overflow-hidden"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
@@ -100,7 +100,7 @@ function ScanBar({ active }: { active: boolean }) {
           aria-hidden
         >
           <motion.div
-            className="h-full w-1/3 bg-gradient-to-r from-transparent via-sky-400 to-transparent"
+            className="h-full w-1/3 bg-linear-to-r from-transparent via-sky-400 to-transparent"
             animate={{ x: ['-40%', '340%'] }}
             transition={{ duration: 1.1, repeat: Infinity, ease: 'easeInOut' }}
           />
@@ -137,7 +137,7 @@ export function AgentPresenceLayer() {
     <>
       <ScanBar active={running} />
       <div
-        className="pointer-events-none fixed bottom-5 right-5 z-[60] flex max-w-[calc(100vw-2.5rem)] flex-col items-end gap-2"
+        className="pointer-events-none fixed bottom-5 right-5 z-60 flex max-w-[calc(100vw-2.5rem)] flex-col items-end gap-2"
         data-testid="agent-presence"
       >
         <AnimatePresence mode="popLayout" initial={false}>
@@ -149,7 +149,7 @@ export function AgentPresenceLayer() {
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: 6, scale: 0.97 }}
               transition={{ type: 'spring', stiffness: 420, damping: 32 }}
-              className="pointer-events-auto flex items-center gap-2 rounded-full border border-amber-400/30 bg-amber-950/85 px-4 py-2 text-sm text-amber-100 shadow-lg backdrop-blur"
+              className="pointer-events-auto flex items-center gap-2 rounded-full border border-amber-400/30 bg-amber-950/85 px-4 py-2 text-sm text-amber-100 shadow-lg backdrop-blur-sm"
               data-testid="agent-pending-confirmation"
             >
               <CornerDownRight className="h-3.5 w-3.5 shrink-0 text-amber-300" />
@@ -179,7 +179,7 @@ export function AgentPresenceLayer() {
             >
               <Link
                 href={`/careers/exports/${offeredExportId}`}
-                className="flex items-center gap-2 rounded-full border border-sky-400/30 bg-slate-900/90 px-4 py-2 text-sm text-slate-100 shadow-lg backdrop-blur transition-colors hover:border-sky-400/60"
+                className="flex items-center gap-2 rounded-full border border-sky-400/30 bg-slate-900/90 px-4 py-2 text-sm text-slate-100 shadow-lg backdrop-blur-sm transition-colors hover:border-sky-400/60"
                 data-testid="agent-export-offer"
               >
                 <ArrowDownToLine className="h-3.5 w-3.5 shrink-0 text-sky-400" />
@@ -197,7 +197,7 @@ export function AgentPresenceLayer() {
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: -4, scale: 0.97 }}
               transition={{ type: 'spring', stiffness: 460, damping: 34 }}
-              className="flex items-center gap-2.5 rounded-full border border-white/10 bg-slate-900/90 px-4 py-2 text-sm text-slate-100 shadow-lg backdrop-blur"
+              className="flex items-center gap-2.5 rounded-full border border-white/10 bg-slate-900/90 px-4 py-2 text-sm text-slate-100 shadow-lg backdrop-blur-sm"
               data-testid="agent-activity"
               data-tool={a.tool}
               data-phase={a.phase}

@@ -49,14 +49,14 @@ export const ToastItem = ({ toast, removeToast }: ToastItemProps) => {
       )}
     >
       <div className="flex items-start gap-4">
-        <div className="flex-shrink-0 mt-0.5">
+        <div className="shrink-0 mt-0.5">
           {toastStyles[toast.type].icon}
         </div>
         <div className="flex-1">
           {toast.title && <h3 className="font-semibold">{toast.title}</h3>}
           <p className="text-sm text-muted-foreground">{toast.description}</p>
         </div>
-        <div className="flex-shrink-0">
+        <div className="shrink-0">
           <button
             onClick={handleRemove}
             className="p-1 rounded-full text-muted-foreground hover:bg-muted"

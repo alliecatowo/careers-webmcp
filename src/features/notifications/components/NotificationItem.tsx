@@ -28,7 +28,7 @@ export function NotificationItem({ notification, onClick }: NotificationItemProp
       onClick={() => onClick(notification.id)}
     >
       {!notification.read && <div className="mt-1 h-2 w-2 rounded-full bg-primary" />}
-      <Icon className={cn("h-5 w-5 flex-shrink-0", iconColor)} />
+      <Icon className={cn("h-5 w-5 shrink-0", iconColor)} />
       <div className="flex-1 space-y-1">
         <p className="text-sm font-semibold">{notification.title}</p>
         <p className="text-sm text-muted-foreground">{notification.message}</p>

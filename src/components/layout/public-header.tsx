@@ -104,7 +104,7 @@ export function PublicHeader() {
                             {navItems.map((item) => <NavLink key={item.label} href={item.href}>{item.label}</NavLink>)}
                             
                             <DropdownMenu>
-                                <DropdownMenuTrigger className={cn("flex items-center gap-1 text-sm font-medium transition-colors outline-none", isAboutActive ? 'text-primary' : 'text-muted-foreground hover:text-foreground')}>
+                                <DropdownMenuTrigger className={cn("flex items-center gap-1 text-sm font-medium transition-colors outline-hidden", isAboutActive ? 'text-primary' : 'text-muted-foreground hover:text-foreground')}>
                                     Careers <ChevronDown className="h-4 w-4" />
                                 </DropdownMenuTrigger>
                                 <DropdownMenuContent>
@@ -116,7 +116,7 @@ export function PublicHeader() {
                                 </DropdownMenuContent>
                             </DropdownMenu>
                             <DropdownMenu>
-                                <DropdownMenuTrigger className={cn("flex items-center gap-1 text-sm font-medium transition-colors outline-none", isAboutActive ? 'text-primary' : 'text-muted-foreground hover:text-foreground')}>
+                                <DropdownMenuTrigger className={cn("flex items-center gap-1 text-sm font-medium transition-colors outline-hidden", isAboutActive ? 'text-primary' : 'text-muted-foreground hover:text-foreground')}>
                                     About Us <ChevronDown className="h-4 w-4" />
                                 </DropdownMenuTrigger>
                                 <DropdownMenuContent>
@@ -129,7 +129,7 @@ export function PublicHeader() {
                             </DropdownMenu>
 
                             <DropdownMenu>
-                                <DropdownMenuTrigger className={cn("flex items-center gap-1 text-sm font-medium transition-colors outline-none", isJoinUsActive ? 'text-primary' : 'text-muted-foreground hover:text-foreground')}>
+                                <DropdownMenuTrigger className={cn("flex items-center gap-1 text-sm font-medium transition-colors outline-hidden", isJoinUsActive ? 'text-primary' : 'text-muted-foreground hover:text-foreground')}>
                                     Join Us <ChevronDown className="h-4 w-4" />
                                 </DropdownMenuTrigger>
                                 <DropdownMenuContent>

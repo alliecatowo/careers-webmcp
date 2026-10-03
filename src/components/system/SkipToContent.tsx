@@ -25,7 +25,7 @@ export function SkipToContent() {
       href="#main-content"
       onClick={handleSkip}
       onBlur={handleBlur}
-      className="sr-only focus:not-sr-only focus:absolute focus:z-[101] focus:m-4"
+      className="sr-only focus:not-sr-only focus:absolute focus:z-101 focus:m-4"
     >
       <Button variant="secondary">Skip to main content</Button>
     </a>
