@@ -1,10 +1,8 @@
 
 import { NextRequest, NextResponse } from "next/server";
 
-export async function GET(
-  request: NextRequest,
-  { params }: { params: { country: string } }
-) {
+export async function GET(request: NextRequest, props: { params: Promise<{ country: string }> }) {
+  const params = await props.params;
   const { country } = params;
 
   return NextResponse.json({

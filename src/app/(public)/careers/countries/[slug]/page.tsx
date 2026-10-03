@@ -9,7 +9,7 @@ import { AppConfig } from '@/config/app.config';
 import { ErrorState } from '@/components/system/ErrorState';
 
 type Props = {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 };
 
 export async function generateStaticParams() {
@@ -24,7 +24,8 @@ export async function generateStaticParams() {
   }
 }
 
-export async function generateMetadata({ params }: Props): Promise<Metadata> {
+export async function generateMetadata(props: Props): Promise<Metadata> {
+  const params = await props.params;
   const country = await talentService.getCountryBySlug(params.slug);
 
   if (!country) {
@@ -52,7 +53,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
-export default async function CountryPage({ params }: Props) {
+export default async function CountryPage(props: Props) {
+  const params = await props.params;
   let country, jobsInCountry, complianceProfile;
 
   try {

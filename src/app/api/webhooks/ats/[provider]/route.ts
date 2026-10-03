@@ -5,10 +5,8 @@ import { atsWebhookHandler } from '@/integrations/ats/ATSWebhookHandler';
 // This route handles incoming webhooks from various ATS providers.
 // The [provider] dynamic segment allows us to identify the source (e.g., 'greenhouse', 'lever').
 
-export async function POST(
-  request: NextRequest,
-  { params }: { params: { provider: string } }
-) {
+export async function POST(request: NextRequest, props: { params: Promise<{ provider: string }> }) {
+  const params = await props.params;
   const { provider: providerName } = params;
   const rawPayload = await request.text(); // Read as text to validate signature
   const signature = request.headers.get('X-Signature-Header'); // Example header

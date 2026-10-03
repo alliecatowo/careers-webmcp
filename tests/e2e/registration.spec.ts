@@ -28,6 +28,8 @@ test.describe('WebMCP tool registration', () => {
     await page.goto('/careers/open-positions');
     await page.waitForFunction(() => Boolean((window as unknown as { __webmcp?: unknown }).__webmcp));
 
+    // Registration happens in an effect after hydration.
+    await expect.poll(async () => (await listTools(page)).length).toBe(EXPECTED_TOOLS.length);
     const names = await listTools(page);
     expect(names.sort()).toEqual([...EXPECTED_TOOLS].sort());
     expect(new Set(names).size).toBe(names.length);

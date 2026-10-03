@@ -7,10 +7,8 @@ import { Notification } from "@/features/notifications";
 
 const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
-export async function POST(
-    request: NextRequest,
-    { params }: { params: { country: string } }
-) {
+export async function POST(request: NextRequest, props: { params: Promise<{ country: string }> }) {
+    const params = await props.params;
     await delay(1000);
     const countrySlug = params.country;
 

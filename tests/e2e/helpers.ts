@@ -8,6 +8,12 @@ export async function installWebMCPShim(page: Page): Promise<void> {
 
 /** Call a registered WebMCP tool from the page and return its parsed JSON result. */
 export async function callTool<T = unknown>(page: Page, name: string, input: Record<string, unknown> = {}): Promise<T> {
+  // The shim exists from the first script, but the app registers tools in an
+  // effect after hydration; wait for this one instead of racing it.
+  await page.waitForFunction(
+    (n) => (window as unknown as { __webmcp?: { tools: () => string[] } }).__webmcp?.tools().includes(n),
+    name,
+  );
   return page.evaluate(
     ([n, i]) => (window as unknown as { __webmcp: { call: (n: string, i: unknown) => Promise<unknown> } }).__webmcp.call(n, i),
     [name, input] as const,
