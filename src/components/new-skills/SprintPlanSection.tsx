@@ -29,7 +29,7 @@ export default function SprintPlanSection() {
       <div className="flex flex-wrap gap-5 mb-8">
         {legendItems.map((item) => (
           <div key={item.key} className="flex items-center gap-2" style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: "0.68rem", color: "#4a6080" }}>
-            <span className="w-3 h-3 rounded-sm inline-block" style={{ background: ROLE_COLORS[item.key] }} />
+            <span className="w-3 h-3 rounded-xs inline-block" style={{ background: ROLE_COLORS[item.key] }} />
             {item.label}
           </div>
         ))}
@@ -52,7 +52,7 @@ export default function SprintPlanSection() {
               {/* Day header */}
               <div className="flex flex-wrap items-center gap-6 px-6 py-4 border-b border-[#172035]" style={{ background: "#0e1524" }}>
                 <div
-                  className="leading-none flex-shrink-0"
+                  className="leading-none shrink-0"
                   style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: "2.5rem", color: numColor }}
                 >
                   {day.num}

@@ -83,7 +83,7 @@ export default function ExportPage() {
                 {preview.map((row, index) => (
                   <TableRow key={index}>
                     {record.columns.map((column) => (
-                      <TableCell key={column} className="max-w-[22rem] truncate whitespace-nowrap">
+                      <TableCell key={column} className="max-w-88 truncate whitespace-nowrap">
                         {row[column]}
                       </TableCell>
                     ))}

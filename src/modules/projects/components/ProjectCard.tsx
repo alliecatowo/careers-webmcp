@@ -28,7 +28,7 @@ export function ProjectCard({ project }: { project: Project }) {
                 </div>
                 <CardDescription>{project.category}</CardDescription>
             </CardHeader>
-            <CardContent className="flex-grow">
+            <CardContent className="grow">
                 <p className="text-sm text-muted-foreground line-clamp-3">{project.description}</p>
                 <div className="mt-4 flex flex-wrap gap-2">
                     {project.requiredSkills.slice(0, 4).map(skill => (

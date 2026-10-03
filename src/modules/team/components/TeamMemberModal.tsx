@@ -47,7 +47,7 @@ export function TeamMemberModal({
               <p className="text-muted-foreground mt-1">{member?.tagline}</p>
             </div>
             <Separator />
-            <p className="text-muted-foreground flex-grow">{member.bio}</p>
+            <p className="text-muted-foreground grow">{member.bio}</p>
             {/* <div>
               <h3 className="font-semibold mb-3 text-sm uppercase tracking-wider text-muted-foreground">Expertise</h3>
               <div className="flex flex-wrap gap-2">

@@ -41,8 +41,8 @@ export default function MetricsSection() {
                   <td className="px-4 py-3" style={{ color: c }}>
                     {row.icon} {row.name}
                   </td>
-                  <td className="px-4 py-3 text-[#dce8ff] text-[0.72rem] leading-[1.5]">{row.day3}</td>
-                  <td className="px-4 py-3 text-[#dce8ff] text-[0.72rem] leading-[1.5]">{row.day5}</td>
+                  <td className="px-4 py-3 text-[#dce8ff] text-[0.72rem] leading-normal">{row.day3}</td>
+                  <td className="px-4 py-3 text-[#dce8ff] text-[0.72rem] leading-normal">{row.day5}</td>
                   <td className="px-4 py-3">
                     <Badge role={row.role}>{row.done}</Badge>
                   </td>

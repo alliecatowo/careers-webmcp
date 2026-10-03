@@ -28,7 +28,7 @@ const ContactDetail = ({ category, contact, isLink = false }: { category: string
             href={isLink ? `https://${contact}` : `mailto:${contact}`}
             target="_blank"
             rel="noopener noreferrer"
-            className="text-lg font-bold text-foreground break-words hover:underline"
+            className="text-lg font-bold text-foreground wrap-break-word hover:underline"
         >
             {contact}
         </a>
@@ -36,7 +36,7 @@ const ContactDetail = ({ category, contact, isLink = false }: { category: string
 );
 
 const LocationCard = ({ country, imageUrl, address }: { country: Country, imageUrl: string, address: string[] }) => (
-    <div className="relative rounded-lg overflow-hidden group aspect-[407/145] text-white">
+    <div className="relative rounded-lg overflow-hidden group aspect-407/145 text-white">
         <Image
             src={imageUrl}
             alt={`Cityscape of ${country.name}`}

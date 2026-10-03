@@ -95,7 +95,7 @@ function NodeTag({ role, children }: { role: "ai"|"be"|"fe"|"seo"|"pm"; children
   const c = ROLE_COLORS[role];
   return (
     <span
-      className="inline-block px-3 py-[4px] text-[0.72rem]"
+      className="inline-block px-3 py-xs text-[0.72rem]"
       style={{ background: `${c}14`, color: c, border: `1px solid ${c}4d` }}
     >
       {children}

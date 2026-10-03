@@ -22,7 +22,7 @@ export function TeamCard({ member, onClick }: TeamCardProps) {
       className="group overflow-hidden cursor-pointer transition-all duration-300 hover:shadow-xl hover:-translate-y-2 border"
       onClick={onClick}
     >
-      <div className="aspect-[4/5] relative">
+      <div className="aspect-4/5 relative">
         {img && (
           <Image
             src={img.imageUrl}

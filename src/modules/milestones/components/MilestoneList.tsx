@@ -50,7 +50,7 @@ function MilestoneCard({ milestone, role, onUpdate }: { milestone: Milestone, ro
         <>
         <Card>
             <CardContent className="p-4 flex flex-col sm:flex-row justify-between items-start gap-4">
-                <div className="flex-grow">
+                <div className="grow">
                     <div className="flex items-center gap-3 mb-2">
                         {statusIcons[milestone.status]}
                         <h4 className="font-semibold">{milestone.title}</h4>
@@ -59,7 +59,7 @@ function MilestoneCard({ milestone, role, onUpdate }: { milestone: Milestone, ro
                     <p className="text-sm text-muted-foreground mb-2">{milestone.description}</p>
                     <p className="text-xs text-muted-foreground">Due: {new Date(milestone.dueDate).toLocaleDateString()}</p>
                 </div>
-                <div className="flex flex-col items-end gap-2 flex-shrink-0 w-full sm:w-auto">
+                <div className="flex flex-col items-end gap-2 shrink-0 w-full sm:w-auto">
                     <p className="font-bold text-lg">{formatCurrency(milestone.amount, 'USD')}</p>
                     {role === 'CLIENT' && (
                         <div className="flex gap-2">

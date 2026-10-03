@@ -258,12 +258,12 @@ export function GoogleIndexingTrigger() {
                 {bulkResults.map((result, index) => (
                   <div
                     key={index}
-                    className="flex items-center gap-2 p-2 rounded border text-sm"
+                    className="flex items-center gap-2 p-2 rounded-sm border text-sm"
                   >
                     {result.success ? (
-                      <CheckCircle className="h-4 w-4 text-green-500 flex-shrink-0" />
+                      <CheckCircle className="h-4 w-4 text-green-500 shrink-0" />
                     ) : (
-                      <XCircle className="h-4 w-4 text-red-500 flex-shrink-0" />
+                      <XCircle className="h-4 w-4 text-red-500 shrink-0" />
                     )}
                     <div className="flex-1 min-w-0">
                       <p className="truncate font-mono text-xs">{result.url}</p>

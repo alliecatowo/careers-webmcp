@@ -20,7 +20,7 @@ function StepGuide({ steps }: { steps: StepItem[] }) {
           >
             {/* Step number */}
             <div
-              className="flex-shrink-0 w-10 text-right leading-none opacity-25"
+              className="shrink-0 w-10 text-right leading-none opacity-25"
               style={{
                 fontFamily: "'Bebas Neue', sans-serif",
                 fontSize: "2.2rem",

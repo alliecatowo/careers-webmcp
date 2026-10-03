@@ -63,7 +63,7 @@ export function MultiSelect({ options, selected, onChange, placeholder, maxSelec
               <Badge key={optionValue} variant="secondary">
                 {option?.label}
                 <button
-                  className="ml-1 ring-offset-background rounded-full outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
+                  className="ml-1 ring-offset-background rounded-full outline-hidden focus:ring-2 focus:ring-ring focus:ring-offset-2"
                   onKeyDown={(e) => {
                     if (e.key === "Enter") {
                       handleUnselect(optionValue);
@@ -90,13 +90,13 @@ export function MultiSelect({ options, selected, onChange, placeholder, maxSelec
             aria-label={placeholder}
             placeholder={isMaxedOut ? "Maximum items selected" : placeholder}
             disabled={isMaxedOut}
-            className={`ml-2 bg-transparent outline-none placeholder:text-muted-foreground flex-1 ${isMaxedOut ? 'cursor-not-allowed' : ''}`}
+            className={`ml-2 bg-transparent outline-hidden placeholder:text-muted-foreground flex-1 ${isMaxedOut ? 'cursor-not-allowed' : ''}`}
           />
         </div>
       </div>
       <div className="relative mt-2">
         {open && selectables.length > 0 && !isMaxedOut ?
-          <div className="absolute w-full z-10 top-0 rounded-md border bg-popover text-popover-foreground shadow-md outline-none animate-in">
+          <div className="absolute w-full z-10 top-0 rounded-md border bg-popover text-popover-foreground shadow-md outline-hidden animate-in">
             <CommandGroup className="h-full overflow-auto">
               {selectables.map((option) => {
                 return (
